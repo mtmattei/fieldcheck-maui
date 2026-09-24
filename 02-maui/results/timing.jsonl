@@ -5,3 +5,5 @@
 {"timestamp_utc": "2026-09-24T15:56:50.377619+00:00", "event": "first_android_build_success"}
 {"timestamp_utc": "2026-09-24T15:57:53.114885+00:00", "event": "verification_start"}
 {"timestamp_utc": "2026-09-24T16:00:14.457477+00:00", "event": "run_finish"}
+{"timestamp_utc": "2026-09-24T17:42:07.716290+00:00", "event": "human_intervention_ci_runners_available"}
+{"timestamp_utc": "2026-09-24T17:42:07.741010+00:00", "event": "run_resumed"}
