@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Asset information sheet shared by the Asset Detail page and the wide Assets detail pane. -->
+<ContentView
+    x:Class="FieldCheck.Views.AssetDetailView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    x:DataType="vm:AssetDetailViewModel">
+
+    <Grid>
+        <VerticalStackLayout IsVisible="{Binding IsContent}" Spacing="0">
+            <!-- Title + status; wide layout keeps the primary action top-right -->
+            <Grid x:Name="HeaderGrid" ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding Name}" FontSize="30" SemanticProperties.HeadingLevel="Level1" />
+                    <controls:StatusChip Text="{Binding StatusText}" Tone="{Binding Tone}" />
+                </VerticalStackLayout>
+                <Button
+                    x:Name="TopActionButton"
+                    AutomationId="StartInspectionTopButton"
+                    Grid.Column="1"
+                    Text="Start inspection"
+                    Style="{StaticResource PrimaryButton}"
+                    WidthRequest="200"
+                    VerticalOptions="Start"
+                    Command="{Binding StartInspectionCommand}"
+                    SemanticProperties.Hint="Opens a new inspection form for this asset" />
+            </Grid>
+
+            <!-- Information sheet -->
+            <Grid x:Name="InfoGrid" Margin="0,24,0,0" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="22" ColumnSpacing="16">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Asset ID" Style="{StaticResource MicroLabel}" />
+                    <Label Text="{Binding AssetId}" FontSize="16" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" Spacing="6">
+                    <Label Text="Type" Style="{StaticResource MicroLabel}" />
+                    <Label Text="{Binding Type}" FontSize="16" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="1" Spacing="6">
+                    <Label Text="Location" Style="{StaticResource MicroLabel}" />
+                    <Label Text="{Binding Location}" FontSize="16" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="6">
+                    <Label Text="Last inspection" Style="{StaticResource MicroLabel}" />
+                    <Label Text="{Binding LastInspectionText}" FontSize="16" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <BoxView Style="{StaticResource Hairline}" Margin="0,24,0,0" />
+            <Label Text="Description" Style="{StaticResource MicroLabel}" Margin="0,30,0,12" SemanticProperties.HeadingLevel="Level2" />
+            <Label Text="{Binding Description}" Style="{StaticResource BodyText}" LineBreakMode="WordWrap" MaximumWidthRequest="620" HorizontalOptions="Start" />
+
+            <BoxView Style="{StaticResource Hairline}" Margin="0,44,0,0" />
+            <Label Text="Latest inspection" Style="{StaticResource MicroLabel}" Margin="0,30,0,12" SemanticProperties.HeadingLevel="Level2" />
+            <VerticalStackLayout Spacing="6" IsVisible="{Binding HasLatestInspection}">
+                <Label Text="{Binding LatestConditionText}" FontSize="19" TextColor="{Binding LatestTone, Converter={StaticResource ToneColor}}" />
+                <Label Text="{Binding LatestSummary}" Style="{StaticResource SecondaryText}" FontSize="14" LineBreakMode="WordWrap" MaximumWidthRequest="620" HorizontalOptions="Start" />
+                <Label Text="{Binding LatestMeta}" Style="{StaticResource SecondaryText}" FontSize="12" />
+            </VerticalStackLayout>
+            <Label
+                Text="No inspection details on record yet. Start an inspection to capture this asset's condition."
+                Style="{StaticResource SecondaryText}"
+                FontSize="14"
+                IsVisible="{Binding HasLatestInspection, Converter={StaticResource InverseBool}}" />
+
+            <Button
+                x:Name="BottomActionButton"
+                AutomationId="StartInspectionButton"
+                Margin="0,52,0,32"
+                Text="Start inspection"
+                Style="{StaticResource PrimaryButton}"
+                Command="{Binding StartInspectionCommand}"
+                SemanticProperties.Hint="Opens a new inspection form for this asset" />
+        </VerticalStackLayout>
+
+        <controls:StatePanel IsVisible="{Binding IsLoading}" IsBusy="True" Title="Loading asset…" />
+        <controls:StatePanel
+            IsVisible="{Binding IsEmpty}"
+            Title="Asset not found"
+            Message="This asset is no longer in the local register." />
+        <controls:StatePanel
+            IsVisible="{Binding IsError}"
+            Title="Couldn't load this asset"
+            Message="{x:Static vm:StatefulViewModel.LoadErrorMessage}"
+            ActionText="Retry"
+            ActionCommand="{Binding RetryCommand}" />
+    </Grid>
+</ContentView>

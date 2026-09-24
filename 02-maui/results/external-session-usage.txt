@@ -1,0 +1,30 @@
+FieldCheck MAUI run — session usage
+===================================
+
+Source: the Claude Code session transcript stored in the run container
+  /root/.claude/projects/-home-user-fieldcheck-maui/9c13fe5d-9881-58e7-8a9a-687920f16c8a.jsonl
+  plus the one subagent transcript under the same session folder.
+Method: summed the `usage` fields of every recorded model response, counting each message ID once.
+These are recorded token counts, not estimates.
+If the host's `/usage` output differs, `/usage` is authoritative. Paste it at the bottom.
+
+Session: session_01RwV4ppTpqnwv95mKcPbJcr
+Transcript span (UTC): 2026-09-24T15:30:37Z -> 2026-09-24T22:37:11Z
+  The span includes post-run Q&A after run_finish (19:49:28Z).
+Model requests: 221
+
+Tokens (all models)
+  input_tokens                  510
+  output_tokens             278,925
+  cache_read_input_tokens 80,350,074
+  cache_creation_tokens    1,161,300
+  total                   81,790,809
+
+By model
+  claude-opus-5-5            requests 216  input 466  output 278,914  cache_read 80,213,093  cache_write 1,117,141
+  claude-haiku-4-5-20251001  requests   5  input  44  output      11  cache_read    136,981  cache_write    44,159
+
+Cost: not available from session telemetry. No estimate is given (see METRICS_CAPTURE.md).
+Core-checkpoint usage snapshot: not captured. It is not needed: MAUI has no Desktop-head phase.
+
+--- /usage output from the host (paste here if available) ---

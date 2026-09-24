@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FieldCheck.Views.NewInspectionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    x:DataType="vm:NewInspectionViewModel"
+    Title="New inspection"
+    Shell.TabBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header: back (cancel) + title + asset identity -->
+        <Grid x:Name="Header" Padding="{OnPlatform Default='8,40,20,8', WinUI='40,36,40,8'}" ColumnDefinitions="Auto,*" ColumnSpacing="6">
+            <ImageButton
+                AutomationId="BackButton"
+                Source="icon_back.png"
+                Style="{StaticResource IconButton}"
+                VerticalOptions="Start"
+                Margin="0,2,0,0"
+                IsVisible="{OnPlatform Default=True, WinUI=False}"
+                Command="{Binding CancelCommand}"
+                SemanticProperties.Description="Cancel inspection and go back" />
+            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                <Label Text="New inspection" Style="{StaticResource ScreenTitle}" />
+                <Label Text="{Binding AssetLine}" Style="{StaticResource SecondaryText}" FontSize="14" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <Grid>
+                <Grid x:Name="FormGrid" Padding="{OnPlatform Default='20,16,20,32', WinUI='40,28,47,40'}" IsVisible="{Binding IsContent}"
+                      RowSpacing="0" ColumnSpacing="0">
+
+                    <!-- Section A: condition, operating normally, temperature -->
+                    <VerticalStackLayout x:Name="SectionPrimary" Spacing="0">
+                        <Label Text="Condition" Style="{StaticResource MicroLabel}" Margin="0,0,0,10" />
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6" SemanticProperties.Description="Condition, required">
+                            <Button Text="Good" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Good" AutomationId="ConditionGood"
+                                    SemanticProperties.Description="Condition Good">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsGood}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="BorderColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="TextColor" Value="{StaticResource Surface}" />
+                                        <Setter Property="SemanticProperties.Description" Value="Condition Good, selected" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="1" Text="Attention" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Attention" AutomationId="ConditionAttention"
+                                    SemanticProperties.Description="Condition Attention">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsAttention}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="BorderColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="TextColor" Value="{StaticResource Surface}" />
+                                        <Setter Property="SemanticProperties.Description" Value="Condition Attention, selected" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="2" Text="Critical" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Critical" AutomationId="ConditionCritical"
+                                    SemanticProperties.Description="Condition Critical">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsCritical}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="BorderColor" Value="{StaticResource Ink}" />
+                                        <Setter Property="TextColor" Value="{StaticResource Surface}" />
+                                        <Setter Property="SemanticProperties.Description" Value="Condition Critical, selected" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="0,18,0,0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="14" MinimumHeightRequest="44">
+                            <Label Text="Operating normally" Style="{StaticResource MicroLabel}" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding OperatingNormallyText}" FontSize="15" VerticalOptions="Center" />
+                            <Switch Grid.Column="2" AutomationId="OperatingSwitch" IsToggled="{Binding OperatingNormally}" VerticalOptions="Center"
+                                    SemanticProperties.Description="Operating normally" />
+                        </Grid>
+
+                        <Label Text="Temperature °C" Style="{StaticResource MicroLabel}" Margin="0,20,0,8" />
+                        <Border Style="{StaticResource InputFrame}">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding TemperatureError, Converter={StaticResource HasValue}}" Value="True">
+                                    <Setter Property="Stroke" Value="{StaticResource Critical}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Entry
+                                x:Name="TemperatureEntry"
+                                AutomationId="TemperatureEntry"
+                                Text="{Binding TemperatureText}"
+                                Keyboard="Numeric"
+                                Placeholder="-50 to 250"
+                                ReturnType="Next"
+                                SemanticProperties.Description="Temperature in degrees Celsius, required, from -50 to 250" />
+                        </Border>
+                        <Label AutomationId="TemperatureError" Text="{Binding TemperatureError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
+                               IsVisible="{Binding TemperatureError, Converter={StaticResource HasValue}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Checklist: three individually required items -->
+                    <VerticalStackLayout x:Name="SectionChecklist" Spacing="0">
+                        <Label Text="Checklist" Style="{StaticResource MicroLabel}" Margin="0,0,0,4" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+                            <CheckBox AutomationId="CheckGuards" IsChecked="{Binding GuardsSecure}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.GuardsItem}" />
+                            <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.GuardsItem}" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+                            <CheckBox AutomationId="CheckLeaks" IsChecked="{Binding NoVisibleLeaks}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.LeaksItem}" />
+                            <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.LeaksItem}" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+                            <CheckBox AutomationId="CheckArea" IsChecked="{Binding AreaClear}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.AreaItem}" />
+                            <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.AreaItem}" VerticalOptions="Center" />
+                        </Grid>
+                        <Label Text="{Binding ChecklistError}" Style="{StaticResource ErrorText}" Margin="0,4,0,0"
+                               IsVisible="{Binding ChecklistError, Converter={StaticResource HasValue}}" />
+                    </VerticalStackLayout>
+
+                    <BoxView x:Name="SectionRule" Style="{StaticResource Hairline}" VerticalOptions="Center" />
+
+                    <!-- Conditional issue description -->
+                    <VerticalStackLayout x:Name="SectionIssue" Spacing="0" IsVisible="{Binding IsIssueDescriptionRequired}">
+                        <HorizontalStackLayout Spacing="30" Margin="0,0,0,8">
+                            <Label Text="Issue description" Style="{StaticResource MicroLabel}" />
+                            <Label Text="Required" FontSize="11" TextColor="{StaticResource Attention}" />
+                        </HorizontalStackLayout>
+                        <Border Style="{StaticResource InputFrame}" Padding="12,6">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IssueDescriptionError, Converter={StaticResource HasValue}}" Value="True">
+                                    <Setter Property="Stroke" Value="{StaticResource Critical}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Editor AutomationId="IssueEditor" Text="{Binding IssueDescription}" Placeholder="Describe what needs attention"
+                                    SemanticProperties.Description="Issue description, required" />
+                        </Border>
+                        <Label Text="{Binding IssueDescriptionError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
+                               IsVisible="{Binding IssueDescriptionError, Converter={StaticResource HasValue}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Notes (optional) -->
+                    <VerticalStackLayout x:Name="SectionNotes" Spacing="0">
+                        <Label Text="Notes" Style="{StaticResource MicroLabel}" Margin="0,0,0,8" />
+                        <Border Style="{StaticResource InputFrame}" Padding="12,6">
+                            <Editor AutomationId="NotesEditor" Text="{Binding Notes}" Placeholder="Optional notes…" SemanticProperties.Description="Notes, optional" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Attachment via platform picker -->
+                    <VerticalStackLayout x:Name="SectionAttach" Spacing="0">
+                        <Label Text="Attach photo / file" Style="{StaticResource MicroLabel}" Margin="0,0,0,8" />
+                        <Grid>
+                            <Border Style="{StaticResource InputFrame}" Padding="18,0" HeightRequest="48">
+                                <Label VerticalOptions="Center" FontSize="14">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding HasAttachment}" Value="True">
+                                            <Setter Property="Text" Value="+  Choose a different file" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding HasAttachment}" Value="False">
+                                            <Setter Property="Text" Value="+  Choose file" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsPicking}" Value="True">
+                                            <Setter Property="Text" Value="Opening picker…" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Border>
+                            <Button BackgroundColor="Transparent" CornerRadius="12" AutomationId="AttachButton" Command="{Binding ChooseFileCommand}"
+                                    SemanticProperties.Description="Attach photo or file" SemanticProperties.Hint="Opens the system file picker" />
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" IsVisible="{Binding HasAttachment}">
+                            <Border WidthRequest="52" HeightRequest="52" StrokeThickness="1" Stroke="{StaticResource Rule}" StrokeShape="RoundRectangle 8"
+                                    BackgroundColor="{StaticResource Surface}">
+                                <Image Source="{Binding Attachment.LocalPath}" Aspect="AspectFill" SemanticProperties.Description="Attachment preview" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label AutomationId="AttachmentName" Text="{Binding AttachmentName}" FontSize="14" LineBreakMode="MiddleTruncation" />
+                                <Label Text="Attached" Style="{StaticResource SecondaryText}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="2" Text="Remove" TextColor="{StaticResource Muted}" AutomationId="RemoveAttachmentButton" Command="{Binding RemoveAttachmentCommand}"
+                                    SemanticProperties.Description="Remove attachment" />
+                        </Grid>
+                        <Label Text="{Binding AttachmentError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
+                               IsVisible="{Binding AttachmentError, Converter={StaticResource HasValue}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Actions -->
+                    <VerticalStackLayout x:Name="SectionActions" Spacing="10">
+                        <Label AutomationId="RequirementsSummary" Text="{Binding RequirementsSummary}" Style="{StaticResource SecondaryText}"
+                               IsVisible="{Binding RequirementsSummary, Converter={StaticResource HasValue}}"
+                               SemanticProperties.Description="{Binding RequirementsSummary}" />
+                        <Label Text="{Binding SubmitError}" Style="{StaticResource ErrorText}" FontSize="14"
+                               IsVisible="{Binding SubmitError, Converter={StaticResource HasValue}}" />
+                        <Grid x:Name="ActionsGrid" ColumnDefinitions="*" ColumnSpacing="24">
+                            <Button x:Name="CancelButton" AutomationId="CancelButton" Text="Cancel" Style="{StaticResource QuietButton}" Command="{Binding CancelCommand}"
+                                    IsVisible="{OnPlatform Default=False, WinUI=True}" />
+                            <Button x:Name="SubmitButton" AutomationId="SubmitButton" Text="{Binding SubmitText}" Style="{StaticResource PrimaryButton}" Command="{Binding SubmitCommand}"
+                                    SemanticProperties.Hint="Saves the inspection" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <controls:StatePanel Padding="{OnPlatform Default='20,0', WinUI='40,0'}" IsVisible="{Binding IsLoading}" IsBusy="True" Title="Loading asset…" />
+                <controls:StatePanel Padding="{OnPlatform Default='20,0', WinUI='40,0'}" IsVisible="{Binding IsEmpty}" Title="Asset not found"
+                                     Message="This asset is no longer in the local register." ActionText="Go back" ActionCommand="{Binding CancelCommand}" />
+                <controls:StatePanel Padding="{OnPlatform Default='20,0', WinUI='40,0'}" IsVisible="{Binding IsError}" Title="Couldn't load this asset"
+                                     Message="{x:Static vm:StatefulViewModel.LoadErrorMessage}" ActionText="Go back" ActionCommand="{Binding CancelCommand}" />
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

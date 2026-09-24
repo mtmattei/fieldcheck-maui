@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Design tokens (DESIGN_SPEC.md) -->
+    <Color x:Key="Canvas">#F3F2ED</Color>
+    <Color x:Key="Surface">#FFFFFF</Color>
+    <Color x:Key="Ink">#171918</Color>
+    <Color x:Key="Muted">#6A6D69</Color>
+    <Color x:Key="Rule">#D8D8D1</Color>
+    <Color x:Key="Accent">#DFFF45</Color>
+    <Color x:Key="Success">#176B4D</Color>
+    <Color x:Key="Attention">#A85C00</Color>
+    <Color x:Key="Critical">#B42318</Color>
+    <Color x:Key="SoftSuccess">#E8F3ED</Color>
+    <Color x:Key="SoftAttention">#F7EDDF</Color>
+    <Color x:Key="SoftCritical">#F8E8E6</Color>
+    <Color x:Key="SelectedSurface">#ECEBE5</Color>
+
+    <SolidColorBrush x:Key="CanvasBrush" Color="{StaticResource Canvas}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource Surface}" />
+    <SolidColorBrush x:Key="InkBrush" Color="{StaticResource Ink}" />
+    <SolidColorBrush x:Key="RuleBrush" Color="{StaticResource Rule}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}" />
+
+</ResourceDictionary>

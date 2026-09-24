@@ -1,0 +1,54 @@
+{
+  "start_utc": "2026-09-24T15:30:46.927615+00:00",
+  "os": "Ubuntu 24.04.4 LTS (Linux 6.18.44-fc-v37, x86_64) \u2014 managed cloud container (Claude Code on the web)",
+  "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz, 4 vCPU, no vmx/svm flags exposed, /dev/kvm absent",
+  "ram": "15 GiB",
+  "dotnet_sdks": [
+    "10.0.112 (Ubuntu archive build, /usr/lib/dotnet)"
+  ],
+  "dotnet_runtime": "Microsoft.NETCore.App 10.0.12",
+  "framework": ".NET MAUI",
+  "framework_version": "Microsoft.Maui.Controls 10.0.110 (latest stable on nuget.org at run start, referenced via PackageReference)",
+  "maui_workload": "maui-android, manifest 10.0.20/10.0.100 from workload set 10.0.112 (user-local install under ~/.dotnet; required a `dotnet workload repair` after first install garbage-collected the net10 packs)",
+  "android_workload_pack": "Microsoft.Android.Sdk.Linux 36.1.69 (net10.0-android, API 36)",
+  "android_tooling": {
+    "java": "OpenJDK 21.0.10",
+    "android_sdk": "Not preinstalled. dl.google.com is denied by the environment network policy (HTTP 403 at proxy CONNECT), so the official Android SDK platform-36 / build-tools 36 / platform-tools / emulator cannot be downloaded. Ubuntu archive packages (android-sdk-platform-23, android-sdk-build-tools) were the only reachable SDK source.",
+    "android_emulator": null,
+    "hardware_acceleration": "unavailable (/dev/kvm absent, no vmx/svm)",
+    "android_sdk_used_for_build": {
+      "path": "/opt/android-sdk-compose (composed)",
+      "platforms/android-36/android.jar": "org.robolectric:android-all:16-robolectric-13921718 from Maven Central (full Android 16 / API 36 framework incl. resources.arsc and AndroidManifest.xml)",
+      "build-tools/36.0.0": "symlink to Ubuntu android-sdk-build-tools 29.0.3 (zipalign, apksigner)",
+      "platform-tools/adb": "Ubuntu adb package",
+      "note": "aapt2, d8/r8, bundletool come from the .NET Android workload pack. A first attempt with Ubuntu's API 23 android.jar failed at aapt2 link (APT2260, AndroidX values-v31)."
+    }
+  },
+  "windows_tooling": "Not available: host is Linux. The maui-windows workload and Windows App SDK/WinUI XAML compiler only run on Windows, so net10.0-windows10.0.19041.0 cannot be built or launched in this environment.",
+  "claude_code_version": "2.1.281 (Claude Code)",
+  "claude_model": "claude-opus-5-5 (session configuration)",
+  "git_state": "branch claude/pensive-sagan-hes7f7 at ce93aa10a861f26f684f25234597d84b1827a5d7, clean working tree at start",
+  "network_policy_notes": "nuget.org, maven.google.com, archive.ubuntu.com reachable; dl.google.com, builds.dotnet.microsoft.com, dotnetcli.azureedge.net, ci.dot.net, download.visualstudio.microsoft.com, GitHub file downloads denied",
+  "cache_policy": "warm",
+  "ci_verification_environment": {
+    "note": "Human intervention 1 (interventions.md): GitHub-hosted runners used to build, launch and verify.",
+    "windows": {
+      "runner": "windows-latest",
+      "os": "Microsoft Windows Server 2025 Datacenter 10.0.26100",
+      "display": "1920x1080, 100% scale",
+      "dotnet_sdk": "10.0.401",
+      "workload": "maui-windows 10.0.20/10.0.100 (SDK band 10.0.400)",
+      "ui_automation": "FlaUI.UIA3 5.0.0"
+    },
+    "android": {
+      "runner": "ubuntu-latest with KVM",
+      "dotnet_sdk": "10.0.401",
+      "workload": "maui-android (android 36.1.69)",
+      "android_sdk": "official: platforms;android-36, build-tools;36.0.0, platform-tools (sdkmanager)",
+      "java": "Microsoft OpenJDK 21",
+      "emulator": "reactivecircus/android-emulator-runner@v2, API 34 google_apis x86_64, profile pixel_6 (1080x2400, 420 dpi = 411x914 dp)",
+      "ui_automation": "adb + uiautomator dump (Python driver)"
+    },
+    "final_run": "https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411 (commit d37afd2)"
+  }
+}

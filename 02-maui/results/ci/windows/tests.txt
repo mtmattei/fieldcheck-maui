@@ -1,0 +1,9 @@
+  Determining projects to restore...
+  Restored D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\src\FieldCheck.Core\FieldCheck.Core.csproj (in 2.25 sec).
+  Restored D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\tests\FieldCheck.Tests\FieldCheck.Tests.csproj (in 5.27 sec).
+  FieldCheck.Core -> D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\src\FieldCheck.Core\bin\Release\net10.0\FieldCheck.Core.dll
+  FieldCheck.Tests -> D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\tests\FieldCheck.Tests\bin\Release\net10.0\FieldCheck.Tests.dll
+Test run for D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\tests\FieldCheck.Tests\bin\Release\net10.0\FieldCheck.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    58, Skipped:     0, Total:    58, Duration: 632 ms - FieldCheck.Tests.dll (net10.0)

@@ -1,0 +1,494 @@
+{
+  "run": {
+    "framework": ".NET MAUI 10.0.110 (.NET 10)",
+    "status": "COMPLETE",
+    "core_complete": true,
+    "verification_environment": "GitHub-hosted runners (human intervention 1, see interventions.md): windows-latest (Windows Server 2025) and ubuntu-latest + KVM Android emulator API 34 x86_64 pixel_6",
+    "final_ci_run": "https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411"
+  },
+  "counts": {
+    "pass": 95,
+    "fail": 0,
+    "not_tested": 0
+  },
+  "not_applicable": [
+    "A08 (Uno Desktop head only)"
+  ],
+  "criteria": [
+    {
+      "id": "A01",
+      "status": "PASS",
+      "evidence": "net10.0 / net10.0-android / net10.0-windows10.0.19041.0; Microsoft.Maui.Controls 10.0.110. Built on CI and locally."
+    },
+    {
+      "id": "A02",
+      "status": "PASS",
+      "evidence": "results/environment.json records the container SDK 10.0.112 plus the CI SDK 10.0.401, workloads maui-android 36.1.69 and maui-windows 10.0.20, and runner OS versions."
+    },
+    {
+      "id": "A03",
+      "status": "PASS",
+      "evidence": "CI ubuntu-latest with the official Android SDK (platforms;android-36, build-tools;36.0.0): `dotnet build -f net10.0-android -c Release`, 0 warnings / 0 errors, signed APK + AAB, 117 s. Run https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411."
+    },
+    {
+      "id": "A04",
+      "status": "PASS",
+      "evidence": "CI windows-latest (Server 2025): `dotnet build -f net10.0-windows10.0.19041.0 -c Release`, 0 warnings / 0 errors, 103 s. First success in run 3; final in https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411."
+    },
+    {
+      "id": "A05",
+      "status": "PASS",
+      "evidence": "Android emulator driver (results/ci/android/android-checks.json): Release APK installed on an API 34 pixel_6 emulator; Dashboard shown ('Good evening'), am start TotalTime 2269 ms."
+    },
+    {
+      "id": "A06",
+      "status": "PASS",
+      "evidence": "Windows CI driver (results/ci/windows/windows-checks.json): Release FieldCheck.exe launched at 1440x900; Dashboard greeting visible 2-3 s after launch."
+    },
+    {
+      "id": "A07",
+      "status": "PASS",
+      "evidence": "Warnings: 0 in Core, MAUI net10.0 + XAML SourceGen, Android Release (CI), Windows Release (CI) and tests."
+    },
+    {
+      "id": "B01",
+      "status": "PASS",
+      "evidence": "Dashboard rendered on both targets (screenshots 01-dashboard) with the reference hierarchy: greeting, 12-asset metric, 3 counts, rule, Needs attention rows, Accent CTA."
+    },
+    {
+      "id": "B02",
+      "status": "PASS",
+      "evidence": "Assets rendered and driven on both targets (android 02-assets, windows 02-assets-master-detail)."
+    },
+    {
+      "id": "B03",
+      "status": "PASS",
+      "evidence": "Asset Detail rendered (android 03-asset-detail; windows detail pane + f04-asset-detail-720x600 page)."
+    },
+    {
+      "id": "B04",
+      "status": "PASS",
+      "evidence": "New Inspection rendered and filled on both (04-new-inspection / 03-new-inspection); asset identity line verified."
+    },
+    {
+      "id": "B05",
+      "status": "PASS",
+      "evidence": "Success rendered on both (05-inspection-success / 04-inspection-success) showing INS-24092."
+    },
+    {
+      "id": "B06",
+      "status": "PASS",
+      "evidence": "History rendered on both (06-history / 05-history)."
+    },
+    {
+      "id": "B07",
+      "status": "PASS",
+      "evidence": "Android emulator driver (results/ci/android/android-checks.json): bottom tabs reached Assets, History and Dashboard (B07, B07-history, B07-dashboard)."
+    },
+    {
+      "id": "B08",
+      "status": "PASS",
+      "evidence": "Android emulator driver (results/ci/android/android-checks.json): system back from New inspection -> Asset detail -> Assets; app not exited (B08, F06)."
+    },
+    {
+      "id": "B09",
+      "status": "PASS",
+      "evidence": "Windows CI driver (results/ci/windows/windows-checks.json): sidebar navigated to Dashboard, Assets and History repeatedly."
+    },
+    {
+      "id": "B10",
+      "status": "PASS",
+      "evidence": "Windows CI driver (results/ci/windows/windows-checks.json): at 1440x900 the Assets list is on the left and the CT-007 detail pane (with Start inspection) on the right."
+    },
+    {
+      "id": "B11",
+      "status": "PASS",
+      "evidence": "Cancel (Windows Cancel button; Android header back) returned without saving; history stayed at 7 on both. Unit test also PASS."
+    },
+    {
+      "id": "B12",
+      "status": "PASS",
+      "evidence": "View asset returned to the asset showing the new status/date on both targets; View history opened History with the new record first (Windows, INS-24093)."
+    },
+    {
+      "id": "C01",
+      "status": "PASS",
+      "evidence": "Unit test (12 seeded assets); UI shows '12 equipment records' on both targets."
+    },
+    {
+      "id": "C02",
+      "status": "PASS",
+      "evidence": "Unit test (counts change after an inspection); UI shows 12/7/3/2 on both."
+    },
+    {
+      "id": "C03",
+      "status": "PASS",
+      "evidence": "UI on both: 'roof' -> AHU-203, CT-007, FAN-305; unit theory covers name/ID/type/location case-insensitively."
+    },
+    {
+      "id": "C04",
+      "status": "PASS",
+      "evidence": "Windows UI: Attention filter -> AHU-203, CNV-018, BLR-002; unit test covers all statuses."
+    },
+    {
+      "id": "C05",
+      "status": "PASS",
+      "evidence": "UI on both: 'roof' + Critical -> CT-007."
+    },
+    {
+      "id": "C06",
+      "status": "PASS",
+      "evidence": "UI on both: INS-24092 (Today) first, then seed records newest-first."
+    },
+    {
+      "id": "C07",
+      "status": "PASS",
+      "evidence": "UI: 'booster' -> INS-24091 (Android), 'ahu-203' -> INS-24086 (Windows)."
+    },
+    {
+      "id": "C08",
+      "status": "PASS",
+      "evidence": "UI: Critical -> INS-24072 (Android); Good -> INS-24091, INS-24044 (Windows)."
+    },
+    {
+      "id": "C09",
+      "status": "PASS",
+      "evidence": "UI on both: History shows 7 completed inspections after submit."
+    },
+    {
+      "id": "C10",
+      "status": "PASS",
+      "evidence": "Runtime on both: force-stop (Android) / process kill (Windows) + relaunch, INS-24092 still present with 7 inspections."
+    },
+    {
+      "id": "C11",
+      "status": "PASS",
+      "evidence": "Unit test hashes the fixtures before/after save. Fixtures are packaged read-only and copied to app storage."
+    },
+    {
+      "id": "C12",
+      "status": "PASS",
+      "evidence": "INS-24092 then INS-24093 after restart (Windows runtime); unit test covers uniqueness and persistence."
+    },
+    {
+      "id": "D01",
+      "status": "PASS",
+      "evidence": "Good/Attention/Critical selectable on both (UI) + unit test."
+    },
+    {
+      "id": "D02",
+      "status": "PASS",
+      "evidence": "Operating normally switch toggled Yes/No on both."
+    },
+    {
+      "id": "D03",
+      "status": "PASS",
+      "evidence": "27 accepted on both; -50 accepted in the Windows second inspection; unit theory covers both bounds."
+    },
+    {
+      "id": "D04",
+      "status": "PASS",
+      "evidence": "300 °C shows 'Temperature must be between -50 and 250 °C.' with submit disabled on both (d04 screenshots)."
+    },
+    {
+      "id": "D05",
+      "status": "PASS",
+      "evidence": "Windows: two of three checked keeps submit disabled; unit theory covers each item."
+    },
+    {
+      "id": "D06",
+      "status": "PASS",
+      "evidence": "Windows UI read back 'Line one\\nLine two'; Android UI dump shows the two-line notes value."
+    },
+    {
+      "id": "D07",
+      "status": "PASS",
+      "evidence": "System picker opened: Windows FileOpenPicker (d07-file-picker-open), Android DocumentsUI (d07-picker-open)."
+    },
+    {
+      "id": "D08",
+      "status": "PASS",
+      "evidence": "Selecting mock-data/inspection-photo.png showed 'inspection-photo.png' plus a thumbnail on both."
+    },
+    {
+      "id": "D09",
+      "status": "PASS",
+      "evidence": "Picker cancel (Escape / Back) left the form intact with no attachment on both."
+    },
+    {
+      "id": "D10",
+      "status": "PASS",
+      "evidence": "Good + Yes hides Issue description on both (UI) + unit theory."
+    },
+    {
+      "id": "D11",
+      "status": "PASS",
+      "evidence": "Attention shows Issue description on both."
+    },
+    {
+      "id": "D12",
+      "status": "PASS",
+      "evidence": "Operating normally No shows Issue description on both."
+    },
+    {
+      "id": "D13",
+      "status": "PASS",
+      "evidence": "Unit test; UI requirement summary lists 'Describe the issue' (Windows E06)."
+    },
+    {
+      "id": "D14",
+      "status": "PASS",
+      "evidence": "Submit disabled on the empty form and enabled once valid on both."
+    },
+    {
+      "id": "D15",
+      "status": "PASS",
+      "evidence": "Triple click/tap on Submit created exactly one inspection on both (no INS-24093 in that run)."
+    },
+    {
+      "id": "D16",
+      "status": "PASS",
+      "evidence": "History grew from 6 to 7 after one submit on both."
+    },
+    {
+      "id": "D17",
+      "status": "PASS",
+      "evidence": "Success shows INS-24092, Cooling Tower 07, Attention, date · Alex Morgan on both."
+    },
+    {
+      "id": "D18",
+      "status": "PASS",
+      "evidence": "After View asset: last inspection = today, 'Attention condition', and the issue text shown on both."
+    },
+    {
+      "id": "E01",
+      "status": "PASS",
+      "evidence": "Windows runtime with FIELDCHECK_READ_DELAY_MS=5000 shows 'Loading dashboard…' (e01-loading). VM starts in Loading (unit test)."
+    },
+    {
+      "id": "E02",
+      "status": "PASS",
+      "evidence": "Windows runtime FIELDCHECK_DATA_MODE=Empty: dashboard 'No assets yet' and history 'No inspections yet' (e02 screenshots)."
+    },
+    {
+      "id": "E03",
+      "status": "PASS",
+      "evidence": "Windows runtime ErrorOnce: 'Couldn't load assets' with a user-safe message and Retry (e03-error-dashboard)."
+    },
+    {
+      "id": "E04",
+      "status": "PASS",
+      "evidence": "Retry recovered to the populated dashboard (e04-retry-recovered); unit test also PASS."
+    },
+    {
+      "id": "E05",
+      "status": "PASS",
+      "evidence": "'No matching assets' with a Clear action on both (e05 screenshots); distinct from the Empty state."
+    },
+    {
+      "id": "E06",
+      "status": "PASS",
+      "evidence": "Per-field messages and the submit summary ('To submit: …') shown on Windows; unit tests."
+    },
+    {
+      "id": "E07",
+      "status": "PASS",
+      "evidence": "CT-007 long description wraps without clipping in the Android detail page and the Windows detail pane."
+    },
+    {
+      "id": "E08",
+      "status": "PASS",
+      "evidence": "Unit tests: a write failure reports an error, keeps the entries and does not navigate; retry succeeds. Not inducible on runners without fault injection."
+    },
+    {
+      "id": "F01",
+      "status": "PASS",
+      "evidence": "Android pixel_6 = 1080x2400 @420 dpi = 411x914 dp (412x915-class); all six views captured without clipping."
+    },
+    {
+      "id": "F02",
+      "status": "PASS",
+      "evidence": "Android: keyboard shown while typing; after dismissal every field and Submit reachable by scrolling."
+    },
+    {
+      "id": "F03",
+      "status": "PASS",
+      "evidence": "Windows 1440x900 capture matches the reference composition (sidebar, 460 px master, detail pane)."
+    },
+    {
+      "id": "F04",
+      "status": "PASS",
+      "evidence": "Windows resized to 1000x800, 900x760, 720x600: at 720 the master/detail collapses to single pane; History switches to stacked rows (f04 screenshots)."
+    },
+    {
+      "id": "F05",
+      "status": "PASS",
+      "evidence": "Android font_scale 1.3: dashboard and full form reachable (f05 screenshots). Windows text scaling not separately exercised."
+    },
+    {
+      "id": "F06",
+      "status": "PASS",
+      "evidence": "Android system back follows the navigation stack; success replaces the form."
+    },
+    {
+      "id": "F07",
+      "status": "PASS",
+      "evidence": "Windows Tab moves focus into app controls (sidebar items, rows, inputs); driver interactions use keyboard input."
+    },
+    {
+      "id": "F08",
+      "status": "PASS",
+      "evidence": "Windows FileOpenPicker with an extension filter; Android SAF/DocumentsUI with MIME filter; both return a copy in app storage."
+    },
+    {
+      "id": "G01",
+      "status": "PASS",
+      "evidence": "UIA names / content-desc verified in dumps: row buttons ('Cooling Tower 07, CT-007, …, status Critical'), chips ('Filter: Critical'), 'Attach photo or file', 'Cancel inspection and go back', checkbox names."
+    },
+    {
+      "id": "G02",
+      "status": "PASS",
+      "evidence": "Status chips always carry text ('Status: Critical' semantic plus visible label)."
+    },
+    {
+      "id": "G03",
+      "status": "PASS",
+      "evidence": "Windows focus rectangle clearly visible (g03-keyboard-focus-dashboard); inputs thicken to a 2 px Ink frame on focus."
+    },
+    {
+      "id": "G04",
+      "status": "PASS",
+      "evidence": "Android dumps: checkboxes 116x116 px, header icon 116x116 px, condition buttons 116 px tall (= 44 dp at 420 dpi); primary buttons 54 dp."
+    },
+    {
+      "id": "G05",
+      "status": "PASS",
+      "evidence": "Validation text sits directly under the field in Critical color with a red frame (d04 screenshots); not color-only."
+    },
+    {
+      "id": "G06",
+      "status": "PASS",
+      "evidence": "Computed contrast: Ink/Canvas 15.8, Muted/Canvas 4.7, Ink/Accent 15.6, chips 5.7/5.5, Attention chip 4.3 (supplied palette)."
+    },
+    {
+      "id": "H01",
+      "status": "PASS",
+      "evidence": "results/screenshots/{android,windows}/01-dashboard.png; differences in visual-review.md."
+    },
+    {
+      "id": "H02",
+      "status": "PASS",
+      "evidence": "android/02-assets.png, windows/02-assets-master-detail.png."
+    },
+    {
+      "id": "H03",
+      "status": "PASS",
+      "evidence": "android/03-asset-detail.png, windows/02-assets-master-detail.png (detail pane)."
+    },
+    {
+      "id": "H04",
+      "status": "PASS",
+      "evidence": "android/04-new-inspection.png (+ -lower), windows/03-new-inspection.png."
+    },
+    {
+      "id": "H05",
+      "status": "PASS",
+      "evidence": "android/05-inspection-success.png, windows/04-inspection-success.png."
+    },
+    {
+      "id": "H06",
+      "status": "PASS",
+      "evidence": "android/06-history.png, windows/05-history.png."
+    },
+    {
+      "id": "I01",
+      "status": "PASS",
+      "evidence": "CommunityToolkit.Mvvm view models in FieldCheck.Core; pages only bind."
+    },
+    {
+      "id": "I02",
+      "status": "PASS",
+      "evidence": "Repository/data store in Core; views never touch persistence."
+    },
+    {
+      "id": "I03",
+      "status": "PASS",
+      "evidence": "Validation and state live in VMs; code-behind is limited to layout breakpoints, query forwarding and refresh-on-appear."
+    },
+    {
+      "id": "I04",
+      "status": "PASS",
+      "evidence": "No dead or duplicate implementations; FlexLayout variants were replaced, not kept."
+    },
+    {
+      "id": "I05",
+      "status": "PASS",
+      "evidence": "No test shortcuts; data modes are env-var repository options with no UI. The CI drivers exercise the real Release binaries."
+    },
+    {
+      "id": "I06",
+      "status": "PASS",
+      "evidence": "2 runtime packages; test/CI-only: xunit stack and FlaUI.UIA3 5.0.0 (harness, not shipped). See dependencies.txt."
+    },
+    {
+      "id": "I07",
+      "status": "PASS",
+      "evidence": "58 xUnit tests pass locally and on the Windows runner; plus 48 Windows and 43 Android end-to-end UI checks."
+    },
+    {
+      "id": "I08",
+      "status": "PASS",
+      "evidence": "No tests weakened. Driver fixes corrected wrong selectors, each backed by a UI dump or screenshot, and never relaxed an app expectation."
+    },
+    {
+      "id": "J01",
+      "status": "PASS",
+      "evidence": "No placeholder/debug UI in any screenshot."
+    },
+    {
+      "id": "J02",
+      "status": "PASS",
+      "evidence": "Every button exercised by the drivers or bound to a tested command (Remove attachment covered by unit test)."
+    },
+    {
+      "id": "J03",
+      "status": "PASS",
+      "evidence": "Final run: Android crash buffer empty; Windows driver completed all steps with no process exit. Two crashes found earlier were fixed (see implementation-notes)."
+    },
+    {
+      "id": "J04",
+      "status": "PASS",
+      "evidence": "Fresh runner/emulator: first run seeded data and reached the Dashboard on both."
+    },
+    {
+      "id": "J05",
+      "status": "PASS",
+      "evidence": "Kill + relaunch preserved the submitted inspection on both."
+    },
+    {
+      "id": "J06",
+      "status": "PASS",
+      "evidence": "Android HOME + resume kept the form input; Windows minimize/restore stayed responsive."
+    },
+    {
+      "id": "J07",
+      "status": "PASS",
+      "evidence": "Picker cancel on both at runtime; failed/superseded picker paths covered by unit tests."
+    },
+    {
+      "id": "J08",
+      "status": "PASS",
+      "evidence": "No secrets; INTERNET permission removed; CI uses only the built-in GITHUB_TOKEN."
+    },
+    {
+      "id": "J09",
+      "status": "PASS",
+      "evidence": "Primary workflow Dashboard -> Assets -> Detail -> Start -> validate/submit -> Success -> View asset -> History -> relaunch executed end-to-end on both targets."
+    },
+    {
+      "id": "J10",
+      "status": "PASS",
+      "evidence": "All runtime verification used Release builds (APK from bin/Release, exe from bin/Release)."
+    }
+  ]
+}

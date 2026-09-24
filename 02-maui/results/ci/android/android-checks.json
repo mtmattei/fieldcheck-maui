@@ -1,0 +1,223 @@
+{
+  "total": 43,
+  "pass": 43,
+  "fail": 0,
+  "screen": "1080x2400 density Physical density: 420",
+  "checks": [
+    {
+      "id": "A05",
+      "status": "PASS",
+      "detail": "Dashboard 'Good evening' shown; am start TotalTime=2269 ms; install 8.2s; screen 1080x2400 density Physical density: 420"
+    },
+    {
+      "id": "J04",
+      "status": "PASS",
+      "detail": "Clean install first run seeded data and reached Dashboard"
+    },
+    {
+      "id": "C02-ui",
+      "status": "PASS",
+      "detail": "Dashboard counts 12/7/3/2 visible"
+    },
+    {
+      "id": "F01-dashboard",
+      "status": "PASS",
+      "detail": "Dashboard content reachable at 412x915-class viewport"
+    },
+    {
+      "id": "B07",
+      "status": "PASS",
+      "detail": "Bottom navigation reached Assets"
+    },
+    {
+      "id": "C03-ui",
+      "status": "PASS",
+      "detail": "Search 'roof' -> AHU-203,CT-007,FAN-305"
+    },
+    {
+      "id": "C05-ui",
+      "status": "PASS",
+      "detail": "roof + Critical -> CT-007"
+    },
+    {
+      "id": "E05-ui",
+      "status": "PASS",
+      "detail": "No-results state for 'zzz'"
+    },
+    {
+      "id": "C04-ui",
+      "status": "PASS",
+      "detail": "Cleared: 6 rows visible"
+    },
+    {
+      "id": "B03",
+      "status": "PASS",
+      "detail": "Asset Detail opened for CT-007"
+    },
+    {
+      "id": "E07",
+      "status": "PASS",
+      "detail": "Long description readable; Start inspection reachable"
+    },
+    {
+      "id": "B08",
+      "status": "PASS",
+      "detail": "System back: Inspection -> Asset Detail -> Assets"
+    },
+    {
+      "id": "F06",
+      "status": "PASS",
+      "detail": "Back did not exit the app while in-app destinations existed"
+    },
+    {
+      "id": "B04",
+      "status": "PASS",
+      "detail": "New inspection shows asset identity"
+    },
+    {
+      "id": "D14-ui",
+      "status": "PASS",
+      "detail": "Submit disabled on empty form"
+    },
+    {
+      "id": "D10-ui",
+      "status": "PASS",
+      "detail": "Good + Yes: issue description hidden"
+    },
+    {
+      "id": "D12-ui",
+      "status": "PASS",
+      "detail": "Operating No: issue description shown"
+    },
+    {
+      "id": "D11-ui",
+      "status": "PASS",
+      "detail": "Attention: issue description shown"
+    },
+    {
+      "id": "D04-ui",
+      "status": "PASS",
+      "detail": "300 °C shows range error"
+    },
+    {
+      "id": "D03-ui",
+      "status": "PASS",
+      "detail": "27 °C accepted"
+    },
+    {
+      "id": "D05-ui",
+      "status": "PASS",
+      "detail": "Three checklist items checked"
+    },
+    {
+      "id": "F02",
+      "status": "PASS",
+      "detail": "Form scrolls; submit reachable after keyboard dismissal"
+    },
+    {
+      "id": "J06",
+      "status": "PASS",
+      "detail": "Background/resume kept form input (temperature 27)"
+    },
+    {
+      "id": "D07",
+      "status": "PASS",
+      "detail": "System document picker opened (<FrameLayout text='' desc='' [0,0][1080,2400]>)"
+    },
+    {
+      "id": "D09",
+      "status": "PASS",
+      "detail": "Picker cancel left the form usable with no attachment"
+    },
+    {
+      "id": "D08",
+      "status": "PASS",
+      "detail": "Selected file name shown in form"
+    },
+    {
+      "id": "F08",
+      "status": "PASS",
+      "detail": "Android Storage Access Framework picker returned the pushed test image"
+    },
+    {
+      "id": "D14-ui-enabled",
+      "status": "PASS",
+      "detail": "Submit enabled when valid"
+    },
+    {
+      "id": "D17-ui",
+      "status": "PASS",
+      "detail": "Success shows INS-24092"
+    },
+    {
+      "id": "D18-ui",
+      "status": "PASS",
+      "detail": "Asset detail shows last inspection Sep 24, 2026, Attention condition"
+    },
+    {
+      "id": "B12-view-asset",
+      "status": "PASS",
+      "detail": "View asset returned to Asset Detail"
+    },
+    {
+      "id": "B07-history",
+      "status": "PASS",
+      "detail": "Bottom navigation reached History"
+    },
+    {
+      "id": "C06-ui",
+      "status": "PASS",
+      "detail": "Order: INS-24092 · Today, 7:43 PM | INS-24091 · Sep 18, 9:24 AM | INS-24044 · Sep 17, 7:58 AM | INS-24086 · Sep 12, 2:40 PM | INS-24065 · Sep 11, 8:15 AM | INS-24058 · Sep 10, 3:32 PM"
+    },
+    {
+      "id": "D15-ui",
+      "status": "PASS",
+      "detail": "Triple tap created exactly one inspection"
+    },
+    {
+      "id": "C09-ui",
+      "status": "PASS",
+      "detail": "History shows 7 after save"
+    },
+    {
+      "id": "C07-ui",
+      "status": "PASS",
+      "detail": "Search booster -> INS-24091"
+    },
+    {
+      "id": "C08-ui",
+      "status": "PASS",
+      "detail": "Critical filter -> INS-24072"
+    },
+    {
+      "id": "B07-dashboard",
+      "status": "PASS",
+      "detail": "Bottom navigation reached Dashboard"
+    },
+    {
+      "id": "B11",
+      "status": "PASS",
+      "detail": "Header back/cancel returned without saving (still 7)"
+    },
+    {
+      "id": "C10",
+      "status": "PASS",
+      "detail": "INS-24092 present after force-stop + relaunch (TotalTime=1143 ms)"
+    },
+    {
+      "id": "J05",
+      "status": "PASS",
+      "detail": "Relaunch succeeded, data intact"
+    },
+    {
+      "id": "F05",
+      "status": "PASS",
+      "detail": "At font scale 1.3 dashboard and form remain reachable"
+    },
+    {
+      "id": "J03",
+      "status": "PASS",
+      "detail": "No crash-buffer entries for the app"
+    }
+  ]
+}

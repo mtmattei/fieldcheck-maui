@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FieldCheck.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    x:DataType="vm:DashboardViewModel"
+    Title="Dashboard"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
+
+    <Grid Padding="{OnPlatform Default='20,0', WinUI='40,0'}" RowDefinitions="*">
+
+        <CollectionView
+            ItemsSource="{Binding NeedsAttention}"
+            SelectionMode="None"
+            IsVisible="{Binding IsContent}">
+            <CollectionView.Header>
+                <VerticalStackLayout Padding="0,0,0,4">
+                    <Label
+                        Text="FIELDCHECK"
+                        Margin="0,28,0,0"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        CharacterSpacing="0.4"
+                        TextColor="{StaticResource Muted}"
+                        IsVisible="{OnPlatform Default=True, WinUI=False}" />
+                    <Label Text="{Binding Greeting}" Style="{StaticResource ScreenTitle}" Margin="{OnPlatform Default='0,14,0,0', WinUI='0,44,0,0'}" />
+                    <Label Text="{Binding ContextLine}" Style="{StaticResource SecondaryText}" FontSize="14" Margin="0,2,0,0" />
+
+                    <HorizontalStackLayout Margin="{OnPlatform Default='0,34,0,0', WinUI='0,70,0,0'}" Spacing="14"
+                                           SemanticProperties.Description="{Binding TotalCount, StringFormat='{0} assets in total'}">
+                        <Label Text="{Binding TotalCount}" FontSize="{OnPlatform Default=50, WinUI=54}" VerticalOptions="End" />
+                        <Label Text="{Binding TotalLabel}" FontSize="19" TextColor="{StaticResource Muted}" VerticalOptions="End" Margin="0,0,0,10" />
+                    </HorizontalStackLayout>
+
+                    <Grid Margin="0,18,0,0" ColumnDefinitions="{OnPlatform Default='*,*,*', WinUI='182,182,182,*'}" ColumnSpacing="0">
+                        <HorizontalStackLayout Spacing="12" SemanticProperties.Description="{Binding OperationalCount, StringFormat='{0} operational'}">
+                            <Label Text="{Binding OperationalCount}" FontSize="26" TextColor="{StaticResource Success}" VerticalOptions="Center" />
+                            <Label Text="Operational" Style="{StaticResource SecondaryText}" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="12" SemanticProperties.Description="{Binding AttentionCount, StringFormat='{0} need attention'}">
+                            <Label Text="{Binding AttentionCount}" FontSize="26" TextColor="{StaticResource Attention}" VerticalOptions="Center" />
+                            <Label Text="Attention" Style="{StaticResource SecondaryText}" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Column="2" Spacing="12" SemanticProperties.Description="{Binding CriticalCount, StringFormat='{0} critical'}">
+                            <Label Text="{Binding CriticalCount}" FontSize="26" TextColor="{StaticResource Critical}" VerticalOptions="Center" />
+                            <Label Text="Critical" Style="{StaticResource SecondaryText}" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Grid>
+
+                    <BoxView Style="{StaticResource Hairline}" Margin="{OnPlatform Default='0,24,0,0', WinUI='0,36,0,0'}" />
+                    <Label Text="Needs attention" Style="{StaticResource MicroLabel}" Margin="0,30,0,10" SemanticProperties.HeadingLevel="Level2" />
+                    <Label
+                        Text="All assets are operational. Nothing needs attention right now."
+                        Style="{StaticResource SecondaryText}"
+                        FontSize="14"
+                        Margin="0,4,0,16"
+                        IsVisible="{Binding HasNeedsAttention, Converter={StaticResource InverseBool}}" />
+                </VerticalStackLayout>
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:AssetItem">
+                    <Grid RowDefinitions="*,1">
+                        <Grid Padding="0,14" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="3" VerticalOptions="Center" AutomationProperties.IsInAccessibleTree="False">
+                                <Label Text="{Binding Name}" Style="{StaticResource RowTitle}" />
+                                <Label Text="{OnPlatform Default={Binding IdAndType}, WinUI={Binding IdAndLocation}}" Style="{StaticResource SecondaryText}" />
+                                <Label Text="{Binding Location}" Style="{StaticResource SecondaryText}" IsVisible="{OnPlatform Default=True, WinUI=False}" />
+                            </VerticalStackLayout>
+                            <controls:StatusChip Grid.Column="1" Text="{Binding StatusText}" Tone="{Binding Tone}"
+                                                 Margin="{OnPlatform Default='0', WinUI='0,0,140,0'}" />
+                            <Image Grid.Column="2" Source="icon_chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
+                                   Margin="{OnPlatform Default='0', WinUI='0,0,20,0'}" />
+                            <!-- Full-row activation target: focusable, keyboard/screen-reader accessible. -->
+                            <Button
+                                Grid.ColumnSpan="3"
+                                Margin="0,-14"
+                                BackgroundColor="Transparent"
+                                CornerRadius="0"
+                                Command="{Binding OpenAssetCommand, Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, x:DataType=vm:DashboardViewModel}"
+                                CommandParameter="{Binding .}"
+                                SemanticProperties.Description="{Binding AccessibilityLabel}"
+                                SemanticProperties.Hint="Opens asset detail" />
+                        </Grid>
+                        <BoxView Grid.Row="1" Style="{StaticResource Hairline}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <Grid Padding="0,38,0,32">
+                    <Button
+                        AutomationId="ViewAllAssetsButton"
+                        Text="View all assets"
+                        Style="{StaticResource PrimaryButton}"
+                        HorizontalOptions="{OnPlatform Default=Fill, WinUI=Start}"
+                        WidthRequest="{OnPlatform Default=-1, WinUI=170}"
+                        Command="{Binding ViewAllAssetsCommand}" />
+                </Grid>
+            </CollectionView.Footer>
+        </CollectionView>
+
+        <controls:StatePanel
+            IsVisible="{Binding IsLoading}"
+            IsBusy="True"
+            Title="Loading dashboard…"
+            Message="Reading assets from local storage." />
+        <controls:StatePanel
+            IsVisible="{Binding IsEmpty}"
+            Margin="0,40,0,0"
+            Title="No assets yet"
+            Message="There are no assets recorded for Facility A. Assets appear here once they are added to the facility register." />
+        <controls:StatePanel
+            IsVisible="{Binding IsError}"
+            Margin="0,40,0,0"
+            Title="Couldn't load assets"
+            Message="{x:Static vm:StatefulViewModel.LoadErrorMessage}"
+            ActionText="Retry"
+            ActionCommand="{Binding LoadCommand}" />
+    </Grid>
+</ContentPage>

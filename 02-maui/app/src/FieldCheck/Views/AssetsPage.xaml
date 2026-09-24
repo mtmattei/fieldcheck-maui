@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FieldCheck.Views.AssetsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    xmlns:views="clr-namespace:FieldCheck.Views"
+    x:DataType="vm:AssetsViewModel"
+    Title="Assets"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
+
+    <Grid x:Name="RootGrid" ColumnDefinitions="*,0,0">
+
+        <!-- Master: search, filters, rows -->
+        <Grid x:Name="MasterPane" RowDefinitions="Auto,Auto,Auto,*" Padding="{OnPlatform Default='20,0', WinUI='40,0'}">
+            <VerticalStackLayout Padding="0,44,0,0" Spacing="2">
+                <Label Text="Assets" Style="{StaticResource ScreenTitle}" />
+                <Label Text="{Binding Subtitle}" Style="{StaticResource SecondaryText}" FontSize="14" />
+            </VerticalStackLayout>
+
+            <Border Grid.Row="1" Margin="0,14,0,0" Style="{StaticResource InputFrame}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Image Source="icon_search.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                    <Entry
+                        Grid.Column="1"
+                        AutomationId="AssetSearchEntry"
+                        Placeholder="Search assets"
+                        Text="{Binding SearchText}"
+                        ReturnType="Search"
+                        ClearButtonVisibility="WhileEditing"
+                        SemanticProperties.Description="Search assets by name, ID, type or location" />
+                </Grid>
+            </Border>
+
+            <ScrollView Grid.Row="2" Margin="0,14,0,10" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Filters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Button
+                            Margin="0,0,8,0"
+                            Text="{Binding Label}"
+                            Style="{StaticResource ChipButton}"
+                            Command="{Binding SelectFilterCommand, Source={RelativeSource AncestorType={x:Type vm:AssetsViewModel}}, x:DataType=vm:AssetsViewModel}"
+                            CommandParameter="{Binding .}"
+                            SemanticProperties.Description="{Binding AccessibilityLabel}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Ink}" />
+                                    <Setter Property="BorderColor" Value="{StaticResource Ink}" />
+                                    <Setter Property="TextColor" Value="{StaticResource Surface}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+            </ScrollView>
+
+            <CollectionView Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="None" IsVisible="{Binding IsContent}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AssetItem">
+                        <Grid RowDefinitions="*,1">
+                            <!-- Selected row (master/detail): Surface fill + Accent marker -->
+                            <Grid Grid.RowSpan="2" Margin="{OnPlatform Default='0', WinUI='-20,0,-20,0'}" IsVisible="{Binding IsSelected}" ColumnDefinitions="4,*">
+                                <BoxView Color="{StaticResource Accent}" />
+                                <BoxView Grid.Column="1" Color="{StaticResource Surface}" />
+                            </Grid>
+                            <Grid Padding="0,14" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                <VerticalStackLayout Spacing="3" VerticalOptions="Center" AutomationProperties.IsInAccessibleTree="False">
+                                    <Label Text="{Binding Name}" Style="{StaticResource RowTitle}" />
+                                    <Label Text="{OnPlatform Default={Binding IdAndType}, WinUI={Binding IdAndLocation}}" Style="{StaticResource SecondaryText}" />
+                                    <Label Text="{Binding Location}" Style="{StaticResource SecondaryText}" IsVisible="{OnPlatform Default=True, WinUI=False}" />
+                                </VerticalStackLayout>
+                                <controls:StatusChip Grid.Column="1" Text="{Binding StatusText}" Tone="{Binding Tone}" />
+                                <Image Grid.Column="2" Source="icon_chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
+                                       IsVisible="{Binding ShowChevrons, Source={RelativeSource AncestorType={x:Type views:AssetsPage}}, x:DataType=views:AssetsPage}" />
+                                <Button
+                                    Grid.ColumnSpan="3"
+                                    Margin="0,-14"
+                                    BackgroundColor="Transparent"
+                                    CornerRadius="0"
+                                    Command="{Binding OpenAssetCommand, Source={RelativeSource AncestorType={x:Type vm:AssetsViewModel}}, x:DataType=vm:AssetsViewModel}"
+                                    CommandParameter="{Binding .}"
+                                    SemanticProperties.Description="{Binding AccessibilityLabel}"
+                                    SemanticProperties.Hint="Shows asset detail" />
+                            </Grid>
+                            <BoxView Grid.Row="1" Style="{StaticResource Hairline}" IsVisible="{Binding IsSelected, Converter={StaticResource InverseBool}}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="24" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <controls:StatePanel Grid.Row="3" IsVisible="{Binding IsLoading}" IsBusy="True" Title="Loading assets…" />
+            <controls:StatePanel
+                Grid.Row="3"
+                IsVisible="{Binding IsNoResults}"
+                Title="No matching assets"
+                Message="No assets match your search and status filter. Try a different name, ID, type or location."
+                ActionText="Clear search and filter"
+                ActionCommand="{Binding ClearSearchCommand}" />
+            <controls:StatePanel
+                Grid.Row="3"
+                IsVisible="{Binding IsEmpty}"
+                Title="No assets yet"
+                Message="There are no assets recorded for Facility A." />
+            <controls:StatePanel
+                Grid.Row="3"
+                IsVisible="{Binding IsError}"
+                Title="Couldn't load assets"
+                Message="{x:Static vm:StatefulViewModel.LoadErrorMessage}"
+                ActionText="Retry"
+                ActionCommand="{Binding LoadCommand}" />
+        </Grid>
+
+        <!-- Master/detail separator and detail pane (wide only) -->
+        <BoxView x:Name="PaneRule" Grid.Column="1" Color="{StaticResource Rule}" WidthRequest="1" />
+        <ScrollView x:Name="DetailPane" Grid.Column="2" BackgroundColor="{StaticResource Canvas}" IsVisible="{Binding ShowDetailPane}">
+            <views:AssetDetailView BindingContext="{Binding Detail}" IsWide="True" Padding="48,46,47,32" />
+        </ScrollView>
+    </Grid>
+</ContentPage>
