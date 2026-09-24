@@ -478,6 +478,7 @@ for name, fn in [("launch", s_launch), ("assets", s_assets), ("detail", s_detail
     step(name, fn)
 
 crash = sh("logcat -d -b crash")
+open(os.path.join(OUT, "logcat-crash.txt"), "w").write(crash)
 record("J03", "FATAL EXCEPTION" not in crash and "com.fieldcheck.app" not in crash, "No crash-buffer entries for the app" if not crash.strip() else crash[:500])
 with open(os.path.join(OUT, "logcat-app.txt"), "w") as f:
     f.write(adb("logcat", "-d", "-t", "3000"))

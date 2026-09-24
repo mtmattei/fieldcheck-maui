@@ -45,7 +45,6 @@ public static class MauiProgram
         services.AddTransient<InspectionSuccessViewModel>();
         services.AddTransient<HistoryViewModel>();
 
-        services.AddSingleton<AppShell>();
         services.AddTransient<DashboardPage>();
         services.AddTransient<AssetsPage>();
         services.AddTransient<AssetDetailPage>();

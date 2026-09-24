@@ -4,13 +4,10 @@ namespace FieldCheck;
 
 public partial class App : Microsoft.Maui.Controls.Application
 {
-    private readonly AppShell _shell;
-
-    public App(AppShell shell)
+    public App()
     {
         InitializeComponent();
         UserAppTheme = AppTheme.Light;
-        _shell = shell;
 
         // Resize the window for the soft keyboard so every form field and action stays reachable.
         On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
@@ -18,7 +15,8 @@ public partial class App : Microsoft.Maui.Controls.Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        var window = new Window(_shell) { Title = "FieldCheck" };
+        // The Shell is created here, after InitializeComponent has loaded the app resources its XAML references.
+        var window = new Window(new AppShell()) { Title = "FieldCheck" };
         if (DeviceInfo.Platform == DevicePlatform.WinUI)
         {
             // Reference desktop viewport; users can resize down to the minimum.

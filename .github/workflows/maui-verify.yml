@@ -54,6 +54,12 @@ jobs:
           Get-CimInstance Win32_VideoController | Select-Object CurrentHorizontalResolution, CurrentVerticalResolution | Out-File -Append ci-out/display.txt
           $exe = Get-ChildItem 02-maui/app/src/FieldCheck/bin/Release/net10.0-windows10.0.19041.0 -Filter FieldCheck.exe -Recurse | Select-Object -First 1
           dotnet run --project 02-maui/ci/windows/FieldCheck.WinDriver -c Release -- "$($exe.FullName)" "$PWD/ci-out" "$PWD/02-maui/mock-data/inspection-photo.png" 2>&1 | Tee-Object ci-out/driver-log.txt
+      - name: Crash diagnostics
+        if: always()
+        run: |
+          Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=(Get-Date).AddHours(-2)} -ErrorAction SilentlyContinue |
+            Where-Object { $_.ProviderName -in '.NET Runtime','Application Error','Windows Error Reporting' } |
+            Format-List TimeCreated, ProviderName, Message | Out-File ci-out/eventlog.txt
       - name: Publish results branch
         if: always()
         run: |
