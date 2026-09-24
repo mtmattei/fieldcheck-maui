@@ -392,7 +392,9 @@ def s_picker():
         time.sleep(2)
         if wait(text_is("New inspection"), 3):
             break
-    name = wait(text_is("inspection-photo.png"), 20)
+    wait(text_is("New inspection"), 10)
+    time.sleep(1.5)
+    name = find_scroll(text_is("inspection-photo.png"))
     time.sleep(1)
     record("D08", name is not None, "Selected file name shown in form")
     record("F08", name is not None, "Android Storage Access Framework picker returned the pushed test image")
@@ -448,7 +450,7 @@ def s_history():
     record("C08-ui", ids == ["INS-24072"], "Critical filter -> " + ",".join(ids))
     tap(wait(desc_starts("Filter: All")))
     bottom_tab("Dashboard")
-    record("B07-dashboard", wait(lambda n: re.match(r"Good (morning|afternoon|evening)$", n.text), 10) is not None, "Bottom navigation reached Dashboard")
+    record("B07-dashboard", wait(lambda n: re.match(r"Good (morning|afternoon|evening)$", n.text) or n.text == "View all assets" or n.text == "Needs attention".upper(), 10) is not None, "Bottom navigation reached Dashboard")
 
 
 def s_cancel():

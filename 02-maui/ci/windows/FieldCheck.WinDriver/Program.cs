@@ -133,11 +133,13 @@ Step("new-inspection-validation", () =>
     d.ClickId("CheckArea");
     d.TypeInto("IssueEditor", "Basin-level alarm intermittent; inspect fan vibration.");
     d.ClickId("NotesEditor");
+    Thread.Sleep(700);
     Keyboard.Type("Line one");
     Keyboard.Press(VirtualKeyShort.RETURN);
     Keyboard.Type("Line two");
     Thread.Sleep(1000);
-    d.Record("D06-ui", d.FindId("NotesEditor")!.AsTextBox().Text.Replace("\r\n", "\n").Replace('\r', '\n').Contains("Line one\nLine two"), "Notes accepts multiline text");
+    var notes = d.FindId("NotesEditor")!.AsTextBox().Text.Replace("\r\n", "\n").Replace('\r', '\n');
+    d.Record("D06-ui", notes.Contains("Line one\nLine two"), $"Notes accepts multiline text: '{notes.Replace("\n", "\\n")}'");
 });
 
 Step("file-picker", () =>
