@@ -3,3 +3,5 @@
 {"timestamp_utc": "2026-09-24T15:37:47.533464+00:00", "event": "first_source_edit"}
 {"timestamp_utc": "2026-09-24T15:40:51.830358+00:00", "event": "first_build_attempt"}
 {"timestamp_utc": "2026-09-24T15:56:50.377619+00:00", "event": "first_android_build_success"}
+{"timestamp_utc": "2026-09-24T15:57:53.114885+00:00", "event": "verification_start"}
+{"timestamp_utc": "2026-09-24T16:00:14.457477+00:00", "event": "run_finish"}

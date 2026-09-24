@@ -1,0 +1,27 @@
+# FieldCheck MAUI — dependencies (resolved 2026-09-24)
+
+## Direct package references
+Project 'FieldCheck.Core' has the following package references
+   > CommunityToolkit.Mvvm              8.4.2         8.4.2   
+   > Microsoft.NET.ILLink.Tasks   (A)   [10.0.12, )   10.0.12 
+Project 'FieldCheck' has the following package references
+   > Microsoft.Maui.Controls            10.0.110      10.0.110
+   > Microsoft.NET.ILLink.Tasks   (A)   [10.0.12, )   10.0.12 
+Project 'FieldCheck.Tests' has the following package references
+   > Microsoft.NET.Test.Sdk         18.10.1     18.10.1 
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.5       3.1.5   
+
+## Transitive (runtime projects)
+   > CommunityToolkit.Mvvm              8.4.2         8.4.2   
+   > Microsoft.NET.ILLink.Tasks   (A)   [10.0.12, )   10.0.12 
+
+## SDK / workloads
+- .NET SDK 10.0.112, runtime 10.0.12
+- Workload maui-android (manifest 10.0.20/10.0.100, workload set 10.0.112); Microsoft.Android.Sdk.Linux 36.1.69
+- Android build inputs (composed, see environment.json): org.robolectric:android-all:16-robolectric-13921718 as platforms/android-36/android.jar; Ubuntu android-sdk-build-tools 29.0.3; Ubuntu adb
+
+## Justification
+- Microsoft.Maui.Controls: required framework (pinned to latest stable 10.0.110).
+- CommunityToolkit.Mvvm: MVVM source generators (ObservableProperty/RelayCommand/AsyncRelayCommand with concurrent-execution guard).
+- xunit, xunit.runner.visualstudio, Microsoft.NET.Test.Sdk: test-only.

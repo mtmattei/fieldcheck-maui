@@ -1,9 +1,11 @@
 {
   "start_utc": "2026-09-24T15:30:46.927615+00:00",
-  "os": "Ubuntu 24.04.4 LTS (Linux 6.18.44-fc-v37, x86_64) — managed cloud container (Claude Code on the web)",
+  "os": "Ubuntu 24.04.4 LTS (Linux 6.18.44-fc-v37, x86_64) \u2014 managed cloud container (Claude Code on the web)",
   "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz, 4 vCPU, no vmx/svm flags exposed, /dev/kvm absent",
   "ram": "15 GiB",
-  "dotnet_sdks": ["10.0.112 (Ubuntu archive build, /usr/lib/dotnet)"],
+  "dotnet_sdks": [
+    "10.0.112 (Ubuntu archive build, /usr/lib/dotnet)"
+  ],
   "dotnet_runtime": "Microsoft.NETCore.App 10.0.12",
   "framework": ".NET MAUI",
   "framework_version": "Microsoft.Maui.Controls 10.0.110 (latest stable on nuget.org at run start, referenced via PackageReference)",
@@ -13,7 +15,14 @@
     "java": "OpenJDK 21.0.10",
     "android_sdk": "Not preinstalled. dl.google.com is denied by the environment network policy (HTTP 403 at proxy CONNECT), so the official Android SDK platform-36 / build-tools 36 / platform-tools / emulator cannot be downloaded. Ubuntu archive packages (android-sdk-platform-23, android-sdk-build-tools) were the only reachable SDK source.",
     "android_emulator": null,
-    "hardware_acceleration": "unavailable (/dev/kvm absent, no vmx/svm)"
+    "hardware_acceleration": "unavailable (/dev/kvm absent, no vmx/svm)",
+    "android_sdk_used_for_build": {
+      "path": "/opt/android-sdk-compose (composed)",
+      "platforms/android-36/android.jar": "org.robolectric:android-all:16-robolectric-13921718 from Maven Central (full Android 16 / API 36 framework incl. resources.arsc and AndroidManifest.xml)",
+      "build-tools/36.0.0": "symlink to Ubuntu android-sdk-build-tools 29.0.3 (zipalign, apksigner)",
+      "platform-tools/adb": "Ubuntu adb package",
+      "note": "aapt2, d8/r8, bundletool come from the .NET Android workload pack. A first attempt with Ubuntu's API 23 android.jar failed at aapt2 link (APT2260, AndroidX values-v31)."
+    }
   },
   "windows_tooling": "Not available: host is Linux. The maui-windows workload and Windows App SDK/WinUI XAML compiler only run on Windows, so net10.0-windows10.0.19041.0 cannot be built or launched in this environment.",
   "claude_code_version": "2.1.281 (Claude Code)",

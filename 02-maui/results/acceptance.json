@@ -1,0 +1,490 @@
+{
+  "run": {
+    "framework": ".NET MAUI 10.0.110 (.NET 10)",
+    "status": "BLOCKED",
+    "core_complete": false,
+    "status_reason": "Environment cannot build/launch Windows or launch Android; runtime, screenshot and on-device workflow criteria are NOT TESTED."
+  },
+  "counts": {
+    "pass": 50,
+    "fail": 0,
+    "not_tested": 45
+  },
+  "criteria": [
+    {
+      "id": "A01",
+      "status": "PASS",
+      "notes": "All projects target .NET 10 (net10.0, net10.0-android; net10.0-windows10.0.19041.0 on Windows hosts); Microsoft.Maui.Controls 10.0.110. Verified by builds."
+    },
+    {
+      "id": "A02",
+      "status": "PASS",
+      "notes": "results/environment.json records SDK 10.0.112, runtime 10.0.12, MAUI 10.0.110, maui-android workload 10.0.20 manifest, Android pack 36.1.69."
+    },
+    {
+      "id": "A03",
+      "status": "PASS",
+      "notes": "`dotnet build -f net10.0-android -c Release` succeeded: 0 errors, 0 warnings, signed APK + AAB produced (targetSdk 36). CAVEAT: official SDK host is blocked, so the SDK was composed: platforms/android-36/android.jar = org.robolectric:android-all:16-robolectric-13921718 (full API 36 framework incl. resources.arsc), build-tools = Ubuntu 29.0.3. Re-run with the official SDK before publication."
+    },
+    {
+      "id": "A04",
+      "status": "NOT TESTED",
+      "notes": "Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "A05",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "A06",
+      "status": "NOT TESTED",
+      "notes": "Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "A07",
+      "status": "PASS",
+      "notes": "Warnings recorded: Core (TreatWarningsAsErrors) 0; MAUI net10.0 compile incl. XAML SourceGen 0; Android Release 0; tests 0."
+    },
+    {
+      "id": "B01",
+      "status": "NOT TESTED",
+      "notes": "DashboardPage implemented and XAML-compiled; rendering vs reference not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B02",
+      "status": "NOT TESTED",
+      "notes": "AssetsPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B03",
+      "status": "NOT TESTED",
+      "notes": "AssetDetailPage/AssetDetailView implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B04",
+      "status": "NOT TESTED",
+      "notes": "NewInspectionPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B05",
+      "status": "NOT TESTED",
+      "notes": "InspectionSuccessPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B06",
+      "status": "NOT TESTED",
+      "notes": "HistoryPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B07",
+      "status": "NOT TESTED",
+      "notes": "Shell bottom tabs (Dashboard/Assets/History) implemented. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B08",
+      "status": "NOT TESTED",
+      "notes": "Shell push stack assetdetail -> newinspection; header back and system back pop. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B09",
+      "status": "NOT TESTED",
+      "notes": "Shell locked flyout sidebar on WinUI implemented. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "B10",
+      "status": "NOT TESTED",
+      "notes": "AssetsPage switches to 460px master + detail pane at content width >= 760 (≈1000px window). VM logic PASS in tests; layout Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "B11",
+      "status": "NOT TESTED",
+      "notes": "VM test Cancel_returns_without_saving PASS (navigates back, 6 inspections persisted). Runtime navigation not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "B12",
+      "status": "NOT TESTED",
+      "notes": "VM test: ViewAsset -> GoBack (form already replaced by success), ViewHistory -> //main/history. Shell execution not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "C01",
+      "status": "PASS",
+      "notes": "Test Seeds_all_twelve_assets_and_six_inspections_from_fixtures."
+    },
+    {
+      "id": "C02",
+      "status": "PASS",
+      "notes": "Test Dashboard_counts_are_derived_from_data (12/7/3/2, then 8/3/1 after a Good inspection on CT-007)."
+    },
+    {
+      "id": "C03",
+      "status": "PASS",
+      "notes": "Theory Assets_search_matches_name_id_type_location (case-insensitive name, ID, type, location)."
+    },
+    {
+      "id": "C04",
+      "status": "PASS",
+      "notes": "Test Assets_status_filter_and_search_combine (Operational 7, Attention 3, Critical 2)."
+    },
+    {
+      "id": "C05",
+      "status": "PASS",
+      "notes": "Same test: Critical + 'roof' -> CT-007; Critical + 'pump' -> NoResults."
+    },
+    {
+      "id": "C06",
+      "status": "PASS",
+      "notes": "Tests Inspections_are_newest_first and History_is_newest_first_searchable_and_filterable."
+    },
+    {
+      "id": "C07",
+      "status": "PASS",
+      "notes": "History search by asset name ('booster') and ID ('cnv-018'); location is not matched."
+    },
+    {
+      "id": "C08",
+      "status": "PASS",
+      "notes": "History Good/Critical filters verified."
+    },
+    {
+      "id": "C09",
+      "status": "PASS",
+      "notes": "Added_inspection_persists_across_restart_and_updates_asset writes the JSON data file to disk via FileDataStore (atomic temp+move)."
+    },
+    {
+      "id": "C10",
+      "status": "NOT TESTED",
+      "notes": "Data-layer restart (new repository instance over the same storage file) PASS in tests; true process kill + relaunch on a device not possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "C11",
+      "status": "PASS",
+      "notes": "Saving_does_not_mutate_fixture_files compares SHA-256 of the fixtures before/after a save; fixtures are bundled read-only (MauiAsset) and copied to app storage."
+    },
+    {
+      "id": "C12",
+      "status": "PASS",
+      "notes": "Generated_ids_are_unique_sequential_and_stable_after_restart (INS-24092, 24093, then 24094 after restart)."
+    },
+    {
+      "id": "D01",
+      "status": "PASS",
+      "notes": "Condition_supports_good_attention_critical."
+    },
+    {
+      "id": "D02",
+      "status": "PASS",
+      "notes": "OperatingNormally Yes/No toggled in Issue_description_visibility tests."
+    },
+    {
+      "id": "D03",
+      "status": "PASS",
+      "notes": "Temperature theory: -50, 0, 27.5, -4,5, 250 accepted."
+    },
+    {
+      "id": "D04",
+      "status": "PASS",
+      "notes": "-50.1, 250.01, 300, abc, empty, 1e3 rejected with a message; submit disabled (VM level; message rendering not verified)."
+    },
+    {
+      "id": "D05",
+      "status": "PASS",
+      "notes": "Each_checklist_item_is_individually_required (theory over the three items)."
+    },
+    {
+      "id": "D06",
+      "status": "PASS",
+      "notes": "Multiline notes persisted verbatim ('Line one\\nLine two'); Editor control in UI."
+    },
+    {
+      "id": "D07",
+      "status": "NOT TESTED",
+      "notes": "MauiFilePickerService uses FilePicker.Default.PickAsync (Android SAF / Windows FileOpenPicker). Platform picker cannot be opened here. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "D08",
+      "status": "NOT TESTED",
+      "notes": "VM shows filename + thumbnail binding; tested with a fake picker. Platform selection of inspection-photo.png not possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "D09",
+      "status": "NOT TESTED",
+      "notes": "VM: null result (cancel), TaskCanceledException and failures leave form usable (test PASS). Platform picker cancel not exercised. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "D10",
+      "status": "PASS",
+      "notes": "Good + Yes -> hidden (theory)."
+    },
+    {
+      "id": "D11",
+      "status": "PASS",
+      "notes": "Attention/Critical -> shown (theory)."
+    },
+    {
+      "id": "D12",
+      "status": "PASS",
+      "notes": "Operating normally No -> shown (theory)."
+    },
+    {
+      "id": "D13",
+      "status": "PASS",
+      "notes": "Issue_description_is_required_when_shown (whitespace rejected)."
+    },
+    {
+      "id": "D14",
+      "status": "PASS",
+      "notes": "SubmitCommand.CanExecute false until condition, temperature, 3 checklist items and (when shown) issue description are valid."
+    },
+    {
+      "id": "D15",
+      "status": "PASS",
+      "notes": "Repeated_activation_during_save_cannot_duplicate: CanExecute false while running + interlocked gate; 3 activations -> 1 inspection."
+    },
+    {
+      "id": "D16",
+      "status": "PASS",
+      "notes": "Submit_creates_exactly_one_inspection_and_navigates_to_success (count 6 -> 7)."
+    },
+    {
+      "id": "D17",
+      "status": "PASS",
+      "notes": "Success VM exposes INS-24092, Cooling Tower 07, Attention, 'Sep 23, 2026 · Alex Morgan' (VM test; page rendering not verified)."
+    },
+    {
+      "id": "D18",
+      "status": "PASS",
+      "notes": "Asset_detail_and_success_reflect_the_new_inspection: status Attention, last inspection Sep 23, 2026, latest summary = issue description."
+    },
+    {
+      "id": "E01",
+      "status": "PASS",
+      "notes": "All list/detail VMs start in Loading and show a StatePanel spinner; FIELDCHECK_READ_DELAY_MS makes it observable. VM state tested; rendering not verified."
+    },
+    {
+      "id": "E02",
+      "status": "PASS",
+      "notes": "DataSourceMode.Empty -> ViewState.Empty on Dashboard/Assets/History (tests)."
+    },
+    {
+      "id": "E03",
+      "status": "PASS",
+      "notes": "DataSourceMode.Error -> ViewState.Error with user-safe message (tests)."
+    },
+    {
+      "id": "E04",
+      "status": "PASS",
+      "notes": "Assets_error_state_retries_and_recovers (ErrorOnce -> Retry -> 12 assets)."
+    },
+    {
+      "id": "E05",
+      "status": "PASS",
+      "notes": "NoResults distinct from Empty (Assets_empty_repository_is_distinct_from_no_results; search no-match -> NoResults with Clear action)."
+    },
+    {
+      "id": "E06",
+      "status": "PASS",
+      "notes": "MissingRequirements/RequirementsSummary list what to fix; per-field messages for temperature, checklist, issue description."
+    },
+    {
+      "id": "E07",
+      "status": "NOT TESTED",
+      "notes": "CT-007 description is in a wrapping Label inside a ScrollView (WordWrap, max width 620). Rendering not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "E08",
+      "status": "PASS",
+      "notes": "Persistence_failure_reports_error_and_keeps_form + Write_failure_throws_and_leaves_data_unchanged: no navigation to success, entries kept, retry succeeds."
+    },
+    {
+      "id": "F01",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "F02",
+      "status": "NOT TESTED",
+      "notes": "Form is in a ScrollView; Android WindowSoftInputModeAdjust.Resize set. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "F03",
+      "status": "NOT TESTED",
+      "notes": "Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "F04",
+      "status": "NOT TESTED",
+      "notes": "Adaptive rules implemented (master/detail >=760 content px, History table >=900, form two-column >=900, 720px min window). Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "F05",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "F06",
+      "status": "NOT TESTED",
+      "notes": "Shell back stack; success replaces form so back returns to asset. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "F07",
+      "status": "NOT TESTED",
+      "notes": "All interactive rows are real Buttons (focusable), inputs are native. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "F08",
+      "status": "NOT TESTED",
+      "notes": "Android image/* + application/pdf MIME types; Windows extension list. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "G01",
+      "status": "NOT TESTED",
+      "notes": "SemanticProperties.Description/Hint set on icon buttons, row activators, chips, inputs, switch, checkboxes. Accessibility tree not inspectable without a running target."
+    },
+    {
+      "id": "G02",
+      "status": "PASS",
+      "notes": "Every status is shown via StatusChip text or a text label ('Critical condition'); tone color is never the only signal (code + VM Tone/Text pairs)."
+    },
+    {
+      "id": "G03",
+      "status": "NOT TESTED",
+      "notes": "Native WinUI focus visuals kept on buttons; FocusFrameBehavior thickens the input frame on focus. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "G04",
+      "status": "NOT TESTED",
+      "notes": "Button styles set MinimumHeight/Width 44; primary buttons 54; icon buttons 44x44; checkboxes min 44. Not measured at runtime."
+    },
+    {
+      "id": "G05",
+      "status": "NOT TESTED",
+      "notes": "Errors are text directly below the field plus a red frame, and listed in the submit summary. Rendering not verified."
+    },
+    {
+      "id": "G06",
+      "status": "PASS",
+      "notes": "Computed WCAG ratios: Ink/Canvas 15.8, Muted/Canvas 4.7, Ink/Accent 15.6, Success chip 5.7, Critical chip 5.5, Attention chip 4.3 (supplied palette), Surface/Ink 17.7."
+    },
+    {
+      "id": "H01",
+      "status": "NOT TESTED",
+      "notes": "No screenshot possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "H02",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "H03",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "H04",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "H05",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "H06",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "I01",
+      "status": "PASS",
+      "notes": "CommunityToolkit.Mvvm view models in FieldCheck.Core; pages only bind and forward query parameters/size changes."
+    },
+    {
+      "id": "I02",
+      "status": "PASS",
+      "notes": "IFieldCheckRepository/JsonFieldCheckRepository/IDataFileStore in Core; views never touch persistence."
+    },
+    {
+      "id": "I03",
+      "status": "PASS",
+      "notes": "Validation, filtering, state and submission live in VMs; code-behind limited to layout breakpoints, query forwarding and OnAppearing refresh."
+    },
+    {
+      "id": "I04",
+      "status": "PASS",
+      "notes": "No dead code or duplicate implementations (reviewed; template MainPage/fonts/iOS/Mac folders removed)."
+    },
+    {
+      "id": "I05",
+      "status": "PASS",
+      "notes": "No test shortcuts; data modes are injectable repository behavior with no UI switch (env var only)."
+    },
+    {
+      "id": "I06",
+      "status": "PASS",
+      "notes": "Runtime deps: Microsoft.Maui.Controls 10.0.110, CommunityToolkit.Mvvm 8.4.2. Test deps: xunit 2.9.3, runner 3.1.5, Test.Sdk 18.10.1. Recorded in dependencies.txt."
+    },
+    {
+      "id": "I07",
+      "status": "PASS",
+      "notes": "58 xUnit tests over repository and all six view models (dotnet test: 58 passed, 0 failed)."
+    },
+    {
+      "id": "I08",
+      "status": "PASS",
+      "notes": "No tests removed or weakened; all passed on first execution."
+    },
+    {
+      "id": "J01",
+      "status": "PASS",
+      "notes": "grep: no lorem/TODO/placeholder content; no debug UI."
+    },
+    {
+      "id": "J02",
+      "status": "PASS",
+      "notes": "All 22 Buttons and 2 ImageButtons bound to commands (StatePanel action hidden when no command); commands covered by VM tests."
+    },
+    {
+      "id": "J03",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "J04",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "J05",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "J06",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "J07",
+      "status": "NOT TESTED",
+      "notes": "VM cancel/failure paths PASS in tests; platform picker not exercisable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched."
+    },
+    {
+      "id": "J08",
+      "status": "PASS",
+      "notes": "No secrets/credentials in source; INTERNET permission removed; APK signed with the SDK-generated debug key (not committed)."
+    },
+    {
+      "id": "J09",
+      "status": "NOT TESTED",
+      "notes": "No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only)."
+    },
+    {
+      "id": "J10",
+      "status": "NOT TESTED",
+      "notes": "Android Release build produced, but no release runtime verification was possible."
+    }
+  ]
+}
