@@ -7,7 +7,8 @@
     xmlns:controls="clr-namespace:FieldCheck.Controls"
     xmlns:views="clr-namespace:FieldCheck.Views"
     x:DataType="vm:AssetsViewModel"
-    Title="Assets">
+    Title="Assets"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
 
     <Grid x:Name="RootGrid" ColumnDefinitions="*,0,0">
 

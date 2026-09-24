@@ -6,7 +6,8 @@
     xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
     xmlns:controls="clr-namespace:FieldCheck.Controls"
     x:DataType="vm:HistoryViewModel"
-    Title="History">
+    Title="History"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
 
     <ContentPage.Resources>
         <!-- Compact rows (Android, narrow windows): asset + result, then ID/time, then inspector -->

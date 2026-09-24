@@ -6,8 +6,7 @@
     xmlns:views="clr-namespace:FieldCheck.Views"
     Title="FieldCheck"
     FlyoutWidth="232"
-    FlyoutBehavior="{OnPlatform Default=Disabled, WinUI=Locked}"
-    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
+    FlyoutBehavior="{OnPlatform Default=Disabled, WinUI=Locked}">
 
     <!-- Windows sidebar: product mark -->
     <Shell.FlyoutHeader>

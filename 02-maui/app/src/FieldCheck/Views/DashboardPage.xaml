@@ -6,7 +6,8 @@
     xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
     xmlns:controls="clr-namespace:FieldCheck.Controls"
     x:DataType="vm:DashboardViewModel"
-    Title="Dashboard">
+    Title="Dashboard"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
 
     <Grid Padding="{OnPlatform Default='20,0', WinUI='40,0'}" RowDefinitions="*">
 
