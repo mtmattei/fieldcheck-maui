@@ -342,11 +342,13 @@ def s_form():
     time.sleep(2)
     sh(f"am start -n {state['activity']}")
     time.sleep(2)
+    hide_keyboard()
     swipe_down(); swipe_down(); swipe_down()
     record("J06", wait(lambda n: n.cls.endswith("EditText") and n.text == "27", 8) is not None, "Background/resume kept form input (temperature 27)")
 
 
 def s_picker():
+    hide_keyboard()
     tap_scroll(desc_starts("Attach photo or file"), "attach")
     picker = wait(lambda n: "documentsui" in n.rid or n.text in ("Recent", "Downloads", "Images") or n.desc == "Show roots", 20)
     time.sleep(1.5)
@@ -359,16 +361,22 @@ def s_picker():
     tap_scroll(desc_starts("Attach photo or file"), "attach")
     wait(lambda n: "documentsui" in n.rid or n.desc == "Show roots", 20)
     time.sleep(1.5)
-    f = wait(lambda n: "inspection-photo" in n.label, 4)
-    if not f:
+    time.sleep(2)  # DocumentsUI re-lays out (chip row collapses) shortly after opening
+    if not wait(lambda n: "inspection-photo" in n.label, 4):
         roots = wait(lambda n: n.desc == "Show roots", 5)
         if roots:
             tap(roots)
         tap(wait(text_is("Downloads"), 10))
-        time.sleep(1.5)
-        f = wait(lambda n: "inspection-photo" in n.label, 10)
+        time.sleep(2)
     shot("d08-picker-file")
-    tap(f)
+    for _ in range(4):
+        f = wait(lambda n: "inspection-photo" in n.label, 5)
+        if not f:
+            break
+        tap(f)
+        time.sleep(2)
+        if wait(text_is("New inspection"), 3):
+            break
     name = wait(text_is("inspection-photo.png"), 20)
     time.sleep(1)
     record("D08", name is not None, "Selected file name shown in form")
