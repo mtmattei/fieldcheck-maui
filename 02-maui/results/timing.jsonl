@@ -7,3 +7,6 @@
 {"timestamp_utc": "2026-09-24T16:00:14.457477+00:00", "event": "run_finish"}
 {"timestamp_utc": "2026-09-24T17:42:07.716290+00:00", "event": "human_intervention_ci_runners_available"}
 {"timestamp_utc": "2026-09-24T17:42:07.741010+00:00", "event": "run_resumed"}
+{"timestamp_utc": "2026-09-24T19:17:16.341950+00:00", "event": "first_windows_build_success"}
+{"timestamp_utc": "2026-09-24T19:17:16.369397+00:00", "event": "first_windows_launch_success"}
+{"timestamp_utc": "2026-09-24T19:17:16.404788+00:00", "event": "first_android_launch_success"}
