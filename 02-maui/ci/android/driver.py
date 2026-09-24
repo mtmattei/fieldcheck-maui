@@ -357,7 +357,7 @@ def s_form():
     time.sleep(2)
     hide_keyboard()
     swipe_down(); swipe_down(); swipe_down()
-    record("J06", wait(lambda n: n.cls.endswith("EditText") and n.text == "27", 8) is not None, "Background/resume kept form input (temperature 27)")
+    record("J06", wait(lambda n: n.cls.endswith("EditText") and (n.text == "27" or n.text.endswith(", 27")), 8) is not None, "Background/resume kept form input (temperature 27)")
 
 
 def s_picker():
@@ -375,7 +375,7 @@ def s_picker():
     wait(lambda n: "documentsui" in n.rid or n.desc == "Show roots", 20)
     time.sleep(1.5)
     time.sleep(2)  # DocumentsUI re-lays out (chip row collapses) shortly after opening
-    if not wait(lambda n: "inspection-photo" in n.label, 4):
+    if not wait(lambda n: "inspection-photo" in n.text, 4):
         roots = wait(lambda n: n.desc == "Show roots", 5)
         if roots:
             tap(roots)
@@ -384,7 +384,7 @@ def s_picker():
     shot("d08-picker-file")
     save_dump("picker-before-select")
     for _ in range(4):
-        f = wait(lambda n: "inspection-photo" in n.label and n.visible(), 5)
+        f = wait(lambda n: "inspection-photo" in n.text and n.visible(), 5)  # the file name, not the "Preview the file" icon
         print("   picker target:", f, flush=True)
         if not f:
             break
