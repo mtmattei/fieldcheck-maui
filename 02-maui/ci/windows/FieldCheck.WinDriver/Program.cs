@@ -136,7 +136,7 @@ Step("new-inspection-validation", () =>
     Keyboard.Type("Line one");
     Keyboard.Press(VirtualKeyShort.RETURN);
     Keyboard.Type("Line two");
-    Thread.Sleep(300);
+    Thread.Sleep(1000);
     d.Record("D06-ui", d.FindId("NotesEditor")!.AsTextBox().Text.Replace("\r\n", "\n").Replace('\r', '\n').Contains("Line one\nLine two"), "Notes accepts multiline text");
 });
 
@@ -291,13 +291,13 @@ Step("view-history-action", () =>
     d.TypeInto("TemperatureEntry", "-50");
     d.ClickId("CheckGuards"); d.ClickId("CheckLeaks"); d.ClickId("CheckArea");
     d.ClickId("SubmitButton");
-    var id = d.WaitId("SuccessInspectionId", 20);
+    var idName = d.WaitId("SuccessInspectionId", 20) is { } idEl ? Driver.SafeName(idEl) : "";
     d.ClickId("ViewHistoryButton");
     d.WaitId("HistorySearchEntry", 20);
     Thread.Sleep(1200);
     var first = d.All().Where(e => Driver.SafeName(e).StartsWith("INS-") && Driver.SafeName(e).Contains(" · ")).OrderBy(e => e.BoundingRectangle.Y).FirstOrDefault()?.Name;
-    d.Record("B12-view-history", id?.Name.Contains("INS-24093") == true && first?.StartsWith("INS-24093") == true, $"Second inspection {id?.Name}; View history shows first row '{first}'");
-    d.Record("C12-ui", id?.Name.Contains("INS-24093") == true, "IDs continue after restart (INS-24093)");
+    d.Record("B12-view-history", idName.Contains("INS-24093") && first?.StartsWith("INS-24093") == true, $"Second inspection '{idName}'; View history shows first row '{first}'");
+    d.Record("C12-ui", idName.Contains("INS-24093"), "IDs continue after restart (INS-24093)");
 });
 
 Step("data-modes", () =>
