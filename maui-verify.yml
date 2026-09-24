@@ -1,0 +1,130 @@
+name: maui-verify
+
+on:
+  push:
+    branches: [claude/pensive-sagan-hes7f7]
+    paths: ['02-maui/app/**', '02-maui/ci/**', '02-maui/mock-data/**', '.github/workflows/maui-verify.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maui-verify
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Versions
+        run: |
+          New-Item -ItemType Directory -Force ci-out | Out-Null
+          dotnet --info | Out-File ci-out/dotnet-info.txt
+          Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version | Out-File ci-out/os.txt
+      - name: Install MAUI workload
+        run: dotnet workload install maui-windows 2>&1 | Tee-Object ci-out/workload-install.txt
+      - name: Workload list
+        run: dotnet workload list | Tee-Object ci-out/workload-list.txt
+      - name: Tests
+        run: dotnet test 02-maui/app/tests/FieldCheck.Tests -c Release 2>&1 | Tee-Object ci-out/tests.txt
+      - name: Build Windows Release
+        run: |
+          $sw = [Diagnostics.Stopwatch]::StartNew()
+          dotnet build 02-maui/app/src/FieldCheck/FieldCheck.csproj -f net10.0-windows10.0.19041.0 -c Release 2>&1 | Tee-Object ci-out/build-windows.txt
+          $code = $LASTEXITCODE
+          "elapsed_seconds=$($sw.Elapsed.TotalSeconds)" | Out-File ci-out/build-windows-time.txt
+          exit $code
+      - name: UI verification
+        if: hashFiles('02-maui/ci/windows/FieldCheck.WinDriver/FieldCheck.WinDriver.csproj') != ''
+        run: |
+          try { Set-DisplayResolution -Width 1920 -Height 1080 -Force } catch { "Set-DisplayResolution failed: $_" | Out-File ci-out/display.txt }
+          Get-CimInstance Win32_VideoController | Select-Object CurrentHorizontalResolution, CurrentVerticalResolution | Out-File -Append ci-out/display.txt
+          $exe = Get-ChildItem 02-maui/app/src/FieldCheck/bin/Release/net10.0-windows10.0.19041.0 -Filter FieldCheck.exe -Recurse | Select-Object -First 1
+          dotnet run --project 02-maui/ci/windows/FieldCheck.WinDriver -c Release -- "$($exe.FullName)" "$PWD/ci-out" "$PWD/02-maui/mock-data/inspection-photo.png" 2>&1 | Tee-Object ci-out/driver-log.txt
+      - name: Crash diagnostics
+        if: always()
+        run: |
+          Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=(Get-Date).AddHours(-2)} -ErrorAction SilentlyContinue |
+            Where-Object { $_.ProviderName -in '.NET Runtime','Application Error','Windows Error Reporting' } |
+            Format-List TimeCreated, ProviderName, Message | Out-File ci-out/eventlog.txt
+      - name: Publish results branch
+        if: always()
+        run: |
+          Copy-Item .github/workflows/maui-verify.yml ci-out/ -ErrorAction SilentlyContinue
+          "run_id=${{ github.run_id }} sha=${{ github.sha }} utc=$((Get-Date).ToUniversalTime().ToString('o'))" | Out-File ci-out/run.txt
+          cd ci-out
+          git init -q
+          git checkout -q -b maui-ci-windows
+          git add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -qm "windows ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" maui-ci-windows
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: '21'
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Versions and SDK
+        run: |
+          mkdir -p ci-out
+          dotnet --info > ci-out/dotnet-info.txt
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools" > ci-out/sdkmanager.txt 2>&1 || true
+          ls "$ANDROID_HOME/platforms" "$ANDROID_HOME/build-tools" >> ci-out/sdkmanager.txt
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android 2>&1 | tee ci-out/workload-install.txt
+      - name: Build Android Release
+        run: |
+          start=$(date +%s)
+          set -o pipefail
+          dotnet build 02-maui/app/src/FieldCheck/FieldCheck.csproj -f net10.0-android -c Release -p:AndroidSdkDirectory="$ANDROID_HOME" 2>&1 | tee ci-out/build-android.txt
+          echo "elapsed_seconds=$(( $(date +%s) - start ))" > ci-out/build-android-time.txt
+          ls -la 02-maui/app/src/FieldCheck/bin/Release/net10.0-android/ >> ci-out/build-android-time.txt
+      - name: Driver dependencies
+        run: python3 -m pip install --quiet pillow
+      - name: UI verification on emulator
+        if: hashFiles('02-maui/ci/android/driver.py') != ''
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          script: python3 02-maui/ci/android/driver.py 02-maui/app/src/FieldCheck/bin/Release/net10.0-android/com.fieldcheck.app-Signed.apk ci-out 02-maui/mock-data/inspection-photo.png 2>&1 | tee ci-out/driver-log.txt
+      - name: Publish results branch
+        if: always()
+        run: |
+          cp .github/workflows/maui-verify.yml ci-out/ || true
+          echo "run_id=${{ github.run_id }} sha=${{ github.sha }} utc=$(date -u +%FT%TZ)" > ci-out/run.txt
+          cd ci-out
+          git init -q
+          git checkout -q -b maui-ci-android
+          git add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -qm "android ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" maui-ci-android
