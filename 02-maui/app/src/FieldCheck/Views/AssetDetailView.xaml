@@ -18,6 +18,7 @@
                 </VerticalStackLayout>
                 <Button
                     x:Name="TopActionButton"
+                    AutomationId="StartInspectionTopButton"
                     Grid.Column="1"
                     Text="Start inspection"
                     Style="{StaticResource PrimaryButton}"
@@ -66,6 +67,7 @@
 
             <Button
                 x:Name="BottomActionButton"
+                AutomationId="StartInspectionButton"
                 Margin="0,52,0,32"
                 Text="Start inspection"
                 Style="{StaticResource PrimaryButton}"

@@ -13,6 +13,7 @@
         <!-- Header: back (cancel) + title + asset identity -->
         <Grid x:Name="Header" Padding="{OnPlatform Default='8,40,20,8', WinUI='40,36,40,8'}" ColumnDefinitions="Auto,*" ColumnSpacing="6">
             <ImageButton
+                AutomationId="BackButton"
                 Source="icon_back.png"
                 Style="{StaticResource IconButton}"
                 VerticalOptions="Start"
@@ -35,7 +36,7 @@
                     <VerticalStackLayout x:Name="SectionPrimary" Spacing="0">
                         <Label Text="Condition" Style="{StaticResource MicroLabel}" Margin="0,0,0,10" />
                         <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6" SemanticProperties.Description="Condition, required">
-                            <Button Text="Good" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Good"
+                            <Button Text="Good" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Good" AutomationId="ConditionGood"
                                     SemanticProperties.Description="Condition Good">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsGood}" Value="True">
@@ -46,7 +47,7 @@
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>
-                            <Button Grid.Column="1" Text="Attention" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Attention"
+                            <Button Grid.Column="1" Text="Attention" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Attention" AutomationId="ConditionAttention"
                                     SemanticProperties.Description="Condition Attention">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsAttention}" Value="True">
@@ -57,7 +58,7 @@
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>
-                            <Button Grid.Column="2" Text="Critical" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Critical"
+                            <Button Grid.Column="2" Text="Critical" Style="{StaticResource SegmentButton}" Command="{Binding SelectConditionCommand}" CommandParameter="Critical" AutomationId="ConditionCritical"
                                     SemanticProperties.Description="Condition Critical">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsCritical}" Value="True">
@@ -73,7 +74,7 @@
                         <Grid Margin="0,18,0,0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="14" MinimumHeightRequest="44">
                             <Label Text="Operating normally" Style="{StaticResource MicroLabel}" VerticalOptions="Center" />
                             <Label Grid.Column="1" Text="{Binding OperatingNormallyText}" FontSize="15" VerticalOptions="Center" />
-                            <Switch Grid.Column="2" IsToggled="{Binding OperatingNormally}" VerticalOptions="Center"
+                            <Switch Grid.Column="2" AutomationId="OperatingSwitch" IsToggled="{Binding OperatingNormally}" VerticalOptions="Center"
                                     SemanticProperties.Description="Operating normally" />
                         </Grid>
 
@@ -86,13 +87,14 @@
                             </Border.Triggers>
                             <Entry
                                 x:Name="TemperatureEntry"
+                                AutomationId="TemperatureEntry"
                                 Text="{Binding TemperatureText}"
                                 Keyboard="Numeric"
                                 Placeholder="-50 to 250"
                                 ReturnType="Next"
                                 SemanticProperties.Description="Temperature in degrees Celsius, required, from -50 to 250" />
                         </Border>
-                        <Label Text="{Binding TemperatureError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
+                        <Label AutomationId="TemperatureError" Text="{Binding TemperatureError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
                                IsVisible="{Binding TemperatureError, Converter={StaticResource HasValue}}" />
                     </VerticalStackLayout>
 
@@ -100,15 +102,15 @@
                     <VerticalStackLayout x:Name="SectionChecklist" Spacing="0">
                         <Label Text="Checklist" Style="{StaticResource MicroLabel}" Margin="0,0,0,4" />
                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
-                            <CheckBox IsChecked="{Binding GuardsSecure}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.GuardsItem}" />
+                            <CheckBox AutomationId="CheckGuards" IsChecked="{Binding GuardsSecure}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.GuardsItem}" />
                             <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.GuardsItem}" VerticalOptions="Center" />
                         </Grid>
                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
-                            <CheckBox IsChecked="{Binding NoVisibleLeaks}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.LeaksItem}" />
+                            <CheckBox AutomationId="CheckLeaks" IsChecked="{Binding NoVisibleLeaks}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.LeaksItem}" />
                             <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.LeaksItem}" VerticalOptions="Center" />
                         </Grid>
                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
-                            <CheckBox IsChecked="{Binding AreaClear}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.AreaItem}" />
+                            <CheckBox AutomationId="CheckArea" IsChecked="{Binding AreaClear}" SemanticProperties.Description="{x:Static vm:NewInspectionViewModel.AreaItem}" />
                             <Label Grid.Column="1" Text="{x:Static vm:NewInspectionViewModel.AreaItem}" VerticalOptions="Center" />
                         </Grid>
                         <Label Text="{Binding ChecklistError}" Style="{StaticResource ErrorText}" Margin="0,4,0,0"
@@ -129,7 +131,7 @@
                                     <Setter Property="Stroke" Value="{StaticResource Critical}" />
                                 </DataTrigger>
                             </Border.Triggers>
-                            <Editor Text="{Binding IssueDescription}" Placeholder="Describe what needs attention"
+                            <Editor AutomationId="IssueEditor" Text="{Binding IssueDescription}" Placeholder="Describe what needs attention"
                                     SemanticProperties.Description="Issue description, required" />
                         </Border>
                         <Label Text="{Binding IssueDescriptionError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
@@ -140,7 +142,7 @@
                     <VerticalStackLayout x:Name="SectionNotes" Spacing="0">
                         <Label Text="Notes" Style="{StaticResource MicroLabel}" Margin="0,0,0,8" />
                         <Border Style="{StaticResource InputFrame}" Padding="12,6">
-                            <Editor Text="{Binding Notes}" Placeholder="Optional notes…" SemanticProperties.Description="Notes, optional" />
+                            <Editor AutomationId="NotesEditor" Text="{Binding Notes}" Placeholder="Optional notes…" SemanticProperties.Description="Notes, optional" />
                         </Border>
                     </VerticalStackLayout>
 
@@ -163,7 +165,7 @@
                                     </Label.Triggers>
                                 </Label>
                             </Border>
-                            <Button BackgroundColor="Transparent" CornerRadius="12" Command="{Binding ChooseFileCommand}"
+                            <Button BackgroundColor="Transparent" CornerRadius="12" AutomationId="AttachButton" Command="{Binding ChooseFileCommand}"
                                     SemanticProperties.Description="Attach photo or file" SemanticProperties.Hint="Opens the system file picker" />
                         </Grid>
 
@@ -173,10 +175,10 @@
                                 <Image Source="{Binding Attachment.LocalPath}" Aspect="AspectFill" SemanticProperties.Description="Attachment preview" />
                             </Border>
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                                <Label Text="{Binding AttachmentName}" FontSize="14" LineBreakMode="MiddleTruncation" />
+                                <Label AutomationId="AttachmentName" Text="{Binding AttachmentName}" FontSize="14" LineBreakMode="MiddleTruncation" />
                                 <Label Text="Attached" Style="{StaticResource SecondaryText}" FontSize="12" />
                             </VerticalStackLayout>
-                            <Button Grid.Column="2" Text="Remove" TextColor="{StaticResource Muted}" Command="{Binding RemoveAttachmentCommand}"
+                            <Button Grid.Column="2" Text="Remove" TextColor="{StaticResource Muted}" AutomationId="RemoveAttachmentButton" Command="{Binding RemoveAttachmentCommand}"
                                     SemanticProperties.Description="Remove attachment" />
                         </Grid>
                         <Label Text="{Binding AttachmentError}" Style="{StaticResource ErrorText}" Margin="0,6,0,0"
@@ -185,15 +187,15 @@
 
                     <!-- Actions -->
                     <VerticalStackLayout x:Name="SectionActions" Spacing="10">
-                        <Label Text="{Binding RequirementsSummary}" Style="{StaticResource SecondaryText}"
+                        <Label AutomationId="RequirementsSummary" Text="{Binding RequirementsSummary}" Style="{StaticResource SecondaryText}"
                                IsVisible="{Binding RequirementsSummary, Converter={StaticResource HasValue}}"
                                SemanticProperties.Description="{Binding RequirementsSummary}" />
                         <Label Text="{Binding SubmitError}" Style="{StaticResource ErrorText}" FontSize="14"
                                IsVisible="{Binding SubmitError, Converter={StaticResource HasValue}}" />
                         <Grid x:Name="ActionsGrid" ColumnDefinitions="*" ColumnSpacing="24">
-                            <Button x:Name="CancelButton" Text="Cancel" Style="{StaticResource QuietButton}" Command="{Binding CancelCommand}"
+                            <Button x:Name="CancelButton" AutomationId="CancelButton" Text="Cancel" Style="{StaticResource QuietButton}" Command="{Binding CancelCommand}"
                                     IsVisible="{OnPlatform Default=False, WinUI=True}" />
-                            <Button x:Name="SubmitButton" Text="{Binding SubmitText}" Style="{StaticResource PrimaryButton}" Command="{Binding SubmitCommand}"
+                            <Button x:Name="SubmitButton" AutomationId="SubmitButton" Text="{Binding SubmitText}" Style="{StaticResource PrimaryButton}" Command="{Binding SubmitCommand}"
                                     SemanticProperties.Hint="Saves the inspection" />
                         </Grid>
                     </VerticalStackLayout>

@@ -91,6 +91,7 @@
             <CollectionView.Footer>
                 <Grid Padding="0,38,0,32">
                     <Button
+                        AutomationId="ViewAllAssetsButton"
                         Text="View all assets"
                         Style="{StaticResource PrimaryButton}"
                         HorizontalOptions="{OnPlatform Default=Fill, WinUI=Start}"

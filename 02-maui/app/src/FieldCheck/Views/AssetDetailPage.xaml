@@ -12,6 +12,7 @@
     <Grid RowDefinitions="Auto,*">
         <HorizontalStackLayout Padding="{OnPlatform Default='8,40,20,8', WinUI='28,36,40,8'}" Spacing="6">
             <ImageButton
+                AutomationId="BackButton"
                 Source="icon_back.png"
                 Style="{StaticResource IconButton}"
                 Command="{Binding BackCommand}"

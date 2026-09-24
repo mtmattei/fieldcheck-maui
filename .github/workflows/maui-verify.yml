@@ -98,6 +98,8 @@ jobs:
           dotnet build 02-maui/app/src/FieldCheck/FieldCheck.csproj -f net10.0-android -c Release -p:AndroidSdkDirectory="$ANDROID_HOME" 2>&1 | tee ci-out/build-android.txt
           echo "elapsed_seconds=$(( $(date +%s) - start ))" > ci-out/build-android-time.txt
           ls -la 02-maui/app/src/FieldCheck/bin/Release/net10.0-android/ >> ci-out/build-android-time.txt
+      - name: Driver dependencies
+        run: python3 -m pip install --quiet pillow
       - name: UI verification on emulator
         if: hashFiles('02-maui/ci/android/driver.py') != ''
         uses: reactivecircus/android-emulator-runner@v2

@@ -50,6 +50,7 @@
                     <Image Source="icon_search.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
                     <Entry
                         Grid.Column="1"
+                        AutomationId="HistorySearchEntry"
                         Placeholder="Search inspections"
                         Text="{Binding SearchText}"
                         ReturnType="Search"

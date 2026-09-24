@@ -23,7 +23,7 @@
                 <Image Source="icon_check.png" WidthRequest="16" HeightRequest="16" />
             </Border>
             <Label Text="Inspection saved" FontSize="32" HorizontalOptions="Center" Margin="0,14,0,0" SemanticProperties.HeadingLevel="Level1" />
-            <Label Text="{Binding InspectionId}" Style="{StaticResource SecondaryText}" HorizontalOptions="Center" Margin="0,14,0,0"
+            <Label AutomationId="SuccessInspectionId" Text="{Binding InspectionId}" Style="{StaticResource SecondaryText}" HorizontalOptions="Center" Margin="0,14,0,0"
                    SemanticProperties.Description="{Binding InspectionId, StringFormat='Inspection ID {0}'}" />
 
             <VerticalStackLayout WidthRequest="{OnPlatform Default=-1, WinUI=413}" MaximumWidthRequest="480" Margin="{OnPlatform Default='36,0', WinUI='0'}"
@@ -42,10 +42,10 @@
                         Direction="{OnPlatform Default=Column, WinUI=Row}"
                         JustifyContent="Center"
                         AlignItems="{OnPlatform Default=Stretch, WinUI=Center}">
-                <Button Text="View asset" Style="{StaticResource PrimaryButton}" FontAttributes="None" Command="{Binding ViewAssetCommand}"
+                <Button AutomationId="ViewAssetButton" Text="View asset" Style="{StaticResource PrimaryButton}" FontAttributes="None" Command="{Binding ViewAssetCommand}"
                         WidthRequest="{OnPlatform Default=-1, WinUI=191}" Margin="{OnPlatform Default='0,0,0,14', WinUI='0,0,15,0'}"
                         SemanticProperties.Hint="Returns to the inspected asset" />
-                <Button Text="View history" Style="{StaticResource SecondaryButton}" Command="{Binding ViewHistoryCommand}"
+                <Button AutomationId="ViewHistoryButton" Text="View history" Style="{StaticResource SecondaryButton}" Command="{Binding ViewHistoryCommand}"
                         WidthRequest="{OnPlatform Default=-1, WinUI=191}"
                         SemanticProperties.Hint="Opens inspection history" />
             </FlexLayout>
