@@ -25,6 +25,18 @@ def sh(cmd):
 def record(cid, ok, detail):
     checks.append({"id": cid, "status": "PASS" if ok else "FAIL", "detail": detail})
     print(f"   [{'PASS' if ok else 'FAIL'}] {cid}: {detail}", flush=True)
+    if not ok:
+        save_dump("fail-" + cid.replace(":", "-"))
+
+
+def save_dump(name):
+    try:
+        sh("uiautomator dump /sdcard/ui.xml >/dev/null 2>&1")
+        os.makedirs(os.path.join(OUT, "ui-dumps"), exist_ok=True)
+        with open(os.path.join(OUT, "ui-dumps", name + ".xml"), "w") as f:
+            f.write(adb("exec-out", "cat", "/sdcard/ui.xml"))
+    except Exception as ex:
+        print("   (dump failed:", ex, ")")
 
 
 class Node:
@@ -216,6 +228,7 @@ install_s = time.time() - t0
 adb("push", PHOTO, "/sdcard/Download/inspection-photo.png")
 sh("am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/inspection-photo.png")
 sh("content call --uri content://media --method scan_volume --arg external_primary")
+adb("logcat", "-G", "16M")
 sh("logcat -c")
 time.sleep(15)  # let the launcher settle after boot
 sh("input keyevent 3")
@@ -369,8 +382,10 @@ def s_picker():
         tap(wait(text_is("Downloads"), 10))
         time.sleep(2)
     shot("d08-picker-file")
+    save_dump("picker-before-select")
     for _ in range(4):
-        f = wait(lambda n: "inspection-photo" in n.label, 5)
+        f = wait(lambda n: "inspection-photo" in n.label and n.visible(), 5)
+        print("   picker target:", f, flush=True)
         if not f:
             break
         tap(f)
