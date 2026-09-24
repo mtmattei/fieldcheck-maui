@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="FieldCheck.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:FieldCheck.Views"
+    Title="FieldCheck"
+    FlyoutWidth="232"
+    FlyoutBehavior="{OnPlatform Default=Disabled, WinUI=Locked}"
+    Shell.TabBarIsVisible="{OnPlatform Default=True, WinUI=False}">
+
+    <!-- Windows sidebar: product mark -->
+    <Shell.FlyoutHeader>
+        <Grid Padding="30,26,32,28" ColumnDefinitions="*,Auto" BackgroundColor="{StaticResource Surface}">
+            <Label
+                Text="FIELDCHECK"
+                FontSize="12"
+                FontAttributes="Bold"
+                CharacterSpacing="0.6"
+                VerticalOptions="Center"
+                SemanticProperties.HeadingLevel="Level1" />
+            <Border
+                Grid.Column="1"
+                WidthRequest="36"
+                HeightRequest="36"
+                BackgroundColor="{StaticResource Accent}"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 8"
+                SemanticProperties.Description="FieldCheck">
+                <Label Text="F" FontSize="15" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Windows sidebar: signed-in technician context -->
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="30,0,30,24" Spacing="4" BackgroundColor="{StaticResource Surface}">
+            <Label Text="Alex Morgan" FontSize="13" />
+            <Label Text="Facility A" FontSize="11" TextColor="{StaticResource Muted}" />
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+
+    <!-- Windows sidebar item: quiet row, Accent marker + subtle surface when active -->
+    <Shell.ItemTemplate>
+        <DataTemplate x:DataType="BaseShellItem">
+            <Grid Padding="16,4" HeightRequest="52">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="ItemSurface" Property="Border.BackgroundColor" Value="Transparent" />
+                                    <Setter TargetName="Marker" Property="BoxView.IsVisible" Value="False" />
+                                    <Setter TargetName="ItemLabel" Property="Label.TextColor" Value="{StaticResource Muted}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter TargetName="ItemSurface" Property="Border.BackgroundColor" Value="{StaticResource Canvas}" />
+                                    <Setter TargetName="Marker" Property="BoxView.IsVisible" Value="True" />
+                                    <Setter TargetName="ItemLabel" Property="Label.TextColor" Value="{StaticResource Ink}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+                <Border x:Name="ItemSurface" StrokeThickness="0" StrokeShape="RoundRectangle 0,8,0,8" Padding="0">
+                    <Grid ColumnDefinitions="4,44,*">
+                        <BoxView x:Name="Marker" Color="{StaticResource Accent}" />
+                        <Image Grid.Column="1" Source="{Binding FlyoutIcon}" WidthRequest="20" HeightRequest="20" HorizontalOptions="Center" />
+                        <Label x:Name="ItemLabel" Grid.Column="2" Text="{Binding Title}" FontSize="15" VerticalOptions="Center" Margin="8,0,0,0" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <FlyoutItem Route="main" FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Dashboard" Icon="nav_dashboard.png" Route="dashboard">
+            <ShellContent ContentTemplate="{DataTemplate views:DashboardPage}" />
+        </Tab>
+        <Tab Title="Assets" Icon="nav_assets.png" Route="assets">
+            <ShellContent ContentTemplate="{DataTemplate views:AssetsPage}" />
+        </Tab>
+        <Tab Title="History" Icon="nav_history.png" Route="history">
+            <ShellContent ContentTemplate="{DataTemplate views:HistoryPage}" />
+        </Tab>
+    </FlyoutItem>
+
+</Shell>

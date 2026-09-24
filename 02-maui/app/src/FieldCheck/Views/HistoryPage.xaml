@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FieldCheck.Views.HistoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    x:DataType="vm:HistoryViewModel"
+    Title="History">
+
+    <ContentPage.Resources>
+        <!-- Compact rows (Android, narrow windows): asset + result, then ID/time, then inspector -->
+        <DataTemplate x:Key="CompactRow" x:DataType="vm:InspectionItem">
+            <Grid RowDefinitions="*,1" SemanticProperties.Description="{Binding AccessibilityLabel}">
+                <Grid Padding="0,14" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                        <Label Text="{Binding AssetName}" FontSize="16" />
+                        <Label Text="{Binding IdAndTimestamp}" Style="{StaticResource SecondaryText}" />
+                        <Label Text="{Binding Inspector}" Style="{StaticResource SecondaryText}" FontSize="12" />
+                    </VerticalStackLayout>
+                    <controls:StatusChip Grid.Column="1" Text="{Binding ConditionText}" Tone="{Binding Tone}" VerticalOptions="Start" Margin="0,2,0,0" />
+                </Grid>
+                <BoxView Grid.Row="1" Style="{StaticResource Hairline}" />
+            </Grid>
+        </DataTemplate>
+
+        <!-- Wide rows (Windows): table columns Asset | Inspection | Inspector | Result -->
+        <DataTemplate x:Key="WideRow" x:DataType="vm:InspectionItem">
+            <Grid RowDefinitions="*,1" SemanticProperties.Description="{Binding AccessibilityLabel}">
+                <Grid Padding="0,20,0,14" ColumnDefinitions="*,230,240,153" HeightRequest="66">
+                    <Label Text="{Binding AssetName}" FontSize="16" VerticalOptions="End" />
+                    <Label Grid.Column="1" Text="{Binding IdAndTimestamp}" Style="{StaticResource SecondaryText}" VerticalOptions="End" />
+                    <Label Grid.Column="2" Text="{Binding Inspector}" FontSize="13" VerticalOptions="End" />
+                    <controls:StatusChip Grid.Column="3" Text="{Binding ConditionText}" Tone="{Binding Tone}" VerticalOptions="Center" />
+                </Grid>
+                <BoxView Grid.Row="1" Style="{StaticResource Hairline}" />
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="{OnPlatform Default='20,0', WinUI='40,0'}">
+        <VerticalStackLayout Padding="0,44,0,0" Spacing="2">
+            <Label Text="History" Style="{StaticResource ScreenTitle}" />
+            <Label Text="{Binding Subtitle}" Style="{StaticResource SecondaryText}" FontSize="14" />
+        </VerticalStackLayout>
+
+        <FlexLayout Grid.Row="1" Margin="0,14,0,10" Wrap="Wrap" AlignItems="Center">
+            <Border x:Name="SearchBox" Style="{StaticResource InputFrame}" Margin="0,0,28,10" FlexLayout.Grow="0">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Image Source="icon_search.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
+                    <Entry
+                        Grid.Column="1"
+                        Placeholder="Search inspections"
+                        Text="{Binding SearchText}"
+                        ReturnType="Search"
+                        ClearButtonVisibility="WhileEditing"
+                        SemanticProperties.Description="Search inspections by asset name or ID" />
+                </Grid>
+            </Border>
+            <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Button
+                            Margin="0,0,8,8"
+                            Text="{Binding Label}"
+                            Style="{StaticResource ChipButton}"
+                            Command="{Binding SelectFilterCommand, Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, x:DataType=vm:HistoryViewModel}"
+                            CommandParameter="{Binding .}"
+                            SemanticProperties.Description="{Binding AccessibilityLabel}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Ink}" />
+                                    <Setter Property="BorderColor" Value="{StaticResource Ink}" />
+                                    <Setter Property="TextColor" Value="{StaticResource Surface}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </FlexLayout>
+
+        <!-- Table header (wide only) -->
+        <Grid x:Name="TableHeader" Grid.Row="2" Margin="0,18,0,0" ColumnDefinitions="*,230,240,153" RowDefinitions="Auto,1" RowSpacing="10">
+            <Label Text="Asset" Style="{StaticResource MicroLabel}" />
+            <Label Grid.Column="1" Text="Inspection" Style="{StaticResource MicroLabel}" />
+            <Label Grid.Column="2" Text="Inspector" Style="{StaticResource MicroLabel}" />
+            <Label Grid.Column="3" Text="Result" Style="{StaticResource MicroLabel}" />
+            <BoxView Grid.Row="1" Grid.ColumnSpan="4" Style="{StaticResource Hairline}" />
+        </Grid>
+
+        <CollectionView x:Name="Rows" Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="None" IsVisible="{Binding IsContent}"
+                        ItemTemplate="{StaticResource CompactRow}">
+            <CollectionView.Footer>
+                <BoxView HeightRequest="24" Color="Transparent" />
+            </CollectionView.Footer>
+        </CollectionView>
+
+        <controls:StatePanel Grid.Row="3" IsVisible="{Binding IsLoading}" IsBusy="True" Title="Loading history…" />
+        <controls:StatePanel
+            Grid.Row="3"
+            IsVisible="{Binding IsNoResults}"
+            Title="No matching inspections"
+            Message="No inspections match your search and condition filter. Try an asset name or ID."
+            ActionText="Clear search and filter"
+            ActionCommand="{Binding ClearSearchCommand}" />
+        <controls:StatePanel
+            Grid.Row="3"
+            IsVisible="{Binding IsEmpty}"
+            Title="No inspections yet"
+            Message="Completed inspections appear here. Start one from an asset's detail page." />
+        <controls:StatePanel
+            Grid.Row="3"
+            IsVisible="{Binding IsError}"
+            Title="Couldn't load history"
+            Message="{x:Static vm:StatefulViewModel.LoadErrorMessage}"
+            ActionText="Retry"
+            ActionCommand="{Binding LoadCommand}" />
+    </Grid>
+</ContentPage>

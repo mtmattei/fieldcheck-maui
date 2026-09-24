@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FieldCheck.Views.InspectionSuccessPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FieldCheck.Core.ViewModels;assembly=FieldCheck.Core"
+    xmlns:controls="clr-namespace:FieldCheck.Controls"
+    x:DataType="vm:InspectionSuccessViewModel"
+    Title="Inspection saved"
+    Shell.TabBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="{OnPlatform Default='20,130,20,32', WinUI='40,174,40,40'}" Spacing="0">
+            <Border
+                WidthRequest="70"
+                HeightRequest="70"
+                HorizontalOptions="Center"
+                BackgroundColor="{StaticResource Accent}"
+                Stroke="{StaticResource Rule}"
+                StrokeThickness="1"
+                StrokeShape="Ellipse"
+                AutomationProperties.IsInAccessibleTree="False">
+                <Image Source="icon_check.png" WidthRequest="16" HeightRequest="16" />
+            </Border>
+            <Label Text="Inspection saved" FontSize="32" HorizontalOptions="Center" Margin="0,14,0,0" SemanticProperties.HeadingLevel="Level1" />
+            <Label Text="{Binding InspectionId}" Style="{StaticResource SecondaryText}" HorizontalOptions="Center" Margin="0,14,0,0"
+                   SemanticProperties.Description="{Binding InspectionId, StringFormat='Inspection ID {0}'}" />
+
+            <VerticalStackLayout WidthRequest="{OnPlatform Default=-1, WinUI=413}" MaximumWidthRequest="480" Margin="{OnPlatform Default='36,0', WinUI='0'}"
+                                 HorizontalOptions="{OnPlatform Default=Fill, WinUI=Center}">
+                <BoxView Style="{StaticResource Hairline}" Margin="0,40,0,0" />
+                <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="12">
+                    <Label Text="{Binding AssetName}" FontSize="20" VerticalOptions="Center" />
+                    <controls:StatusChip Grid.Column="1" Text="{Binding ConditionText}" Tone="{Binding Tone}" />
+                    <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MetaLine}" Style="{StaticResource SecondaryText}" FontSize="14" />
+                </Grid>
+                <Label Margin="0,30,0,0" Style="{StaticResource SecondaryText}" FontSize="14" LineHeight="1.4"
+                       Text="The inspection is stored locally and will remain available after the app restarts." />
+            </VerticalStackLayout>
+
+            <FlexLayout Margin="{OnPlatform Default='0,80,0,0', WinUI='0,56,0,0'}"
+                        Direction="{OnPlatform Default=Column, WinUI=Row}"
+                        JustifyContent="Center"
+                        AlignItems="{OnPlatform Default=Stretch, WinUI=Center}">
+                <Button Text="View asset" Style="{StaticResource PrimaryButton}" FontAttributes="None" Command="{Binding ViewAssetCommand}"
+                        WidthRequest="{OnPlatform Default=-1, WinUI=191}" Margin="{OnPlatform Default='0,0,0,14', WinUI='0,0,15,0'}"
+                        SemanticProperties.Hint="Returns to the inspected asset" />
+                <Button Text="View history" Style="{StaticResource SecondaryButton}" Command="{Binding ViewHistoryCommand}"
+                        WidthRequest="{OnPlatform Default=-1, WinUI=191}"
+                        SemanticProperties.Hint="Opens inspection history" />
+            </FlexLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
