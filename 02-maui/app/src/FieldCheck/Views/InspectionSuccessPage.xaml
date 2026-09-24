@@ -38,17 +38,17 @@
                        Text="The inspection is stored locally and will remain available after the app restarts." />
             </VerticalStackLayout>
 
-            <FlexLayout Margin="{OnPlatform Default='0,80,0,0', WinUI='0,56,0,0'}"
-                        Direction="{OnPlatform Default=Column, WinUI=Row}"
-                        JustifyContent="Center"
-                        AlignItems="{OnPlatform Default=Stretch, WinUI=Center}">
+            <StackLayout Margin="{OnPlatform Default='0,80,0,0', WinUI='0,56,0,0'}"
+                         Orientation="{OnPlatform Default=Vertical, WinUI=Horizontal}"
+                         HorizontalOptions="{OnPlatform Default=Fill, WinUI=Center}"
+                         Spacing="{OnPlatform Default=14, WinUI=15}">
                 <Button AutomationId="ViewAssetButton" Text="View asset" Style="{StaticResource PrimaryButton}" FontAttributes="None" Command="{Binding ViewAssetCommand}"
-                        WidthRequest="{OnPlatform Default=-1, WinUI=191}" Margin="{OnPlatform Default='0,0,0,14', WinUI='0,0,15,0'}"
+                        WidthRequest="{OnPlatform Default=-1, WinUI=191}"
                         SemanticProperties.Hint="Returns to the inspected asset" />
                 <Button AutomationId="ViewHistoryButton" Text="View history" Style="{StaticResource SecondaryButton}" Command="{Binding ViewHistoryCommand}"
                         WidthRequest="{OnPlatform Default=-1, WinUI=191}"
                         SemanticProperties.Hint="Opens inspection history" />
-            </FlexLayout>
+            </StackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

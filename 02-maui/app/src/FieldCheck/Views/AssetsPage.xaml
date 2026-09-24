@@ -32,11 +32,12 @@
                 </Grid>
             </Border>
 
-            <FlexLayout Grid.Row="2" Margin="0,14,0,10" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+            <ScrollView Grid.Row="2" Margin="0,14,0,10" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Filters}">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="vm:FilterOption">
                         <Button
-                            Margin="0,0,8,8"
+                            Margin="0,0,8,0"
                             Text="{Binding Label}"
                             Style="{StaticResource ChipButton}"
                             Command="{Binding SelectFilterCommand, Source={RelativeSource AncestorType={x:Type vm:AssetsViewModel}}, x:DataType=vm:AssetsViewModel}"
@@ -52,7 +53,8 @@
                         </Button>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
-            </FlexLayout>
+            </HorizontalStackLayout>
+            </ScrollView>
 
             <CollectionView Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="None" IsVisible="{Binding IsContent}">
                 <CollectionView.ItemTemplate>

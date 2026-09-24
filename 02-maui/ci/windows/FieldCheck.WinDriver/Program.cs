@@ -421,8 +421,12 @@ public sealed class Driver(UIA3Automation automation, string exe, string shots, 
     public void ClickSidebar(string name)
     {
         var left = Window.BoundingRectangle.X + 240;
+        // Shell flyout items surface as ListItems without their label text, so fall back to position.
+        var index = Array.IndexOf(new[] { "Dashboard", "Assets", "History" }, name);
         var e = Wait(() => All().Where(x => SafeName(x) == name && x.BoundingRectangle.X < left && !x.BoundingRectangle.IsEmpty)
-            .OrderByDescending(x => x.BoundingRectangle.Width).FirstOrDefault(), 15)
+                .OrderByDescending(x => x.BoundingRectangle.Width).FirstOrDefault()
+            ?? All().Where(x => x.ControlType == ControlType.ListItem && x.BoundingRectangle.X < left && !x.BoundingRectangle.IsEmpty)
+                .OrderBy(x => x.BoundingRectangle.Y).ElementAtOrDefault(index), 15)
             ?? throw new InvalidOperationException($"Sidebar '{name}' not found");
         e.Click();
         Thread.Sleep(800);

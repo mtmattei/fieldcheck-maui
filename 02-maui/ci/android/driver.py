@@ -85,6 +85,10 @@ def text_is(t):
     return lambda n: n.text == t or n.desc == t
 
 
+def text_ci(t):
+    return lambda n: n.text.lower() == t.lower()
+
+
 def desc_starts(t):
     return lambda n: n.desc.startswith(t) or n.text.startswith(t)
 
@@ -300,12 +304,12 @@ def s_form():
     swipe_down(); swipe_down()
     tap(wait(desc_starts("Condition Good")))
     time.sleep(0.8)
-    record("D10-ui", wait(text_is("Issue description"), 2) is None, "Good + Yes: issue description hidden")
+    record("D10-ui", wait(text_ci("Issue description"), 2) is None, "Good + Yes: issue description hidden")
     tap(wait(desc_starts("Operating normally")))
-    record("D12-ui", wait(text_is("Issue description"), 5) is not None, "Operating No: issue description shown")
+    record("D12-ui", wait(text_ci("Issue description"), 5) is not None, "Operating No: issue description shown")
     tap(wait(desc_starts("Operating normally")))
     tap(wait(desc_starts("Condition Attention")))
-    record("D11-ui", wait(text_is("Issue description"), 5) is not None, "Attention: issue description shown")
+    record("D11-ui", wait(text_ci("Issue description"), 5) is not None, "Attention: issue description shown")
     temp = sorted([n for n in dump() if n.cls.endswith("EditText")], key=lambda n: n.y1)[0]
     tap(temp)
     type_text("300")

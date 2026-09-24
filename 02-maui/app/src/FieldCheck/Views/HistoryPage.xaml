@@ -44,8 +44,8 @@
             <Label Text="{Binding Subtitle}" Style="{StaticResource SecondaryText}" FontSize="14" />
         </VerticalStackLayout>
 
-        <FlexLayout Grid.Row="1" Margin="0,14,0,10" Wrap="Wrap" AlignItems="Center">
-            <Border x:Name="SearchBox" Style="{StaticResource InputFrame}" Margin="0,0,28,10" FlexLayout.Grow="0">
+        <Grid x:Name="SearchRow" Grid.Row="1" Margin="0,14,0,10">
+            <Border x:Name="SearchBox" Style="{StaticResource InputFrame}">
                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
                     <Image Source="icon_search.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
                     <Entry
@@ -58,11 +58,12 @@
                         SemanticProperties.Description="Search inspections by asset name or ID" />
                 </Grid>
             </Border>
-            <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+            <ScrollView x:Name="ChipScroller" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" VerticalOptions="Center">
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Filters}">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="vm:FilterOption">
                         <Button
-                            Margin="0,0,8,8"
+                            Margin="0,0,8,0"
                             Text="{Binding Label}"
                             Style="{StaticResource ChipButton}"
                             Command="{Binding SelectFilterCommand, Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, x:DataType=vm:HistoryViewModel}"
@@ -78,8 +79,9 @@
                         </Button>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
-            </FlexLayout>
-        </FlexLayout>
+            </HorizontalStackLayout>
+            </ScrollView>
+        </Grid>
 
         <!-- Table header (wide only) -->
         <Grid x:Name="TableHeader" Grid.Row="2" Margin="0,18,0,0" ColumnDefinitions="*,230,240,153" RowDefinitions="Auto,1" RowSpacing="10">
