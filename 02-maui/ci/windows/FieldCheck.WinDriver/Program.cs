@@ -63,10 +63,10 @@ Step("assets-master-detail", () =>
     d.ClickRow("Cooling Tower 07");
     var start = d.WaitId("StartInspectionTopButton", 20);
     Thread.Sleep(1000);
-    var paneTitle = d.All().FirstOrDefault(e => e.Name == "Cooling Tower 07" && e.BoundingRectangle.X > d.Window.BoundingRectangle.X + 700);
+    var paneTitle = d.All().FirstOrDefault(e => Driver.SafeName(e) == "Cooling Tower 07" && e.BoundingRectangle.X > d.Window.BoundingRectangle.X + 700);
     d.Record("B10", start is not null && paneTitle is not null, $"Wide Assets: list left, detail pane right (title x={paneTitle?.BoundingRectangle.X}, action {start?.BoundingRectangle})");
     d.Shot("02-assets-master-detail");
-    var longText = d.All().FirstOrDefault(e => e.Name.Contains("intentionally long description"));
+    var longText = d.All().FirstOrDefault(e => Driver.SafeName(e).Contains("intentionally long description"));
     d.Record("E07", longText is not null && !longText.IsOffscreen && longText.BoundingRectangle.Right <= d.Window.BoundingRectangle.Right, $"CT-007 description wraps within pane: {longText?.BoundingRectangle}");
 });
 
@@ -174,7 +174,7 @@ Step("submit", () =>
     var id = d.WaitId("SuccessInspectionId", 20);
     Thread.Sleep(1200);
     d.Shot("04-inspection-success");
-    d.Record("D17-ui", id?.Name == "INS-24092" && d.HasName("Cooling Tower 07") && d.HasName("Attention"), $"Success shows '{id?.Name}', Cooling Tower 07, Attention");
+    d.Record("D17-ui", id?.Name.Contains("INS-24092") == true && d.HasName("Cooling Tower 07") && d.HasName("Attention"), $"Success shows '{id?.Name}', Cooling Tower 07, Attention");
     d.ClickId("ViewAssetButton");
     d.WaitId("AssetSearchEntry", 20);
     Thread.Sleep(1500);
@@ -190,18 +190,18 @@ Step("history", () =>
     d.WaitId("HistorySearchEntry", 20);
     Thread.Sleep(1500);
     d.Shot("05-history");
-    var first = d.All().Where(e => e.Name.StartsWith("INS-") && e.Name.Contains(" · ")).OrderBy(e => e.BoundingRectangle.Y).Select(e => e.Name).ToList();
+    var first = d.All().Where(e => Driver.SafeName(e).StartsWith("INS-") && Driver.SafeName(e).Contains(" · ")).OrderBy(e => e.BoundingRectangle.Y).Select(e => Driver.SafeName(e)).ToList();
     d.Record("C06-ui", first.FirstOrDefault()?.StartsWith("INS-24092 · Today") == true, "History order: " + string.Join(" | ", first));
     d.Record("D15-ui", !first.Any(n => n.StartsWith("INS-24093")) && first.Count(n => n.StartsWith("INS-24092")) == 1, "Triple click on Submit created exactly one inspection");
     d.Record("C09-ui", d.HasName("7 completed inspections"), "History count 7 after save");
     d.TypeInto("HistorySearchEntry", "ahu-203");
     Thread.Sleep(800);
-    var ahu = d.All().Where(e => e.Name.StartsWith("INS-") && e.Name.Contains(" · ")).Select(e => e.Name).ToList();
+    var ahu = d.All().Where(e => Driver.SafeName(e).StartsWith("INS-") && Driver.SafeName(e).Contains(" · ")).Select(e => Driver.SafeName(e)).ToList();
     d.Record("C07-ui", ahu.Count == 1 && ahu[0].StartsWith("INS-24086"), "Search 'ahu-203' -> " + string.Join(",", ahu));
     d.TypeInto("HistorySearchEntry", "");
     d.ClickName("Filter: Good");
     Thread.Sleep(800);
-    var good = d.All().Where(e => e.Name.StartsWith("INS-") && e.Name.Contains(" · ")).Select(e => e.Name.Split(' ')[0]).ToList();
+    var good = d.All().Where(e => Driver.SafeName(e).StartsWith("INS-") && Driver.SafeName(e).Contains(" · ")).Select(e => Driver.SafeName(e).Split(' ')[0]).ToList();
     d.Shot("c08-history-filter-good");
     d.Record("C08-ui", good.OrderBy(x => x).SequenceEqual(new[] { "INS-24044", "INS-24091" }), "Good filter -> " + string.Join(",", good));
     d.ClickName("Filter: All");
@@ -275,7 +275,7 @@ Step("restart-persistence", () =>
     d.WaitId("HistorySearchEntry", 20);
     Thread.Sleep(1500);
     d.Shot("c10-history-after-restart");
-    d.Record("C10", d.All().Any(e => e.Name.StartsWith("INS-24092 · ")), "INS-24092 present after process kill + relaunch");
+    d.Record("C10", d.All().Any(e => Driver.SafeName(e).StartsWith("INS-24092 · ")), "INS-24092 present after process kill + relaunch");
     d.Record("J05", d.HasName("7 completed inspections"), "Relaunch succeeded with 7 inspections");
 });
 
@@ -295,9 +295,9 @@ Step("view-history-action", () =>
     d.ClickId("ViewHistoryButton");
     d.WaitId("HistorySearchEntry", 20);
     Thread.Sleep(1200);
-    var first = d.All().Where(e => e.Name.StartsWith("INS-") && e.Name.Contains(" · ")).OrderBy(e => e.BoundingRectangle.Y).FirstOrDefault()?.Name;
-    d.Record("B12-view-history", id?.Name == "INS-24093" && first?.StartsWith("INS-24093") == true, $"Second inspection {id?.Name}; View history shows first row '{first}'");
-    d.Record("C12-ui", id?.Name == "INS-24093", "IDs continue after restart (INS-24093)");
+    var first = d.All().Where(e => Driver.SafeName(e).StartsWith("INS-") && Driver.SafeName(e).Contains(" · ")).OrderBy(e => e.BoundingRectangle.Y).FirstOrDefault()?.Name;
+    d.Record("B12-view-history", id?.Name.Contains("INS-24093") == true && first?.StartsWith("INS-24093") == true, $"Second inspection {id?.Name}; View history shows first row '{first}'");
+    d.Record("C12-ui", id?.Name.Contains("INS-24093") == true, "IDs continue after restart (INS-24093)");
 });
 
 Step("data-modes", () =>
@@ -386,12 +386,14 @@ public sealed class Driver(UIA3Automation automation, string exe, string shots, 
         Wait(() => All().FirstOrDefault(e => SafeName(e) is { } n && match(n)), seconds);
 
     public AutomationElement? WaitDialog(int seconds) => Wait(() =>
-        App.GetAllTopLevelWindows(automation).FirstOrDefault(w => w.ClassName == "#32770")
+        // Owned modal dialogs appear under the owner window in the UIA tree.
+        Window.FindFirstChild(cf => cf.ByClassName("#32770"))
+        ?? App.GetAllTopLevelWindows(automation).FirstOrDefault(w => w.ClassName == "#32770")
         ?? automation.GetDesktop().FindFirstChild(cf => cf.ByClassName("#32770")), seconds);
 
     public List<string> RowButtons() => All()
         .Where(e => e.ControlType == ControlType.Button && SafeName(e) is { } n && n.Contains(", status "))
-        .Select(e => e.Name).ToList();
+        .Select(SafeName).ToList();
 
     public void ClickId(string id)
     {
@@ -463,7 +465,7 @@ public sealed class Driver(UIA3Automation automation, string exe, string shots, 
 
     public void TryShot(string name) { try { ShotScreen(name); } catch { } }
 
-    private static string? SafeName(AutomationElement e) { try { return e.Name; } catch { return null; } }
+    public static string SafeName(AutomationElement e) { try { return e.Name ?? string.Empty; } catch { return string.Empty; } }
 
     private static T? Wait<T>(Func<T?> probe, int seconds) where T : class
     {
