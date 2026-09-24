@@ -159,11 +159,28 @@ def bottom_tab(name):
     tap(max(tabs, key=lambda n: n.y1))
 
 
+ACTIVITY = f"{PKG}/.MainActivity"
+
+
+def dismiss_system_dialogs():
+    for _ in range(3):
+        nodes = dump()
+        if not any("isn't responding" in n.text or "keeps stopping" in n.text for n in nodes):
+            return
+        btn = next((n for n in nodes if n.text in ("Wait", "Close app", "OK")), None)
+        if btn:
+            tap(btn)
+        time.sleep(1)
+
+
 def launch():
-    activity = sh(f"cmd package resolve-activity --brief {PKG}").strip().splitlines()[-1]
-    out = sh(f"am start -W -n {activity}")
+    dismiss_system_dialogs()
+    out = sh(f"am start -W -n {ACTIVITY}")
+    print("   am start:", out.strip().replace("\n", " | "), flush=True)
     m = re.search(r"TotalTime: (\d+)", out)
-    return int(m.group(1)) if m else None, activity
+    time.sleep(2)
+    dismiss_system_dialogs()
+    return int(m.group(1)) if m else None, ACTIVITY
 
 
 def rows():
@@ -196,6 +213,10 @@ adb("push", PHOTO, "/sdcard/Download/inspection-photo.png")
 sh("am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/inspection-photo.png")
 sh("content call --uri content://media --method scan_volume --arg external_primary")
 sh("logcat -c")
+time.sleep(15)  # let the launcher settle after boot
+sh("input keyevent 3")
+time.sleep(2)
+dismiss_system_dialogs()
 state = {}
 
 

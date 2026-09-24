@@ -35,7 +35,7 @@ jobs:
           dotnet --info | Out-File ci-out/dotnet-info.txt
           Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version | Out-File ci-out/os.txt
       - name: Install MAUI workload
-        run: dotnet workload install maui 2>&1 | Tee-Object ci-out/workload-install.txt
+        run: dotnet workload install maui-windows 2>&1 | Tee-Object ci-out/workload-install.txt
       - name: Workload list
         run: dotnet workload list | Tee-Object ci-out/workload-list.txt
       - name: Tests
@@ -43,7 +43,7 @@ jobs:
       - name: Build Windows Release
         run: |
           $sw = [Diagnostics.Stopwatch]::StartNew()
-          dotnet build 02-maui/app/src/FieldCheck/FieldCheck.csproj -f net10.0-windows10.0.19041.0 -c Release -r win-x64 2>&1 | Tee-Object ci-out/build-windows.txt
+          dotnet build 02-maui/app/src/FieldCheck/FieldCheck.csproj -f net10.0-windows10.0.19041.0 -c Release 2>&1 | Tee-Object ci-out/build-windows.txt
           $code = $LASTEXITCODE
           "elapsed_seconds=$($sw.Elapsed.TotalSeconds)" | Out-File ci-out/build-windows-time.txt
           exit $code
@@ -52,7 +52,7 @@ jobs:
         run: |
           try { Set-DisplayResolution -Width 1920 -Height 1080 -Force } catch { "Set-DisplayResolution failed: $_" | Out-File ci-out/display.txt }
           Get-CimInstance Win32_VideoController | Select-Object CurrentHorizontalResolution, CurrentVerticalResolution | Out-File -Append ci-out/display.txt
-          $exe = Get-ChildItem 02-maui/app/src/FieldCheck/bin/Release/net10.0-windows10.0.19041.0/win-x64 -Filter FieldCheck.exe -Recurse | Select-Object -First 1
+          $exe = Get-ChildItem 02-maui/app/src/FieldCheck/bin/Release/net10.0-windows10.0.19041.0 -Filter FieldCheck.exe -Recurse | Select-Object -First 1
           dotnet run --project 02-maui/ci/windows/FieldCheck.WinDriver -c Release -- "$($exe.FullName)" "$PWD/ci-out" "$PWD/02-maui/mock-data/inspection-photo.png" 2>&1 | Tee-Object ci-out/driver-log.txt
       - name: Publish results branch
         if: always()
