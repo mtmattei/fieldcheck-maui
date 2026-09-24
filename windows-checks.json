@@ -1,0 +1,248 @@
+{
+  "total": 48,
+  "pass": 48,
+  "fail": 0,
+  "elapsed_seconds": 135.0411279,
+  "checks": [
+    {
+      "Id": "A06",
+      "Status": "PASS",
+      "Detail": "Dashboard greeting \u0027Good evening\u0027 visible 3.1s after launch; window {X=0,Y=0,Width=1440,Height=900}"
+    },
+    {
+      "Id": "J04",
+      "Status": "PASS",
+      "Detail": "Clean first run on a fresh runner seeded data and reached the Dashboard"
+    },
+    {
+      "Id": "C02-ui",
+      "Status": "PASS",
+      "Detail": "Dashboard shows 12 / 7 / 3 / 2"
+    },
+    {
+      "Id": "B01-rows",
+      "Status": "PASS",
+      "Detail": "Needs attention rows: Cooling Tower 07 | Emergency Fan 90 | Air Handler 203 | Conveyor 18 | Boiler 02"
+    },
+    {
+      "Id": "F07",
+      "Status": "PASS",
+      "Detail": "Tab moves focus through app controls; focused: ListItem \u0027Microsoft.Maui.Controls.Platform.ShellFlyoutItemView\u0027"
+    },
+    {
+      "Id": "B09",
+      "Status": "PASS",
+      "Detail": "Sidebar navigated to Assets"
+    },
+    {
+      "Id": "B10",
+      "Status": "PASS",
+      "Detail": "Wide Assets: list left, detail pane right (title x=749, action {X=1185,Y=78,Width=200,Height=54})"
+    },
+    {
+      "Id": "E07",
+      "Status": "PASS",
+      "Detail": "CT-007 description wraps within pane: {X=749,Y=382,Width=612,Height=81}"
+    },
+    {
+      "Id": "C03-ui",
+      "Status": "PASS",
+      "Detail": "Search \u0027roof\u0027 -\u003E AHU-203,CT-007,FAN-305"
+    },
+    {
+      "Id": "C05-ui",
+      "Status": "PASS",
+      "Detail": "Search \u0027roof\u0027 \u002B Critical -\u003E CT-007"
+    },
+    {
+      "Id": "E05-ui",
+      "Status": "PASS",
+      "Detail": "No-results state shown for \u0027zzz\u0027 \u002B Critical"
+    },
+    {
+      "Id": "C04-ui",
+      "Status": "PASS",
+      "Detail": "Clear search restores list (12 rows realized)"
+    },
+    {
+      "Id": "C04-ui-attention",
+      "Status": "PASS",
+      "Detail": "Attention filter -\u003E AHU-203,CNV-018,BLR-002"
+    },
+    {
+      "Id": "B04",
+      "Status": "PASS",
+      "Detail": "New inspection shows asset identity"
+    },
+    {
+      "Id": "D14-ui",
+      "Status": "PASS",
+      "Detail": "Submit disabled on empty form"
+    },
+    {
+      "Id": "D10-ui",
+      "Status": "PASS",
+      "Detail": "Good \u002B Operating Yes: issue description hidden"
+    },
+    {
+      "Id": "D12-ui",
+      "Status": "PASS",
+      "Detail": "Operating normally No: issue description shown"
+    },
+    {
+      "Id": "D11-ui",
+      "Status": "PASS",
+      "Detail": "Attention: issue description shown"
+    },
+    {
+      "Id": "D04-ui",
+      "Status": "PASS",
+      "Detail": "300 \u00B0C -\u003E \u0027Temperature must be between -50 and 250 \u00B0C.\u0027, submit disabled"
+    },
+    {
+      "Id": "E06-ui",
+      "Status": "PASS",
+      "Detail": "Summary: \u0027To submit: Enter a temperature from -50 to 250 \u00B0C \u00B7 Confirm 3 checklist items \u00B7 Describe the issue.\u0027"
+    },
+    {
+      "Id": "D03-ui",
+      "Status": "PASS",
+      "Detail": "27 \u00B0C accepted"
+    },
+    {
+      "Id": "D05-ui",
+      "Status": "PASS",
+      "Detail": "Two of three checklist items -\u003E submit still disabled"
+    },
+    {
+      "Id": "D06-ui",
+      "Status": "PASS",
+      "Detail": "Notes accepts multiline text: \u0027Line one\\nLine two\u0027"
+    },
+    {
+      "Id": "D07",
+      "Status": "PASS",
+      "Detail": "System file dialog opened: \u0027Open\u0027 (#32770)"
+    },
+    {
+      "Id": "D09",
+      "Status": "PASS",
+      "Detail": "Picker cancelled: form intact, no attachment"
+    },
+    {
+      "Id": "D08",
+      "Status": "PASS",
+      "Detail": "Attachment shown: \u0027inspection-photo.png\u0027"
+    },
+    {
+      "Id": "F08",
+      "Status": "PASS",
+      "Detail": "Windows FileOpenPicker used with image/PDF extension filter"
+    },
+    {
+      "Id": "D14-ui-enabled",
+      "Status": "PASS",
+      "Detail": "Submit enabled once all required inputs are valid"
+    },
+    {
+      "Id": "D17-ui",
+      "Status": "PASS",
+      "Detail": "Success shows \u0027Inspection ID INS-24092\u0027, Cooling Tower 07, Attention"
+    },
+    {
+      "Id": "D18-ui",
+      "Status": "PASS",
+      "Detail": "Detail pane shows last inspection Sep 24, 2026, Attention condition"
+    },
+    {
+      "Id": "B12-view-asset",
+      "Status": "PASS",
+      "Detail": "View asset returned to the asset (Assets master/detail)"
+    },
+    {
+      "Id": "C06-ui",
+      "Status": "PASS",
+      "Detail": "History order: INS-24092 \u00B7 Today, 7:42 PM | INS-24091 \u00B7 Sep 18, 9:24 AM | INS-24044 \u00B7 Sep 17, 7:58 AM | INS-24086 \u00B7 Sep 12, 2:40 PM | INS-24065 \u00B7 Sep 11, 8:15 AM | INS-24058 \u00B7 Sep 10, 3:32 PM | INS-24072 \u00B7 Sep 8, 11:05 AM"
+    },
+    {
+      "Id": "D15-ui",
+      "Status": "PASS",
+      "Detail": "Triple click on Submit created exactly one inspection"
+    },
+    {
+      "Id": "C09-ui",
+      "Status": "PASS",
+      "Detail": "History count 7 after save"
+    },
+    {
+      "Id": "C07-ui",
+      "Status": "PASS",
+      "Detail": "Search \u0027ahu-203\u0027 -\u003E INS-24086 \u00B7 Sep 12, 2:40 PM"
+    },
+    {
+      "Id": "C08-ui",
+      "Status": "PASS",
+      "Detail": "Good filter -\u003E INS-24091,INS-24044"
+    },
+    {
+      "Id": "B11",
+      "Status": "PASS",
+      "Detail": "Cancel returned to Assets; history still 7"
+    },
+    {
+      "Id": "F04",
+      "Status": "PASS",
+      "Detail": "At 720 px the master/detail collapses to single pane; row opens Asset Detail page"
+    },
+    {
+      "Id": "F03-size",
+      "Status": "PASS",
+      "Detail": "Window restored to {X=0,Y=0,Width=1440,Height=900}"
+    },
+    {
+      "Id": "J06",
+      "Status": "PASS",
+      "Detail": "Minimize/restore keeps the app responsive"
+    },
+    {
+      "Id": "C10",
+      "Status": "PASS",
+      "Detail": "INS-24092 present after process kill \u002B relaunch"
+    },
+    {
+      "Id": "J05",
+      "Status": "PASS",
+      "Detail": "Relaunch succeeded with 7 inspections"
+    },
+    {
+      "Id": "B12-view-history",
+      "Status": "PASS",
+      "Detail": "Second inspection \u0027Inspection ID INS-24093\u0027; View history shows first row \u0027INS-24093 \u00B7 Today, 7:43 PM\u0027"
+    },
+    {
+      "Id": "C12-ui",
+      "Status": "PASS",
+      "Detail": "IDs continue after restart (INS-24093)"
+    },
+    {
+      "Id": "E01-ui",
+      "Status": "PASS",
+      "Detail": "Loading state visible during delayed initial read"
+    },
+    {
+      "Id": "E02-ui",
+      "Status": "PASS",
+      "Detail": "Empty repository mode: dashboard and history empty states"
+    },
+    {
+      "Id": "E03-ui",
+      "Status": "PASS",
+      "Detail": "Read failure shows user-safe error with Retry"
+    },
+    {
+      "Id": "E04-ui",
+      "Status": "PASS",
+      "Detail": "Retry recovered to populated dashboard"
+    }
+  ]
+}

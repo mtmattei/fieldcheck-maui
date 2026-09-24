@@ -1,0 +1,15 @@
+
+TimeCreated  : 9/24/2026 7:32:11 PM
+ProviderName : Application Error
+Message      : Faulting application name: SearchHost.exe, version: 2126.19100.0.0, time stamp: 0x6a516d65
+               Faulting module name: ucrtbase.dll, version: 10.0.26100.33158, time stamp: 0x32c000ad
+               Exception code: 0xc0000409
+               Fault offset: 0x000000000001cba8
+               Faulting process id: 0x2170
+               Faulting application start time: 0x1DD4C5B648CB5D6
+               Faulting application path: C:\Windows\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\SearchHost.exe
+               Faulting module path: C:\Windows\System32\ucrtbase.dll
+               Report Id: 902d1abe-9dc3-45c9-a346-1f889e25b088
+               Faulting package full name: MicrosoftWindows.Client.CBS_1000.26100.275.0_x64__cw5n1h2txyewy
+               Faulting package-relative application ID: CortanaUI
+

@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  Restored D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\src\FieldCheck\FieldCheck.csproj (in 1.12 min).
+  1 of 2 projects are up-to-date for restore.
+  FieldCheck.Core -> D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\src\FieldCheck.Core\bin\Release\net10.0\FieldCheck.Core.dll
+  XAML source generation is enabled (MauiXamlInflator=SourceGen). This generates C# code from XAML at compile time for better performance. To disable, remove the MauiXamlInflator line from your .csproj file (reverts to configuration-based defaults: Runtime in Debug, XamlC in Release).
+  FieldCheck -> D:\a\fieldcheck-maui\fieldcheck-maui\02-maui\app\src\FieldCheck\bin\Release\net10.0-windows10.0.19041.0\win-x64\FieldCheck.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:21.20

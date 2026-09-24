@@ -1,0 +1,13 @@
+
+Workload version: 10.0.401
+
+Installed Workload Id      Manifest Version         Installation Source            
+-----------------------------------------------------------------------------------
+android                    36.1.69/10.0.100         SDK 10.0.400, VS 18.9.12120.119
+ios                        26.5.10318/10.0.100      SDK 10.0.400, VS 18.9.12120.119
+maccatalyst                26.5.10318/10.0.100      SDK 10.0.400, VS 18.9.12120.119
+maui-windows               10.0.20/10.0.100         SDK 10.0.400, VS 18.9.12120.119
+wasm-tools                 10.0.112/10.0.100        SDK 10.0.400, VS 18.9.12120.119
+
+Use `dotnet workload search` to find additional workloads to install.
+
