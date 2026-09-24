@@ -34,8 +34,8 @@
 		<MauiImage Include="Resources\Images\*" />
 
 		<!-- Benchmark fixtures are bundled read-only and copied into app storage on first run. -->
-		<MauiAsset Include="..\..\..\mock-data\assets.json" LogicalName="seed\assets.json" />
-		<MauiAsset Include="..\..\..\mock-data\inspections.json" LogicalName="seed\inspections.json" />
+		<MauiAsset Include="..\..\..\mock-data\assets.json" LogicalName="seed/assets.json" />
+		<MauiAsset Include="..\..\..\mock-data\inspections.json" LogicalName="seed/inspections.json" />
 	</ItemGroup>
 
 	<ItemGroup>

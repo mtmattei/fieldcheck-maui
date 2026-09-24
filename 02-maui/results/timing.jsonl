@@ -2,3 +2,4 @@
 {"timestamp_utc": "2026-09-24T15:35:32.737422+00:00", "event": "capability_discovery_complete"}
 {"timestamp_utc": "2026-09-24T15:37:47.533464+00:00", "event": "first_source_edit"}
 {"timestamp_utc": "2026-09-24T15:40:51.830358+00:00", "event": "first_build_attempt"}
+{"timestamp_utc": "2026-09-24T15:56:50.377619+00:00", "event": "first_android_build_success"}

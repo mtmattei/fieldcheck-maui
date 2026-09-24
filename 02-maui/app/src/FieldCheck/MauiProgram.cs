@@ -1,7 +1,9 @@
+using FieldCheck.Controls;
 using FieldCheck.Core.Services;
 using FieldCheck.Core.ViewModels;
 using FieldCheck.Services;
 using FieldCheck.Views;
+using Microsoft.Maui.Handlers;
 
 namespace FieldCheck;
 
@@ -15,6 +17,8 @@ public static class MauiProgram
         builder.ConfigureMauiHandlers(handlers =>
             handlers.AddHandler<Shell, FieldCheck.Platforms.Android.FieldCheckShellRenderer>());
 #endif
+
+        ConfigureInputChrome();
 
         var services = builder.Services;
 
@@ -50,5 +54,39 @@ public static class MauiProgram
         services.AddTransient<HistoryPage>();
 
         return builder.Build();
+    }
+
+    /// <summary>
+    /// Inputs are framed by a FieldCheck Border (DESIGN_SPEC: labeled fields with visible borders), so the native
+    /// underline (Android) and TextBox border (Windows) are removed to avoid a double frame.
+    /// </summary>
+    private static void AttachFocusFrame(object view)
+    {
+        if (view is InputView input && !input.Behaviors.OfType<FocusFrameBehavior>().Any())
+        {
+            input.Behaviors.Add(new FocusFrameBehavior());
+        }
+    }
+
+    private static void ConfigureInputChrome()
+    {
+        EntryHandler.Mapper.AppendToMapping("FieldCheckChrome", (handler, entry) =>
+        {
+            AttachFocusFrame(entry);
+#if ANDROID
+            handler.PlatformView.BackgroundTintList = global::Android.Content.Res.ColorStateList.ValueOf(global::Android.Graphics.Color.Transparent);
+#elif WINDOWS
+            handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+#endif
+        });
+        EditorHandler.Mapper.AppendToMapping("FieldCheckChrome", (handler, editor) =>
+        {
+            AttachFocusFrame(editor);
+#if ANDROID
+            handler.PlatformView.BackgroundTintList = global::Android.Content.Res.ColorStateList.ValueOf(global::Android.Graphics.Color.Transparent);
+#elif WINDOWS
+            handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+#endif
+        });
     }
 }
