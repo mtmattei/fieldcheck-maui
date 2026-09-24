@@ -1,0 +1,63 @@
+== launch
+   [PASS] A06: Dashboard greeting 'Good evening' visible 3.1s after launch; window {X=0,Y=0,Width=1440,Height=900}
+   [PASS] J04: Clean first run on a fresh runner seeded data and reached the Dashboard
+   [PASS] C02-ui: Dashboard shows 12 / 7 / 3 / 2
+   [PASS] B01-rows: Needs attention rows: Cooling Tower 07 | Emergency Fan 90 | Air Handler 203 | Conveyor 18 | Boiler 02
+== keyboard-focus
+   [PASS] F07: Tab moves focus through app controls; focused: ListItem 'Microsoft.Maui.Controls.Platform.ShellFlyoutItemView'
+== assets-master-detail
+   [PASS] B09: Sidebar navigated to Assets
+   [PASS] B10: Wide Assets: list left, detail pane right (title x=749, action {X=1185,Y=78,Width=200,Height=54})
+   [PASS] E07: CT-007 description wraps within pane: {X=749,Y=382,Width=612,Height=81}
+== assets-search-filter
+   [PASS] C03-ui: Search 'roof' -> AHU-203,CT-007,FAN-305
+   [PASS] C05-ui: Search 'roof' + Critical -> CT-007
+   [PASS] E05-ui: No-results state shown for 'zzz' + Critical
+   [PASS] C04-ui: Clear search restores list (12 rows realized)
+   [PASS] C04-ui-attention: Attention filter -> AHU-203,CNV-018,BLR-002
+== new-inspection-validation
+   [PASS] B04: New inspection shows asset identity
+   [PASS] D14-ui: Submit disabled on empty form
+   [PASS] D10-ui: Good + Operating Yes: issue description hidden
+   [PASS] D12-ui: Operating normally No: issue description shown
+   [PASS] D11-ui: Attention: issue description shown
+   [PASS] D04-ui: 300 °C -> 'Temperature must be between -50 and 250 °C.', submit disabled
+   [PASS] E06-ui: Summary: 'To submit: Enter a temperature from -50 to 250 °C · Confirm 3 checklist items · Describe the issue.'
+   [PASS] D03-ui: 27 °C accepted
+   [PASS] D05-ui: Two of three checklist items -> submit still disabled
+   [PASS] D06-ui: Notes accepts multiline text: 'Line one\nLine two'
+== file-picker
+   [PASS] D07: System file dialog opened: 'Open' (#32770)
+   [PASS] D09: Picker cancelled: form intact, no attachment
+   [PASS] D08: Attachment shown: 'inspection-photo.png'
+   [PASS] F08: Windows FileOpenPicker used with image/PDF extension filter
+   [PASS] D14-ui-enabled: Submit enabled once all required inputs are valid
+== submit
+   [PASS] D17-ui: Success shows 'Inspection ID INS-24092', Cooling Tower 07, Attention
+   [PASS] D18-ui: Detail pane shows last inspection Sep 24, 2026, Attention condition
+   [PASS] B12-view-asset: View asset returned to the asset (Assets master/detail)
+== history
+   [PASS] C06-ui: History order: INS-24092 · Today, 7:42 PM | INS-24091 · Sep 18, 9:24 AM | INS-24044 · Sep 17, 7:58 AM | INS-24086 · Sep 12, 2:40 PM | INS-24065 · Sep 11, 8:15 AM | INS-24058 · Sep 10, 3:32 PM | INS-24072 · Sep 8, 11:05 AM
+   [PASS] D15-ui: Triple click on Submit created exactly one inspection
+   [PASS] C09-ui: History count 7 after save
+   [PASS] C07-ui: Search 'ahu-203' -> INS-24086 · Sep 12, 2:40 PM
+   [PASS] C08-ui: Good filter -> INS-24091,INS-24044
+== cancel
+   [PASS] B11: Cancel returned to Assets; history still 7
+== responsive
+   [PASS] F04: At 720 px the master/detail collapses to single pane; row opens Asset Detail page
+   [PASS] F03-size: Window restored to {X=0,Y=0,Width=1440,Height=900}
+== minimize-restore
+   [PASS] J06: Minimize/restore keeps the app responsive
+== restart-persistence
+   [PASS] C10: INS-24092 present after process kill + relaunch
+   [PASS] J05: Relaunch succeeded with 7 inspections
+== view-history-action
+   [PASS] B12-view-history: Second inspection 'Inspection ID INS-24093'; View history shows first row 'INS-24093 · Today, 7:43 PM'
+   [PASS] C12-ui: IDs continue after restart (INS-24093)
+== data-modes
+   [PASS] E01-ui: Loading state visible during delayed initial read
+   [PASS] E02-ui: Empty repository mode: dashboard and history empty states
+   [PASS] E03-ui: Read failure shows user-safe error with Retry
+   [PASS] E04-ui: Retry recovered to populated dashboard
+Checks: 48 pass / 0 fail of 48

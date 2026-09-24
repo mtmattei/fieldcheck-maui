@@ -10,3 +10,5 @@
 {"timestamp_utc": "2026-09-24T19:17:16.341950+00:00", "event": "first_windows_build_success"}
 {"timestamp_utc": "2026-09-24T19:17:16.369397+00:00", "event": "first_windows_launch_success"}
 {"timestamp_utc": "2026-09-24T19:17:16.404788+00:00", "event": "first_android_launch_success"}
+{"timestamp_utc": "2026-09-24T19:46:29.906245+00:00", "event": "core_complete"}
+{"timestamp_utc": "2026-09-24T19:49:28.514429+00:00", "event": "run_finish"}

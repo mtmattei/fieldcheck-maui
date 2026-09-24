@@ -76,3 +76,61 @@ Totals: 15 build/test invocations, 4 failed (1 code, 1 test-project config, 2 en
 - nuget.org flat-container API: latest stable versions.
 - Claude Code remote docs: environment network page (blocked-host guidance).
 - No Uno-specific skills/MCPs used (forbidden for this run). No installed MAUI-specific skill exists.
+
+## Phase 2: runtime verification on GitHub-hosted runners (after human intervention 1)
+
+`.github/workflows/maui-verify.yml` runs on every push to the run branch:
+
+- **`windows` job**:
+  1. Install `maui-windows`.
+  2. Run the unit tests.
+  3. Build the Release win exe (self-contained Windows App SDK).
+  4. Run the FlaUI driver (`02-maui/ci/windows`) against the exe.
+- **`android` job**:
+  1. Install the official SDK (android-36, build-tools 36) and `maui-android`.
+  2. Build the Release APK.
+  3. Run the adb/uiautomator driver (`02-maui/ci/android/driver.py`) on an API 34 pixel_6 emulator.
+
+Each job force-pushes logs, screenshots, check JSON and UI dumps to `maui-ci-windows` / `maui-ci-android`. `ci/collect_results.sh` copies the latest into `results/`.
+
+### CI runs
+
+| Run | Commit | Windows | Android |
+|---|---|---|---|
+| 1 | bdd6174 | cancelled by next push (workload install) | Release build **success** with the official SDK (0 warnings) |
+| 2 | 41ce5d5 | **build failed**: NU1102, `-r win-x64` also applied the RID to the Android TFM during restore | build OK; app not foregrounded (launcher ANR dialog, no stable activity name) |
+| 3 | f584a9d | **first Windows build success**; app exits at launch | app crashes at launch: `XamlParseException: StaticResource not found for key Surface` |
+| 4 | c6e7343 | **first Windows launch**: Dashboard OK, 6/18 checks (driver could not find sidebar items) | **first Android launch**: 21/36; crash in `FlexLayoutManager.ArrangeChildren` |
+| 5–6 | e8cd14e | cancelled (superseded) | cancelled |
+| 7 | db2cfbe | 35/41 (driver selector bugs) | 25/35, no crash; tab bar now hidden on pushed pages |
+| 8 | b92fe7a | 45/47 | 26/35 (driver tapped the picker's preview icon) |
+| 9 | 835211b | **48/48** | 26/35 (UI dumps added; J06 was a selector bug) |
+| 10 | 22f1595 | 47/48 (notes timing) | 40/43 (attachment row off-screen) |
+| 11 | d37afd2 | **48/48** | **43/43** |
+
+### Runtime defects found and fixed (K10)
+
+| # | Category | Platform | Defect | Fix |
+|---|---|---|---|---|
+| R1 | Crash at startup (blocker) | Android + Windows | `App(AppShell shell)` let DI construct the Shell before `App.InitializeComponent()` loaded resources, so the Shell XAML's `StaticResource Surface` threw | Create `new AppShell()` in `CreateWindow`; remove the DI registration |
+| R2 | Crash during layout (blocker) | Android | MAUI `FlexLayout` threw "something is deeply wrong" in `ArrangeChildren` (chips row, History search row, success buttons) | Replaced with HorizontalStackLayout in a horizontal ScrollView, an adaptive Grid, and a StackLayout |
+| R3 | Navigation chrome | Android | Bottom tab bar still visible on Asset detail / New inspection / Success. A Shell-level `TabBarIsVisible` masked the page-level `False` | Set `Shell.TabBarIsVisible` per page (root pages OnPlatform, pushed pages False), per the MS Learn guidance |
+| R4 | Visual | Windows | Native NavigationView blue selection pill drawn beside the Accent marker | `NavigationViewSelectionIndicatorForeground` = Transparent in the Windows App.xaml |
+| R5 | Build config | Windows | Unpackaged app needs the Windows App Runtime | `WindowsAppSDKSelfContained=true` for the Windows TFM |
+
+Driver (harness) corrections, none of which relaxed an app expectation:
+
+- Case-insensitive match for uppercase labels.
+- Positional sidebar lookup, because UIA exposes the items as `ShellFlyoutItemView`.
+- Owned-dialog lookup for the file picker.
+- EditText value suffix match.
+- Picker file-name node instead of the preview icon.
+- Scroll to the attachment row.
+- Stale-element reads.
+- Focus timing.
+
+### Totals across both phases
+
+- **Local (Linux container)**: 15 build/test invocations, 4 failed.
+- **CI**: 11 runs, of which 3 were cancelled by the next push. Windows builds: 1 failed, 8 succeeded. Android builds: all 9 completed runs succeeded.
+- **Runtime launches on CI**: every completed run launched the Release app several times. Windows: initial launch, restart, and four data-mode launches per full run. Android: initial launch, resume, force-stop relaunch, and font-scale relaunch. Exact totals were not counted.

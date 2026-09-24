@@ -1,0 +1,63 @@
+screen 1080 2400 Physical density: 420
+Performing Streamed Install
+Success
+
+== launch
+   am start: Starting: Intent { cmp=com.fieldcheck.app/.MainActivity } | Status: ok | LaunchState: COLD | Activity: com.fieldcheck.app/.MainActivity | TotalTime: 2269 | WaitTime: 2325 | Complete
+   [PASS] A05: Dashboard 'Good evening' shown; am start TotalTime=2269 ms; install 8.2s; screen 1080x2400 density Physical density: 420
+   [PASS] J04: Clean install first run seeded data and reached Dashboard
+   [PASS] C02-ui: Dashboard counts 12/7/3/2 visible
+   [PASS] F01-dashboard: Dashboard content reachable at 412x915-class viewport
+== assets
+   [PASS] B07: Bottom navigation reached Assets
+   [PASS] C03-ui: Search 'roof' -> AHU-203,CT-007,FAN-305
+   [PASS] C05-ui: roof + Critical -> CT-007
+   [PASS] E05-ui: No-results state for 'zzz'
+   [PASS] C04-ui: Cleared: 6 rows visible
+== detail
+   [PASS] B03: Asset Detail opened for CT-007
+   [PASS] E07: Long description readable; Start inspection reachable
+== back
+   [PASS] B08: System back: Inspection -> Asset Detail -> Assets
+   [PASS] F06: Back did not exit the app while in-app destinations existed
+== form
+   [PASS] B04: New inspection shows asset identity
+   [PASS] D14-ui: Submit disabled on empty form
+   [PASS] D10-ui: Good + Yes: issue description hidden
+   [PASS] D12-ui: Operating No: issue description shown
+   [PASS] D11-ui: Attention: issue description shown
+   [PASS] D04-ui: 300 °C shows range error
+   [PASS] D03-ui: 27 °C accepted
+   [PASS] D05-ui: Three checklist items checked
+   [PASS] F02: Form scrolls; submit reachable after keyboard dismissal
+   [PASS] J06: Background/resume kept form input (temperature 27)
+== picker
+   [PASS] D07: System document picker opened (<FrameLayout text='' desc='' [0,0][1080,2400]>)
+   [PASS] D09: Picker cancel left the form usable with no attachment
+   picker target: <TextView text='inspection-photo.png' desc='' [196,1035][497,1086]>
+   [PASS] D08: Selected file name shown in form
+   [PASS] F08: Android Storage Access Framework picker returned the pushed test image
+== submit
+   [PASS] D14-ui-enabled: Submit enabled when valid
+   [PASS] D17-ui: Success shows INS-24092
+   [PASS] D18-ui: Asset detail shows last inspection Sep 24, 2026, Attention condition
+   [PASS] B12-view-asset: View asset returned to Asset Detail
+== history
+   [PASS] B07-history: Bottom navigation reached History
+   [PASS] C06-ui: Order: INS-24092 · Today, 7:43 PM | INS-24091 · Sep 18, 9:24 AM | INS-24044 · Sep 17, 7:58 AM | INS-24086 · Sep 12, 2:40 PM | INS-24065 · Sep 11, 8:15 AM | INS-24058 · Sep 10, 3:32 PM
+   [PASS] D15-ui: Triple tap created exactly one inspection
+   [PASS] C09-ui: History shows 7 after save
+   [PASS] C07-ui: Search booster -> INS-24091
+   [PASS] C08-ui: Critical filter -> INS-24072
+   [PASS] B07-dashboard: Bottom navigation reached Dashboard
+== cancel
+   [PASS] B11: Header back/cancel returned without saving (still 7)
+== restart
+   am start: Starting: Intent { cmp=com.fieldcheck.app/.MainActivity } | Status: ok | LaunchState: COLD | Activity: com.fieldcheck.app/.MainActivity | TotalTime: 1143 | WaitTime: 1172 | Complete
+   [PASS] C10: INS-24092 present after force-stop + relaunch (TotalTime=1143 ms)
+   [PASS] J05: Relaunch succeeded, data intact
+== fontscale
+   am start: Starting: Intent { cmp=com.fieldcheck.app/.MainActivity } | Status: ok | LaunchState: COLD | Activity: com.fieldcheck.app/.MainActivity | TotalTime: 1096 | WaitTime: 1101 | Complete
+   [PASS] F05: At font scale 1.3 dashboard and form remain reachable
+   [PASS] J03: No crash-buffer entries for the app
+Checks: 43 pass / 0 fail of 43

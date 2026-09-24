@@ -1,0 +1,5 @@
+
+CurrentHorizontalResolution CurrentVerticalResolution
+--------------------------- -------------------------
+                       1920                      1080
+

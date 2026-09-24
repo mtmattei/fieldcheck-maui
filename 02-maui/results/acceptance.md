@@ -1,105 +1,111 @@
 # FieldCheck MAUI — Acceptance Results
 
-Status: **BLOCKED** (environment). PASS 50 · FAIL 0 · NOT TESTED 45 (of 95).
+Status: **COMPLETE**. PASS 95 · FAIL 0 · NOT TESTED 0 (of 95; A08 is Uno-only and not applicable).
 
-PASS entries are backed by builds, automated tests or deterministic code checks. Criteria needing a rendered UI, a platform picker, a device/emulator or Windows are NOT TESTED, with the reason.
+Runtime evidence comes from the final CI run on commit `d37afd2`:
 
-| ID | Status | Evidence / reason |
+- Run: https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411
+- Windows: 48/48 end-to-end checks.
+- Android: 43/43 end-to-end checks.
+- Unit tests: 58/58.
+- Raw check files, logs and UI dumps: `results/ci/`.
+
+Runtime verification uses GitHub-hosted runners, made available by a recorded human intervention (`interventions.md`).
+
+| ID | Status | Evidence |
 |---|---|---|
-| A01 | PASS | All projects target .NET 10 (net10.0, net10.0-android; net10.0-windows10.0.19041.0 on Windows hosts); Microsoft.Maui.Controls 10.0.110. Verified by builds. |
-| A02 | PASS | results/environment.json records SDK 10.0.112, runtime 10.0.12, MAUI 10.0.110, maui-android workload 10.0.20 manifest, Android pack 36.1.69. |
-| A03 | PASS | `dotnet build -f net10.0-android -c Release` succeeded: 0 errors, 0 warnings, signed APK + AAB produced (targetSdk 36). CAVEAT: official SDK host is blocked, so the SDK was composed: platforms/android-36/android.jar = org.robolectric:android-all:16-robolectric-13921718 (full API 36 framework incl. resources.arsc), build-tools = Ubuntu 29.0.3. Re-run with the official SDK before publication. |
-| A04 | NOT TESTED | Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| A05 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| A06 | NOT TESTED | Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| A07 | PASS | Warnings recorded: Core (TreatWarningsAsErrors) 0; MAUI net10.0 compile incl. XAML SourceGen 0; Android Release 0; tests 0. |
-| B01 | NOT TESTED | DashboardPage implemented and XAML-compiled; rendering vs reference not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B02 | NOT TESTED | AssetsPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B03 | NOT TESTED | AssetDetailPage/AssetDetailView implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B04 | NOT TESTED | NewInspectionPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B05 | NOT TESTED | InspectionSuccessPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B06 | NOT TESTED | HistoryPage implemented and compiled; not rendered. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B07 | NOT TESTED | Shell bottom tabs (Dashboard/Assets/History) implemented. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B08 | NOT TESTED | Shell push stack assetdetail -> newinspection; header back and system back pop. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B09 | NOT TESTED | Shell locked flyout sidebar on WinUI implemented. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| B10 | NOT TESTED | AssetsPage switches to 460px master + detail pane at content width >= 760 (≈1000px window). VM logic PASS in tests; layout Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| B11 | NOT TESTED | VM test Cancel_returns_without_saving PASS (navigates back, 6 inspections persisted). Runtime navigation not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| B12 | NOT TESTED | VM test: ViewAsset -> GoBack (form already replaced by success), ViewHistory -> //main/history. Shell execution not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| C01 | PASS | Test Seeds_all_twelve_assets_and_six_inspections_from_fixtures. |
-| C02 | PASS | Test Dashboard_counts_are_derived_from_data (12/7/3/2, then 8/3/1 after a Good inspection on CT-007). |
-| C03 | PASS | Theory Assets_search_matches_name_id_type_location (case-insensitive name, ID, type, location). |
-| C04 | PASS | Test Assets_status_filter_and_search_combine (Operational 7, Attention 3, Critical 2). |
-| C05 | PASS | Same test: Critical + 'roof' -> CT-007; Critical + 'pump' -> NoResults. |
-| C06 | PASS | Tests Inspections_are_newest_first and History_is_newest_first_searchable_and_filterable. |
-| C07 | PASS | History search by asset name ('booster') and ID ('cnv-018'); location is not matched. |
-| C08 | PASS | History Good/Critical filters verified. |
-| C09 | PASS | Added_inspection_persists_across_restart_and_updates_asset writes the JSON data file to disk via FileDataStore (atomic temp+move). |
-| C10 | NOT TESTED | Data-layer restart (new repository instance over the same storage file) PASS in tests; true process kill + relaunch on a device not possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| C11 | PASS | Saving_does_not_mutate_fixture_files compares SHA-256 of the fixtures before/after a save; fixtures are bundled read-only (MauiAsset) and copied to app storage. |
-| C12 | PASS | Generated_ids_are_unique_sequential_and_stable_after_restart (INS-24092, 24093, then 24094 after restart). |
-| D01 | PASS | Condition_supports_good_attention_critical. |
-| D02 | PASS | OperatingNormally Yes/No toggled in Issue_description_visibility tests. |
-| D03 | PASS | Temperature theory: -50, 0, 27.5, -4,5, 250 accepted. |
-| D04 | PASS | -50.1, 250.01, 300, abc, empty, 1e3 rejected with a message; submit disabled (VM level; message rendering not verified). |
-| D05 | PASS | Each_checklist_item_is_individually_required (theory over the three items). |
-| D06 | PASS | Multiline notes persisted verbatim ('Line one\nLine two'); Editor control in UI. |
-| D07 | NOT TESTED | MauiFilePickerService uses FilePicker.Default.PickAsync (Android SAF / Windows FileOpenPicker). Platform picker cannot be opened here. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| D08 | NOT TESTED | VM shows filename + thumbnail binding; tested with a fake picker. Platform selection of inspection-photo.png not possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| D09 | NOT TESTED | VM: null result (cancel), TaskCanceledException and failures leave form usable (test PASS). Platform picker cancel not exercised. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| D10 | PASS | Good + Yes -> hidden (theory). |
-| D11 | PASS | Attention/Critical -> shown (theory). |
-| D12 | PASS | Operating normally No -> shown (theory). |
-| D13 | PASS | Issue_description_is_required_when_shown (whitespace rejected). |
-| D14 | PASS | SubmitCommand.CanExecute false until condition, temperature, 3 checklist items and (when shown) issue description are valid. |
-| D15 | PASS | Repeated_activation_during_save_cannot_duplicate: CanExecute false while running + interlocked gate; 3 activations -> 1 inspection. |
-| D16 | PASS | Submit_creates_exactly_one_inspection_and_navigates_to_success (count 6 -> 7). |
-| D17 | PASS | Success VM exposes INS-24092, Cooling Tower 07, Attention, 'Sep 23, 2026 · Alex Morgan' (VM test; page rendering not verified). |
-| D18 | PASS | Asset_detail_and_success_reflect_the_new_inspection: status Attention, last inspection Sep 23, 2026, latest summary = issue description. |
-| E01 | PASS | All list/detail VMs start in Loading and show a StatePanel spinner; FIELDCHECK_READ_DELAY_MS makes it observable. VM state tested; rendering not verified. |
-| E02 | PASS | DataSourceMode.Empty -> ViewState.Empty on Dashboard/Assets/History (tests). |
-| E03 | PASS | DataSourceMode.Error -> ViewState.Error with user-safe message (tests). |
-| E04 | PASS | Assets_error_state_retries_and_recovers (ErrorOnce -> Retry -> 12 assets). |
-| E05 | PASS | NoResults distinct from Empty (Assets_empty_repository_is_distinct_from_no_results; search no-match -> NoResults with Clear action). |
-| E06 | PASS | MissingRequirements/RequirementsSummary list what to fix; per-field messages for temperature, checklist, issue description. |
-| E07 | NOT TESTED | CT-007 description is in a wrapping Label inside a ScrollView (WordWrap, max width 620). Rendering not verifiable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| E08 | PASS | Persistence_failure_reports_error_and_keeps_form + Write_failure_throws_and_leaves_data_unchanged: no navigation to success, entries kept, retry succeeds. |
-| F01 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| F02 | NOT TESTED | Form is in a ScrollView; Android WindowSoftInputModeAdjust.Resize set. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| F03 | NOT TESTED | Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| F04 | NOT TESTED | Adaptive rules implemented (master/detail >=760 content px, History table >=900, form two-column >=900, 720px min window). Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| F05 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| F06 | NOT TESTED | Shell back stack; success replaces form so back returns to asset. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| F07 | NOT TESTED | All interactive rows are real Buttons (focusable), inputs are native. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| F08 | NOT TESTED | Android image/* + application/pdf MIME types; Windows extension list. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| G01 | NOT TESTED | SemanticProperties.Description/Hint set on icon buttons, row activators, chips, inputs, switch, checkboxes. Accessibility tree not inspectable without a running target. |
-| G02 | PASS | Every status is shown via StatusChip text or a text label ('Critical condition'); tone color is never the only signal (code + VM Tone/Text pairs). |
-| G03 | NOT TESTED | Native WinUI focus visuals kept on buttons; FocusFrameBehavior thickens the input frame on focus. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| G04 | NOT TESTED | Button styles set MinimumHeight/Width 44; primary buttons 54; icon buttons 44x44; checkboxes min 44. Not measured at runtime. |
-| G05 | NOT TESTED | Errors are text directly below the field plus a red frame, and listed in the submit summary. Rendering not verified. |
-| G06 | PASS | Computed WCAG ratios: Ink/Canvas 15.8, Muted/Canvas 4.7, Ink/Accent 15.6, Success chip 5.7, Critical chip 5.5, Attention chip 4.3 (supplied palette), Surface/Ink 17.7. |
-| H01 | NOT TESTED | No screenshot possible. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| H02 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| H03 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| H04 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| H05 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| H06 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| I01 | PASS | CommunityToolkit.Mvvm view models in FieldCheck.Core; pages only bind and forward query parameters/size changes. |
-| I02 | PASS | IFieldCheckRepository/JsonFieldCheckRepository/IDataFileStore in Core; views never touch persistence. |
-| I03 | PASS | Validation, filtering, state and submission live in VMs; code-behind limited to layout breakpoints, query forwarding and OnAppearing refresh. |
-| I04 | PASS | No dead code or duplicate implementations (reviewed; template MainPage/fonts/iOS/Mac folders removed). |
-| I05 | PASS | No test shortcuts; data modes are injectable repository behavior with no UI switch (env var only). |
-| I06 | PASS | Runtime deps: Microsoft.Maui.Controls 10.0.110, CommunityToolkit.Mvvm 8.4.2. Test deps: xunit 2.9.3, runner 3.1.5, Test.Sdk 18.10.1. Recorded in dependencies.txt. |
-| I07 | PASS | 58 xUnit tests over repository and all six view models (dotnet test: 58 passed, 0 failed). |
-| I08 | PASS | No tests removed or weakened; all passed on first execution. |
-| J01 | PASS | grep: no lorem/TODO/placeholder content; no debug UI. |
-| J02 | PASS | All 22 Buttons and 2 ImageButtons bound to commands (StatePanel action hidden when no command); commands covered by VM tests. |
-| J03 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| J04 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| J05 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| J06 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| J07 | NOT TESTED | VM cancel/failure paths PASS in tests; platform picker not exercisable. No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. |
-| J08 | PASS | No secrets/credentials in source; INTERNET permission removed; APK signed with the SDK-generated debug key (not committed). |
-| J09 | NOT TESTED | No Android emulator/device (dl.google.com blocked, no KVM) and no Windows host in this environment; runtime UI cannot be launched. Windows target cannot be built or run on this Linux host (maui-windows workload / WinUI XAML compiler are Windows-only). |
-| J10 | NOT TESTED | Android Release build produced, but no release runtime verification was possible. |
-
-K-metrics are reported in `final-summary.md`.
+| A01 | PASS | net10.0 / net10.0-android / net10.0-windows10.0.19041.0; Microsoft.Maui.Controls 10.0.110. Built on CI and locally. |
+| A02 | PASS | results/environment.json records the container SDK 10.0.112 plus the CI SDK 10.0.401, workloads maui-android 36.1.69 and maui-windows 10.0.20, and runner OS versions. |
+| A03 | PASS | CI ubuntu-latest with the official Android SDK (platforms;android-36, build-tools;36.0.0): `dotnet build -f net10.0-android -c Release`, 0 warnings / 0 errors, signed APK + AAB, 117 s. Run https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411. |
+| A04 | PASS | CI windows-latest (Server 2025): `dotnet build -f net10.0-windows10.0.19041.0 -c Release`, 0 warnings / 0 errors, 103 s. First success in run 3; final in https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411. |
+| A05 | PASS | Android emulator driver (results/ci/android/android-checks.json): Release APK installed on an API 34 pixel_6 emulator; Dashboard shown ('Good evening'), am start TotalTime 2269 ms. |
+| A06 | PASS | Windows CI driver (results/ci/windows/windows-checks.json): Release FieldCheck.exe launched at 1440x900; Dashboard greeting visible 2-3 s after launch. |
+| A07 | PASS | Warnings: 0 in Core, MAUI net10.0 + XAML SourceGen, Android Release (CI), Windows Release (CI) and tests. |
+| B01 | PASS | Dashboard rendered on both targets (screenshots 01-dashboard) with the reference hierarchy: greeting, 12-asset metric, 3 counts, rule, Needs attention rows, Accent CTA. |
+| B02 | PASS | Assets rendered and driven on both targets (android 02-assets, windows 02-assets-master-detail). |
+| B03 | PASS | Asset Detail rendered (android 03-asset-detail; windows detail pane + f04-asset-detail-720x600 page). |
+| B04 | PASS | New Inspection rendered and filled on both (04-new-inspection / 03-new-inspection); asset identity line verified. |
+| B05 | PASS | Success rendered on both (05-inspection-success / 04-inspection-success) showing INS-24092. |
+| B06 | PASS | History rendered on both (06-history / 05-history). |
+| B07 | PASS | Android emulator driver (results/ci/android/android-checks.json): bottom tabs reached Assets, History and Dashboard (B07, B07-history, B07-dashboard). |
+| B08 | PASS | Android emulator driver (results/ci/android/android-checks.json): system back from New inspection -> Asset detail -> Assets; app not exited (B08, F06). |
+| B09 | PASS | Windows CI driver (results/ci/windows/windows-checks.json): sidebar navigated to Dashboard, Assets and History repeatedly. |
+| B10 | PASS | Windows CI driver (results/ci/windows/windows-checks.json): at 1440x900 the Assets list is on the left and the CT-007 detail pane (with Start inspection) on the right. |
+| B11 | PASS | Cancel (Windows Cancel button; Android header back) returned without saving; history stayed at 7 on both. Unit test also PASS. |
+| B12 | PASS | View asset returned to the asset showing the new status/date on both targets; View history opened History with the new record first (Windows, INS-24093). |
+| C01 | PASS | Unit test (12 seeded assets); UI shows '12 equipment records' on both targets. |
+| C02 | PASS | Unit test (counts change after an inspection); UI shows 12/7/3/2 on both. |
+| C03 | PASS | UI on both: 'roof' -> AHU-203, CT-007, FAN-305; unit theory covers name/ID/type/location case-insensitively. |
+| C04 | PASS | Windows UI: Attention filter -> AHU-203, CNV-018, BLR-002; unit test covers all statuses. |
+| C05 | PASS | UI on both: 'roof' + Critical -> CT-007. |
+| C06 | PASS | UI on both: INS-24092 (Today) first, then seed records newest-first. |
+| C07 | PASS | UI: 'booster' -> INS-24091 (Android), 'ahu-203' -> INS-24086 (Windows). |
+| C08 | PASS | UI: Critical -> INS-24072 (Android); Good -> INS-24091, INS-24044 (Windows). |
+| C09 | PASS | UI on both: History shows 7 completed inspections after submit. |
+| C10 | PASS | Runtime on both: force-stop (Android) / process kill (Windows) + relaunch, INS-24092 still present with 7 inspections. |
+| C11 | PASS | Unit test hashes the fixtures before/after save. Fixtures are packaged read-only and copied to app storage. |
+| C12 | PASS | INS-24092 then INS-24093 after restart (Windows runtime); unit test covers uniqueness and persistence. |
+| D01 | PASS | Good/Attention/Critical selectable on both (UI) + unit test. |
+| D02 | PASS | Operating normally switch toggled Yes/No on both. |
+| D03 | PASS | 27 accepted on both; -50 accepted in the Windows second inspection; unit theory covers both bounds. |
+| D04 | PASS | 300 °C shows 'Temperature must be between -50 and 250 °C.' with submit disabled on both (d04 screenshots). |
+| D05 | PASS | Windows: two of three checked keeps submit disabled; unit theory covers each item. |
+| D06 | PASS | Windows UI read back 'Line one\nLine two'; Android UI dump shows the two-line notes value. |
+| D07 | PASS | System picker opened: Windows FileOpenPicker (d07-file-picker-open), Android DocumentsUI (d07-picker-open). |
+| D08 | PASS | Selecting mock-data/inspection-photo.png showed 'inspection-photo.png' plus a thumbnail on both. |
+| D09 | PASS | Picker cancel (Escape / Back) left the form intact with no attachment on both. |
+| D10 | PASS | Good + Yes hides Issue description on both (UI) + unit theory. |
+| D11 | PASS | Attention shows Issue description on both. |
+| D12 | PASS | Operating normally No shows Issue description on both. |
+| D13 | PASS | Unit test; UI requirement summary lists 'Describe the issue' (Windows E06). |
+| D14 | PASS | Submit disabled on the empty form and enabled once valid on both. |
+| D15 | PASS | Triple click/tap on Submit created exactly one inspection on both (no INS-24093 in that run). |
+| D16 | PASS | History grew from 6 to 7 after one submit on both. |
+| D17 | PASS | Success shows INS-24092, Cooling Tower 07, Attention, date · Alex Morgan on both. |
+| D18 | PASS | After View asset: last inspection = today, 'Attention condition', and the issue text shown on both. |
+| E01 | PASS | Windows runtime with FIELDCHECK_READ_DELAY_MS=5000 shows 'Loading dashboard…' (e01-loading). VM starts in Loading (unit test). |
+| E02 | PASS | Windows runtime FIELDCHECK_DATA_MODE=Empty: dashboard 'No assets yet' and history 'No inspections yet' (e02 screenshots). |
+| E03 | PASS | Windows runtime ErrorOnce: 'Couldn't load assets' with a user-safe message and Retry (e03-error-dashboard). |
+| E04 | PASS | Retry recovered to the populated dashboard (e04-retry-recovered); unit test also PASS. |
+| E05 | PASS | 'No matching assets' with a Clear action on both (e05 screenshots); distinct from the Empty state. |
+| E06 | PASS | Per-field messages and the submit summary ('To submit: …') shown on Windows; unit tests. |
+| E07 | PASS | CT-007 long description wraps without clipping in the Android detail page and the Windows detail pane. |
+| E08 | PASS | Unit tests: a write failure reports an error, keeps the entries and does not navigate; retry succeeds. Not inducible on runners without fault injection. |
+| F01 | PASS | Android pixel_6 = 1080x2400 @420 dpi = 411x914 dp (412x915-class); all six views captured without clipping. |
+| F02 | PASS | Android: keyboard shown while typing; after dismissal every field and Submit reachable by scrolling. |
+| F03 | PASS | Windows 1440x900 capture matches the reference composition (sidebar, 460 px master, detail pane). |
+| F04 | PASS | Windows resized to 1000x800, 900x760, 720x600: at 720 the master/detail collapses to single pane; History switches to stacked rows (f04 screenshots). |
+| F05 | PASS | Android font_scale 1.3: dashboard and full form reachable (f05 screenshots). Windows text scaling not separately exercised. |
+| F06 | PASS | Android system back follows the navigation stack; success replaces the form. |
+| F07 | PASS | Windows Tab moves focus into app controls (sidebar items, rows, inputs); driver interactions use keyboard input. |
+| F08 | PASS | Windows FileOpenPicker with an extension filter; Android SAF/DocumentsUI with MIME filter; both return a copy in app storage. |
+| G01 | PASS | UIA names / content-desc verified in dumps: row buttons ('Cooling Tower 07, CT-007, …, status Critical'), chips ('Filter: Critical'), 'Attach photo or file', 'Cancel inspection and go back', checkbox names. |
+| G02 | PASS | Status chips always carry text ('Status: Critical' semantic plus visible label). |
+| G03 | PASS | Windows focus rectangle clearly visible (g03-keyboard-focus-dashboard); inputs thicken to a 2 px Ink frame on focus. |
+| G04 | PASS | Android dumps: checkboxes 116x116 px, header icon 116x116 px, condition buttons 116 px tall (= 44 dp at 420 dpi); primary buttons 54 dp. |
+| G05 | PASS | Validation text sits directly under the field in Critical color with a red frame (d04 screenshots); not color-only. |
+| G06 | PASS | Computed contrast: Ink/Canvas 15.8, Muted/Canvas 4.7, Ink/Accent 15.6, chips 5.7/5.5, Attention chip 4.3 (supplied palette). |
+| H01 | PASS | results/screenshots/{android,windows}/01-dashboard.png; differences in visual-review.md. |
+| H02 | PASS | android/02-assets.png, windows/02-assets-master-detail.png. |
+| H03 | PASS | android/03-asset-detail.png, windows/02-assets-master-detail.png (detail pane). |
+| H04 | PASS | android/04-new-inspection.png (+ -lower), windows/03-new-inspection.png. |
+| H05 | PASS | android/05-inspection-success.png, windows/04-inspection-success.png. |
+| H06 | PASS | android/06-history.png, windows/05-history.png. |
+| I01 | PASS | CommunityToolkit.Mvvm view models in FieldCheck.Core; pages only bind. |
+| I02 | PASS | Repository/data store in Core; views never touch persistence. |
+| I03 | PASS | Validation and state live in VMs; code-behind is limited to layout breakpoints, query forwarding and refresh-on-appear. |
+| I04 | PASS | No dead or duplicate implementations; FlexLayout variants were replaced, not kept. |
+| I05 | PASS | No test shortcuts; data modes are env-var repository options with no UI. The CI drivers exercise the real Release binaries. |
+| I06 | PASS | 2 runtime packages; test/CI-only: xunit stack and FlaUI.UIA3 5.0.0 (harness, not shipped). See dependencies.txt. |
+| I07 | PASS | 58 xUnit tests pass locally and on the Windows runner; plus 48 Windows and 43 Android end-to-end UI checks. |
+| I08 | PASS | No tests weakened. Driver fixes corrected wrong selectors, each backed by a UI dump or screenshot, and never relaxed an app expectation. |
+| J01 | PASS | No placeholder/debug UI in any screenshot. |
+| J02 | PASS | Every button exercised by the drivers or bound to a tested command (Remove attachment covered by unit test). |
+| J03 | PASS | Final run: Android crash buffer empty; Windows driver completed all steps with no process exit. Two crashes found earlier were fixed (see implementation-notes). |
+| J04 | PASS | Fresh runner/emulator: first run seeded data and reached the Dashboard on both. |
+| J05 | PASS | Kill + relaunch preserved the submitted inspection on both. |
+| J06 | PASS | Android HOME + resume kept the form input; Windows minimize/restore stayed responsive. |
+| J07 | PASS | Picker cancel on both at runtime; failed/superseded picker paths covered by unit tests. |
+| J08 | PASS | No secrets; INTERNET permission removed; CI uses only the built-in GITHUB_TOKEN. |
+| J09 | PASS | Primary workflow Dashboard -> Assets -> Detail -> Start -> validate/submit -> Success -> View asset -> History -> relaunch executed end-to-end on both targets. |
+| J10 | PASS | All runtime verification used Release builds (APK from bin/Release, exe from bin/Release). |

@@ -29,5 +29,26 @@
   "claude_model": "claude-opus-5-5 (session configuration)",
   "git_state": "branch claude/pensive-sagan-hes7f7 at ce93aa10a861f26f684f25234597d84b1827a5d7, clean working tree at start",
   "network_policy_notes": "nuget.org, maven.google.com, archive.ubuntu.com reachable; dl.google.com, builds.dotnet.microsoft.com, dotnetcli.azureedge.net, ci.dot.net, download.visualstudio.microsoft.com, GitHub file downloads denied",
-  "cache_policy": "warm"
+  "cache_policy": "warm",
+  "ci_verification_environment": {
+    "note": "Human intervention 1 (interventions.md): GitHub-hosted runners used to build, launch and verify.",
+    "windows": {
+      "runner": "windows-latest",
+      "os": "Microsoft Windows Server 2025 Datacenter 10.0.26100",
+      "display": "1920x1080, 100% scale",
+      "dotnet_sdk": "10.0.401",
+      "workload": "maui-windows 10.0.20/10.0.100 (SDK band 10.0.400)",
+      "ui_automation": "FlaUI.UIA3 5.0.0"
+    },
+    "android": {
+      "runner": "ubuntu-latest with KVM",
+      "dotnet_sdk": "10.0.401",
+      "workload": "maui-android (android 36.1.69)",
+      "android_sdk": "official: platforms;android-36, build-tools;36.0.0, platform-tools (sdkmanager)",
+      "java": "Microsoft OpenJDK 21",
+      "emulator": "reactivecircus/android-emulator-runner@v2, API 34 google_apis x86_64, profile pixel_6 (1080x2400, 420 dpi = 411x914 dp)",
+      "ui_automation": "adb + uiautomator dump (Python driver)"
+    },
+    "final_run": "https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411 (commit d37afd2)"
+  }
 }

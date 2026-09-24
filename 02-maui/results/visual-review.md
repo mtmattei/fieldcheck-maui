@@ -1,37 +1,59 @@
 # Visual Review — FieldCheck (.NET MAUI)
 
-## Status: NOT PERFORMED (no implementation screenshots)
+Implementation screenshots come from the final CI run (commit `d37afd2`, run 36049012411):
 
-No implementation screenshot could be captured. Android has no emulator/device in this environment (Google SDK host blocked, no KVM), and the Windows target cannot be built or run on Linux. H01–H06 are NOT TESTED. Nothing below is a screenshot comparison.
+- **Android**: API 34 `pixel_6` emulator, 1080×2400 px at 420 dpi = 411×914 dp. Files in `screenshots/android/<name>.png` are downscaled to 412×915 for side-by-side comparison. Full resolution is in `<name>-1080x2400.png`. Screenshots include the system status bar and gesture bar, which the references omit.
+- **Windows**: Windows Server 2025 runner, 100 % scale, app window 1440×900 including the title bar, captured with UIA (`screenshots/windows/<name>.png`).
 
-What follows is a **design-intent mapping**: how each reference view was translated into XAML, plus the divergences already known from the implementation. It exists so the comparison can be completed quickly on a capable machine.
+Font rasterization differs from the references: Roboto on Android, Segoe UI Variable on Windows, while the references use a generic grotesque. Per the acceptance rules this is not scored.
 
-## Deliberate divergences (known without rendering)
+## Android (412×915)
 
-| Area | Reference | Implementation | Reason |
-|---|---|---|---|
-| Nav/search icons | Glyphs render as vertical-bar "tofu" boxes (Dashboard, History, search) | Line icons drawn as SVG: 2×2 grid (Dashboard), diamond (Assets, same as reference), list (History), magnifier (search) | The reference glyphs look like missing-font boxes. Reproducing them would ship broken-looking icons. |
-| Dashboard "Needs attention" | 4 rows (CT-007, AHU-203, CNV-018, BLR-002); EF-090 absent although counted as Critical | 5 rows, Critical first: CT-007, EF-090, AHU-203, CNV-018, BLR-002 | Spec: list contains all Attention and Critical assets. Counts (7/3/2) match the reference. |
-| History rows (Android) | Asset, then "ID · time" | Asset, "ID · time", then inspector on a third line | Spec §3.6 requires the inspector on each row. The Windows table already shows it. |
-| History subtitle | "7 completed inspections" | "6 completed inspections" before any submit, 7 after | The reference is captured after one new inspection. |
-| Inspection IDs | INS-24102 | INS-24092 for the first new record | IDs increment from the highest seeded ID. References allow differences for generated records. |
-| Checklist boxes | Lime-filled box, ink check, ink border | Native CheckBox tinted Ink (ink fill, white check) | Keeps native keyboard focus and screen-reader semantics (F07/G01). A custom lime box would need a custom focusable control. |
-| New inspection defaults | Shows a filled example (Attention, 27, all checked) | Starts empty: no condition, empty temperature, unchecked | These are required inputs. Prefilling them would bypass validation. |
-| Android New inspection | No Notes field visible | Notes (optional, multiline) after Issue description | Spec §3.4 requires Notes. |
-| Windows Cancel | Quiet "Cancel" text button | Same. On Android, Cancel is the header back arrow plus system back (no extra button, matching the reference) | — |
-| Status bar | References show no Android status bar | Headers use top padding 40–44 px. With MAUI 10 edge-to-edge, final vertical offsets depend on the device's inset handling | Needs a runtime check. |
+| Ref | Implementation | Structure / composition | Spacing / alignment | Typography | Color / borders / radii | Sizing / density | Notes |
+|---|---|---|---|---|---|---|---|
+| 01-dashboard | 01-dashboard.png | Match: micro label, greeting, context line, 12 assets metric, 3 colored counts, rule, NEEDS ATTENTION rows (name / ID·type / location, chip, chevron), bottom nav with Accent indicator | Content starts ~30 px lower because of the status bar; 20 px gutters match | Titles render **bold** vs the reference's semibold | Tokens match; chips soft-fill with 14 px radius | Rows ~94 px vs ~92 px | List has **5** rows (spec: all Attention + Critical); the reference shows 4 and omits EF-090. The "View all assets" button is below the fold because of the 5th row. |
+| 02-assets | 02-assets.png | Match: title + count, bordered search (12 px radius) with icon, 4 pill chips (Ink selected), separated rows with chip + chevron | Match | Bold title | Match | 6 rows visible (reference 6) | Search icon is a magnifier (reference glyph renders as a missing-font box). |
+| 03-asset-detail | 03-asset-detail.png | Match: back + "Asset detail", name, chip, 2×2 info sheet, rules, description, latest inspection, full-width Accent Start inspection | Match | Bold header | Match | Start inspection sits below the fold (reached by scrolling, `e07-asset-detail-scrolled.png`) because an extra meta line (ID · date · inspector) is shown under the latest inspection. | Long CT-007 text wraps cleanly. |
+| 04-new-inspection | 04-new-inspection.png, 04-new-inspection-lower.png | Match: segmented condition (Ink selected), operating switch (Ink track / lime thumb), temperature field, checklist, conditional Issue description with "Required", attach field, Accent submit | Match | Match | Checkboxes are native (Ink fill, white check) vs the reference's lime box with ink check | Form is longer because Notes (spec-required) sits between Issue description and Attach | The reference shows no Notes field; the spec requires it. |
+| 05-inspection-success | 05-inspection-success.png | Match: lime circle + check, "Inspection saved", ID, rule, asset + chip, date · inspector, local-storage note, stacked View asset / View history | Match | Match | Match | Match | Near-identical composition. |
+| 06-history | 06-history.png | Match: title + count, search, chips, rows with asset, ID · time, chip | Match | Match | Match | Rows are taller: a third line shows the **inspector** (spec §3.6 requires it; the reference omits it) | Bottom nav with Accent indicator on History. |
 
-## Per-screen mapping
+## Windows (1440×900)
 
-- **Dashboard (H01)**: FIELDCHECK micro label (Android only; the Windows sidebar carries the mark), "Good afternoon/morning/evening" 30 semibold, "Facility A · {weekday, MMM d}", 50–54 px total metric plus muted "assets", three colored counts, hairline, NEEDS ATTENTION rows with chip and chevron, full-width (Android) or 170 px (Windows) Accent "View all assets".
-- **Assets (H02/H03 Windows)**: title and count, bordered search field (12 px radius), pill chips (Ink fill when selected), separated rows. At ≥ 760 px content width: a 460 px master pane on #F6F5F1 with a 1 px rule, the selected row on a Surface fill with a 4 px Accent marker, and the detail pane (title 30, chip, 200 px Accent "Start inspection" top-right, 2×2 info sheet, rules, description, latest inspection).
-- **Asset detail (H03 Android)**: back plus "Asset detail" 30, then the same info sheet with a full-width Start inspection button after the content.
-- **New inspection (H04)**: three segmented buttons (Ink fill when selected), operating-normally switch (Ink track, Accent thumb), temperature field, checklist, conditional issue description with an Attention-colored "Required" tag, notes, "+ Choose file" field, Accent submit. Wide layout: checklist in a right column at x = 380 + 92, rule, 820 px text areas, Cancel and Submit bottom-right.
-- **Success (H05)**: 70 px lime circle with an ink check, "Inspection saved" 32, ID, rule, asset name with chip, date · inspector, local-storage note, then View asset (Accent) and View history (outlined). Stacked on Android, side by side on Windows (191 px each).
-- **History (H06)**: title and count, search plus chips (one row on wide, stacked on narrow), Windows table columns ASSET / INSPECTION / INSPECTOR / RESULT with hairlines, Android stacked rows.
+| Ref | Implementation | Structure / composition | Spacing / alignment | Typography | Color / borders / radii | Sizing / density | Notes |
+|---|---|---|---|---|---|---|---|
+| 01-dashboard | 01-dashboard.png | Match: 232 px white sidebar with FIELDCHECK + lime F mark, 3 items with Accent marker on the active one, footer Alex Morgan / Facility A; content with greeting, metric, counts, rule, rows (chip column + chevron), 170 px Accent CTA | Content offset ~30 px lower (window title bar) | Bold titles | Match | 5 rows (see Android note) | The window title bar and system caption buttons are native chrome absent from the reference. |
+| 02-assets-master-detail | 02-assets-master-detail.png | Match: 460 px master pane (lighter surface, 1 px rule) with search, chips, rows; selected row on a Surface fill with Accent marker; detail pane with title, chip, top-right Accent Start inspection, info sheet, description, latest inspection | Match | Match | Match | Master rows ~73 px (reference ~84 px): slightly denser | A native WinUI scroll indicator line appears in the master list while scrolling. |
+| 03-new-inspection | 03-new-inspection.png | Match: two-column top (condition / operating / temperature left, checklist right), rule, 820 px issue + notes editors, 360 px attach field, Cancel + Submit bottom-right | Match | Match | Native Ink checkboxes (see Android) | With an attachment preview row added, Submit sits just below the 900 px fold (reachable by scroll). Reference fits because it has no attachment preview. | Shell adds a native back arrow in the title bar on pushed pages; it works, it is not in the reference. |
+| 04-inspection-success | 04-inspection-success.png | Match: centered 413 px column, lime circle, title, ID, rule, asset + chip, meta, note, side-by-side 191 px buttons | Match | Match | Match | Match | Near-identical. |
+| 05-history | 05-history.png | Match: title + count, 415 px search + chips in one row, table header ASSET / INSPECTION / INSPECTOR / RESULT, hairline rows | Match | Match | Match | Rows ~67 px vs ~66 px | Near-identical. |
 
-## To complete this review
+## Responsive / state captures (supporting evidence)
 
-1. On Windows: `dotnet build src/FieldCheck -f net10.0-windows10.0.19041.0 -c Release`, run, and capture at the default 1440×900 window.
-2. On an Android emulator (Pixel-class 412×915 dp): install the Release APK and capture the six views.
-3. Save the images to `results/screenshots/{android,windows}/` using the reference file names, then replace this document with the per-screenshot comparison.
+- **Windows**:
+  - `f04-assets-1000x800`, `f04-assets-900x760`, `f04-assets-720x600`: master/detail collapses below ~1000 px window width.
+  - `f04-history-720x600`: stacked rows below the table breakpoint.
+  - `f04-asset-detail-720x600`: detail as its own page.
+  - Data states: `e01-loading`, `e02-empty-*`, `e03-error-dashboard`, `e04-retry-recovered`, `e05-assets-no-results`.
+  - Also: `d04-temperature-validation`, `d07-file-picker-open`, `g03-keyboard-focus-dashboard` (visible focus rectangle).
+- **Android**:
+  - `f05-*-font-1.3`: 130 % system font scale.
+  - Picker: `d07-picker-open`, `d08-picker-file` (DocumentsUI).
+  - Also: `d04-temperature-validation`, `e05-no-results`, `c10-history-after-restart`.
+
+## Summary of material differences
+
+No structural divergence or redesign. The deliberate differences either follow the spec or keep native accessibility:
+
+- 5 Needs-attention rows.
+- Notes field present.
+- Inspector shown in History rows.
+- Native checkboxes.
+- SVG line icons where the reference glyphs are missing-font boxes.
+
+Cosmetic differences:
+
+- Bold where the reference uses semibold titles.
+- The native Windows title bar and back arrow.
+- A slightly denser Windows master list.
+- The Submit / Start inspection buttons land just below the fold in two views, because of the extra spec-required content.

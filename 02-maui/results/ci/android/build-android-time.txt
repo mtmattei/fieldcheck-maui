@@ -1,0 +1,13 @@
+elapsed_seconds=117
+total 85084
+drwxr-xr-x 2 runner runner     4096 Sep 24 19:36 .
+drwxr-xr-x 3 runner runner     4096 Sep 24 19:34 ..
+-rw-r--r-- 1 runner runner   107008 Sep 24 19:34 FieldCheck.Core.dll
+-rw-r--r-- 1 runner runner    78104 Sep 24 19:34 FieldCheck.Core.pdb
+-rw-r--r-- 1 runner runner   226816 Sep 24 19:35 FieldCheck.dll
+-rw-r--r-- 1 runner runner   160764 Sep 24 19:35 FieldCheck.pdb
+-rw-r--r-- 1 runner runner     2956 Sep 24 19:35 FieldCheck.runtimeconfig.json
+-rw-r--r-- 1 runner runner     4045 Sep 24 19:35 FieldCheck.xml
+-rw-r--r-- 1 runner runner 28696597 Sep 24 19:36 com.fieldcheck.app-Signed.aab
+-rw-rw-rw- 1 runner runner 29260668 Jan  1  1981 com.fieldcheck.app-Signed.apk
+-rw------- 1 runner runner 28561075 Sep 24 19:36 com.fieldcheck.app.aab

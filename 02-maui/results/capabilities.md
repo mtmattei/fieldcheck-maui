@@ -49,3 +49,15 @@ Discovery performed 2026-09-24 15:30–15:45 UTC, before any application source 
 ## Consequence
 
 Android + Windows runtime launch, screenshot capture and on-device workflow verification cannot be performed in this environment. Everything that can run on Linux (net10.0 compile of the shared app code and XAML, automated tests, Android compile as far as the available SDK permits) is exercised; the rest is recorded as NOT TESTED with the reason.
+
+## Added after human intervention 1 (GitHub Actions runners)
+
+| Tool | Use |
+|---|---|
+| GitHub Actions `windows-latest` | Windows Release build + launch + UI verification |
+| GitHub Actions `ubuntu-latest` + KVM | Official Android SDK Release build; Android emulator (API 34, pixel_6) |
+| `reactivecircus/android-emulator-runner@v2` | Emulator lifecycle on CI |
+| FlaUI.UIA3 5.0.0 | Windows UI Automation driver (clicks, typing, dialogs, screenshots, resize, minimize) |
+| adb + `uiautomator dump` | Android UI driver (taps, text entry, back/home, force-stop, font scale, SAF picker) |
+| GitHub MCP (`actions_list`, `list_workflow_jobs`) | Run status; results were exchanged through `maui-ci-*` result branches |
+| Microsoft Learn MCP | Shell `TabBarIsVisible` guidance (per-page pattern) |

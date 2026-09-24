@@ -1,97 +1,103 @@
 # FieldCheck — .NET MAUI Run: Final Summary
 
-## Completion status: **BLOCKED (environment)**, not COMPLETE
+## Completion status: **COMPLETE**
 
-The application is fully implemented and passes every check this environment can run: the Android Release build, a net10.0 compile of all XAML and C#, and 58 automated tests. It is **not verified COMPLETE**, because this run's container cannot:
+All 95 applicable acceptance criteria pass: **95 PASS · 0 FAIL · 0 NOT TESTED**. A08 is Uno-only and not applicable.
 
-- build or launch the **Windows** target (Linux host; the WinUI toolchain is Windows-only);
-- launch **Android** (the official SDK/emulator host `dl.google.com` is denied by the network policy, and `/dev/kvm` is absent, so no emulator can run);
-- therefore capture screenshots, exercise the platform file picker, or run end-to-end/process-restart checks on a device.
+Runtime verification ran on GitHub-hosted runners after a recorded human intervention (`interventions.md`). The original container could not build or run Windows, or run an Android emulator.
 
-All runtime-dependent criteria are recorded as NOT TESTED with the reason. No criterion FAILED.
+The final evidence comes from CI run [36049012411](https://github.com/mtmattei/fieldcheck-maui/actions/runs/36049012411) on commit `d37afd2`:
+
+| Target | Evidence |
+|---|---|
+| Windows (Server 2025, Release exe, 1440×900) | 48/48 end-to-end UI checks |
+| Android (API 34 emulator, pixel_6, Release APK) | 43/43 end-to-end UI checks |
+| Unit tests | 58/58 xUnit tests, locally and on the Windows runner |
 
 ## Versions
 
 | Item | Version |
 |---|---|
-| .NET SDK / runtime | 10.0.112 / 10.0.12 |
-| .NET MAUI (Microsoft.Maui.Controls) | **10.0.110** (latest stable on nuget.org at run start) |
-| maui-android workload | manifest 10.0.20/10.0.100 (workload set 10.0.112) |
-| .NET for Android pack | 36.1.69 (API 36) |
+| .NET MAUI (Microsoft.Maui.Controls) | **10.0.110** (latest stable at run start) |
+| .NET SDK | 10.0.112 (container) · 10.0.401 (CI runners) |
+| .NET runtime | 10.0.12 |
+| Workloads | maui-android: Android pack 36.1.69, target API 36 · maui-windows: manifest 10.0.20 |
+| Android SDK (CI) | Official platforms;android-36, build-tools;36.0.0; emulator API 34 x86_64 |
+| Windows | Windows Server 2025 Datacenter 10.0.26100, Windows App SDK self-contained |
 | CommunityToolkit.Mvvm | 8.4.2 |
-| Tests | xunit 2.9.3, xunit.runner.visualstudio 3.1.5, Microsoft.NET.Test.Sdk 18.10.1 |
-| Java | OpenJDK 21.0.10 |
-| Claude Code | 2.1.281; session model `claude-opus-5-5` (get_session: configured and last served) |
+| Tests / harness | xunit 2.9.3; FlaUI.UIA3 5.0.0 (CI only) |
+| Claude Code | 2.1.281; session model `claude-opus-5-5` |
 
-## Acceptance counts (95 criteria, A08 excluded as Uno-only)
+## Timeline
 
-- **PASS 50**
-- **FAIL 0**
-- **NOT TESTED 45**: all require a running Android/Windows app, a Windows build, screenshots or the platform picker.
+Controller marks come from `timing.jsonl`. Actual first-success times come from the CI run records.
 
-Details: `results/acceptance.md` / `results/acceptance.json`.
-
-## Remaining defects / risks
-
-- **Known defects: none.** No test failures or build warnings.
-- **Unverified at runtime**: layout fidelity versus the references, Shell sidebar styling on Windows, the Android bottom-nav indicator renderer, edge-to-edge top insets, WinUI CheckBox intrinsic min-width, keyboard focus order, and picker behavior on both platforms. See `visual-review.md` for the known deliberate divergences.
-- **Android build caveat**: the successful Release APK used a composed SDK. The API 36 framework jar came from `org.robolectric:android-all` and build-tools from Ubuntu 29.0.3. Rebuild with the official Android SDK before publication.
-
-## Timeline (from `timing.jsonl`)
-
-| Milestone | UTC | Since start |
+| Milestone | UTC | Notes |
 |---|---|---|
-| run_start | 15:30:46 | 0:00 |
-| capability_discovery_complete | 15:35:32 | 4:46 |
-| first_source_edit (K01) | 15:37:47 | 7:01 |
-| first_build_attempt (K02) | 15:40:51 | 10:05 |
-| first_android_build_success (K03) | 15:56:50 | 26:04 |
-| first_windows_build_success | — | not possible |
-| first_android_launch_success (K04) | — | not possible |
-| first_windows_launch_success (K04) | — | not possible |
-| verification_start | 15:57:53 | 27:07 |
-| core_complete (K05) | — | not reached |
-| run_finish | 16:00:14 | 29:28 |
+| run_start | 15:30:46 | |
+| capability_discovery_complete | 15:35:32 | |
+| first_source_edit (K01) | 15:37:47 | +7:01 |
+| first_build_attempt (K02) | 15:40:51 | +10:05 |
+| first_android_build_success (K03) | 15:56:50 | Composed SDK in the container. First official-SDK build: CI run 1, 17:45 |
+| verification_start | 15:57:53 | |
+| run_finish (BLOCKED) | 16:00:14 | Container could not launch either target |
+| human_intervention_ci_runners_available / run_resumed | 17:42:07 | Waiting time 16:00→17:42 was not agent work |
+| first Windows build success (K03) | ~18:10 (CI run 3) | Controller mark written later at 19:17:16 |
+| first Windows + Android launch success (K04) | ~18:33 (CI run 4) | Controller marks written later at 19:17:16 |
+| core_complete (K05) | 19:46:29 | Final all-green CI run |
+| run_finish | see the last `timing.jsonl` entry | |
 
-## Builds and tests (K09, K13)
+Agent working wall-clock: 29:28 in phase 1, plus 2:04 from resume to core_complete in phase 2.
 
-- 15 build/test invocations, **4 failed**: 1 C# name clash, 1 test-project missing `using Xunit`, 2 Android SDK environment failures. Log in `implementation-notes.md`.
-- Android Release build: about 2m04s wall time. 0 errors, 0 warnings. Produced a signed APK (29.3 MB) and AAB, targetSdk 36, minSdk 23.
-- Automated tests: `dotnet test` → **58 passed, 0 failed** (repository, persistence/restart simulation, fixture immutability, ID generation, all six view models, validation, conditional field, duplicate-submit guard, persistence failure, picker cancel/failure, empty/error/retry/no-results states).
-- Runtime launches: 0. Runtime defects found (K10): none, since none could be observed.
+## Builds, tests, defects
+
+| Metric | Result |
+|---|---|
+| Build/test invocations (K09) | Container: 15, 4 failed. CI: 11 runs, 3 cancelled. Windows builds 1 failed / 8 succeeded; Android builds 9/9 succeeded. |
+| Build time (K13) | Android Release 117 s (CI) / ~2 min (container). Windows Release 103 s (CI). |
+| Startup (K13) | Android `am start` TotalTime ≈ 2.3 s cold, ≈ 1.1–1.8 s relaunch. Windows greeting visible ≈ 2–3 s after process start. |
+| Runtime defects (K10) | 5 found only by running the app. Crash at startup (both platforms). Android `FlexLayout` arrange crash. Android tab bar visible on pushed pages. Windows native navigation pill shown beside the Accent marker. Windows App Runtime dependency. All fixed and re-verified. |
+| Known remaining defects | None. The visual differences listed in `visual-review.md` are deliberate (spec-required content, native accessibility) or cosmetic. |
 
 ## Complexity (K12)
 
-- Source: 2,098 lines of C# in app + core, 1,127 lines of XAML. Tests: 764 lines of C#. 75 files under `app/src` and `app/tests`, excluding obj/bin.
-- Runtime package dependencies: 2 (Microsoft.Maui.Controls, CommunityToolkit.Mvvm).
+- App + core: about 2.1k lines of C# and 1.1k lines of XAML. Tests: 764 lines.
+- CI harness: Windows FlaUI driver plus the Android Python driver.
+- Runtime packages: 2 (Microsoft.Maui.Controls, CommunityToolkit.Mvvm).
 
 ## Architecture
 
-MVVM with CommunityToolkit.Mvvm. `FieldCheck.Core` (net10.0) holds the models, the JSON repository (seed-once from bundled fixtures, atomic writes, commit-after-write) and all view models. `FieldCheck` (MAUI) holds the Shell, pages, a status chip and state-panel controls, and platform services: Shell navigation, the MAUI FilePicker, and the packaged seed reader. Android uses bottom tabs; Windows uses a locked 232 px Shell flyout as the sidebar, with Assets master/detail at ≥ 1000 px window width. Details are in `implementation-notes.md`.
+MVVM (CommunityToolkit.Mvvm) with a MAUI-free `FieldCheck.Core` library holding models, the JSON repository and all view models. The repository seeds once from the fixtures, writes atomically and commits in memory only after the write succeeds.
+
+The MAUI app uses Shell:
+
+- **Android**: bottom tabs with a custom Accent indicator renderer.
+- **Windows**: a locked 232 px flyout as the sidebar.
+- **Adaptive layout**: Assets master/detail at ≥ 1000 px window width; two-column inspection form; History table on wide windows.
+- **Platform services**: Shell navigation, MAUI FilePicker (copying the pick into app storage), and a packaged seed reader.
+
+Details are in `implementation-notes.md`.
 
 ## Tools / MCP / skills used
 
-- Microsoft Learn MCP: MAUI 10 unit-testing pattern, FilePicker API, what's new in MAUI 10.
-- nuget.org API: version resolution.
-- `dotnet` CLI: `new maui` template, workload install/repair, build, test, list package.
-- Ubuntu apt: Android build-tools 29.0.3, adb. Maven Central: API 36 framework jar.
-- Claude Code remote docs: network-policy guidance. `get_session`: model identity.
-- Skills: none invoked. No MAUI-specific skill is installed, and Uno skills/MCP are excluded by the run rules.
+- **Microsoft Learn MCP**: MAUI unit-testing pattern, FilePicker semantics, Shell tab bar visibility.
+- **GitHub MCP**: workflow run and job status.
+- **Claude Code remote docs**: network policy guidance.
+- **CLI**: dotnet CLI (template, workload install/repair, build, test).
+- **CI**: GitHub Actions with windows-latest, and ubuntu-latest with KVM running reactivecircus/android-emulator-runner.
+- **UI drivers**: FlaUI/UIA3; adb + uiautomator.
+- **Other sources**: Ubuntu apt and Maven Central, for the phase-1 composed SDK only.
+- **Skills**: none invoked. No MAUI-specific skill is installed, and Uno skills/MCP are excluded by the run rules.
 
 ## Token usage / cost
 
-Not available to the agent: `get_session` exposes no token or cost counters. **Attach external session telemetry after the run** as `results/external-session-usage.txt` (see `METRICS_CAPTURE.md`). No estimate is given.
+Not available to the agent: session tools expose no token or cost counters. **Attach external session telemetry** as `results/external-session-usage.txt` (see `METRICS_CAPTURE.md`). No estimate is given.
 
 ## Result files
 
-- `results/environment.json`, `results/capabilities.md`, `results/timing.jsonl`
-- `results/acceptance.json`, `results/acceptance.md`
-- `results/visual-review.md`, `results/implementation-notes.md`, `results/dependencies.txt`
-- `results/screenshots/android/README.md`, `results/screenshots/windows/README.md` (explain why no screenshots exist)
-- Application: `app/FieldCheck.sln`
-
-## To finish verification (on a Windows 11 machine with an Android emulator)
-
-1. `dotnet workload install maui` and install the Android SDK/emulator through the official channel.
-2. `dotnet build app/src/FieldCheck -f net10.0-windows10.0.19041.0 -c Release`, then `-f net10.0-android -c Release`.
-3. Run the NOT TESTED items in `acceptance.md`: primary workflow, restart persistence, picker with `mock-data/inspection-photo.png`, and screenshots at 412×915 and 1440×900. For the empty/error/loading states, set `FIELDCHECK_DATA_MODE=Empty|Error|ErrorOnce` and `FIELDCHECK_READ_DELAY_MS=1500` before launching the Windows app.
+- **Run records**: `results/environment.json`, `capabilities.md`, `timing.jsonl`, `interventions.md`
+- **Acceptance**: `results/acceptance.json`, `acceptance.md`
+- **Review and notes**: `results/visual-review.md`, `implementation-notes.md`, `dependencies.txt`
+- **Screenshots**: `results/screenshots/android/*.png` (412×915, plus `-1080x2400` originals) and `results/screenshots/windows/*.png` (1440×900)
+- **Raw CI output**: `results/ci/{android,windows}/` (check JSON, driver logs, build logs, logcat, event log, UI dumps)
+- **App and harness**: application in `app/FieldCheck.sln`; CI harness in `ci/` and `.github/workflows/maui-verify.yml`

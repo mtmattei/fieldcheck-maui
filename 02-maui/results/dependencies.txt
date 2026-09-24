@@ -25,3 +25,8 @@ Project 'FieldCheck.Tests' has the following package references
 - Microsoft.Maui.Controls: required framework (pinned to latest stable 10.0.110).
 - CommunityToolkit.Mvvm: MVVM source generators (ObservableProperty/RelayCommand/AsyncRelayCommand with concurrent-execution guard).
 - xunit, xunit.runner.visualstudio, Microsoft.NET.Test.Sdk: test-only.
+
+## Verification harness (CI only, not shipped)
+- FlaUI.UIA3 5.0.0 (+ FlaUI.Core): Windows UI Automation driver, 02-maui/ci/windows/FieldCheck.WinDriver
+- Python 3 + pillow (screenshot downscale): Android driver, 02-maui/ci/android/driver.py
+- GitHub Actions: actions/checkout@v4, actions/setup-dotnet@v4, actions/setup-java@v4, reactivecircus/android-emulator-runner@v2
